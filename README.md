@@ -10,3 +10,6 @@ An instant message application for linux.
 ```
 using namespace std;
 ```
+
+#Git Rules
+- Code in your own branch
