@@ -5,3 +5,8 @@ An instant message application for linux.
 - UI-part
 - Logic-part
 
+#Code Rules
+- DO NOT USE 
+```
+using namespace std;
+```
