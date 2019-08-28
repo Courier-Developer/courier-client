@@ -10,25 +10,30 @@
  * @param path the path of file
  * @param mode openmode of file
  */
-File_handle::File_handle(const std::string& path, std::ios_base::openmode mode) {
-    try {
-        fp.open(path,mode);
-    }catch (std::exception& e){
-        std::cerr<<e.what()<<std::endl;
-    }
 
+File_handle::File_handle(const std::string &path, std::ios_base::openmode mode) {
+    try {
+        fp.open(path, mode);
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
 }
 
 
 /**
  * clean the File_handle
  */
-File_handle::~File_handle()
-{
+File_handle::~File_handle() {
     try {
         fp.close();
-    }catch (std::exception& e){
-        std::cerr<<e.what()<<std::endl;
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
     }
 
 }
+
+
+const std::fstream &File_handle::getFp() const {
+    return fp;
+}
+

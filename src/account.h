@@ -16,10 +16,11 @@
 #define PASSWORD_LENGTH_ERROR 1
 #define LINK_ERROR 5
 
-int regist(std::string username,std::string password,std::string nickname);
+int regist(const std::string &username, const std::string &password, const std::string &nickname);
 
-bool check_username_length(std::string username);
+bool check_username_length(const std::string &username);
 
-bool check_password_length(std::string password);
+bool check_password_length(const std::string &password);
+
 
 #endif //COURIER_CLIENT_ACCOUNT_H

@@ -13,7 +13,11 @@ class File_handle {
 private:
     std::fstream fp;
 public:
-    File_handle(const std::string&, std::ios_base::openmode);
+    File_handle(const std::string &, std::ios_base::openmode);
+
+    const std::fstream &getFp() const;
+
+
     ~File_handle();
 };
 

@@ -6,7 +6,8 @@
 #define COURIER_CLIENT_FILESENDER_H
 
 
-class Filesender {
+class Filesender{
+private:
 
 };
 

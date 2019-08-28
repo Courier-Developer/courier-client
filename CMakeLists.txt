@@ -9,5 +9,5 @@ INCLUDE_DIRECTORIES(${DIR_LIB})
 
 AUX_SOURCE_DIRECTORY(src DIR_SRCS)
 
-ADD_EXECUTABLE(courier-client ${DIR_SRCS})
+ADD_EXECUTABLE(courier-client ${DIR_SRCS} src/Group_info.cpp src/Group_info.h src/Shortcut.cpp src/Shortcut.h)
 
