@@ -44,10 +44,10 @@ void Group_info::setOnline_user_number(int online_user_number) {
     Group_info::online_user_number = online_user_number;
 }
 
-const std::list<Shortcut> &Group_info::getMember() const {
+const std::list<Member_Shortcut> &Group_info::getMember() const {
     return member;
 }
 
-void Group_info::setMember(const std::list<Shortcut> &member) {
+void Group_info::setMember(const std::list<Member_Shortcut> &member) {
     Group_info::member = member;
 }

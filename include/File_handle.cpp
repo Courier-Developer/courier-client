@@ -33,7 +33,3 @@ File_handle::~File_handle() {
 }
 
 
-const std::fstream &File_handle::getFp() const {
-    return fp;
-}
-

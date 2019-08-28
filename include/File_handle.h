@@ -15,9 +15,6 @@ private:
 public:
     File_handle(const std::string &, std::ios_base::openmode);
 
-    const std::fstream &getFp() const;
-
-
     ~File_handle();
 };
 

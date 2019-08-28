@@ -11,7 +11,7 @@
 
 #include <string>
 #include <list>
-#include "Shortcut.h"
+#include "Member_Shortcut.h"
 
 class Group_info {
 private:
@@ -20,7 +20,7 @@ private:
     std::string groupname;
     int size;
     int online_user_number;
-    std::list<Shortcut> member;
+    std::list<Member_Shortcut> member;
 public:
     unsigned int getGroupid() const;
 
@@ -42,9 +42,9 @@ public:
 
     void setOnline_user_number(int online_user_number);
 
-    const std::list<Shortcut> &getMember() const;
+    const std::list<Member_Shortcut> &getMember() const;
 
-    void setMember(const std::list<Shortcut> &member);
+    void setMember(const std::list<Member_Shortcut> &member);
 };
 
 

@@ -9,11 +9,17 @@
 
 #include <string>
 
-class Shortcut {
+class Member_Shortcut {
 private:
     unsigned int user_id;
     std::string name;
     std::string avator_path;
+    int status;
+public:
+    int getStatus() const;
+
+    void setStatus(int status);
+
 public:
     const std::string &getName() const;
 
