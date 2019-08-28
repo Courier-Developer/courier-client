@@ -7,7 +7,7 @@
 
 #include <string>
 
-class Friendinfo {
+class Friend_info {
 private:
     std::string avator_path;
     unsigned int id;

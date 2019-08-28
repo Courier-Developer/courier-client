@@ -10,6 +10,7 @@
 #include <string>
 
 class Shortcut {
+private:
     unsigned int user_id;
     std::string name;
     std::string avator_path;
