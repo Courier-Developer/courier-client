@@ -103,6 +103,4 @@ void update_profile(const link_to_server &link)
         //todo: call for UI
         return;
     }
-
-
 }
