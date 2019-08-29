@@ -9,6 +9,8 @@
 #include <iostream>
 #include <stdexcept>
 
+
+//todo: 封装文件句柄，暂时搁置，不完善有问题
 class File_handle {
 private:
     std::fstream fp;
