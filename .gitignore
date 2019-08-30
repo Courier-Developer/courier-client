@@ -33,10 +33,17 @@
 *.app
 
 /.idea
+
 /cmake-build-debug
+
 .DS_Store
+
 /CMakeLists.txt
+
 /builder.ui
+
 /main.cpp
+
 /UI-part
-/Logic_part/interface
+
+UI-part
