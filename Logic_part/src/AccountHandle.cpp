@@ -18,11 +18,11 @@ void signin(const link_to_server &link,const std::string &username, const std::s
         //todo: call for UI
         return;
     }
-    if (link.signin(username,password,nickname))
-    {
-        //todo: call for UI
-    }
-    // todo: call for the server's function
+//    if (link.signin(username,password,nickname))
+//    {
+//        //todo: call for UI
+//    }
+//    // todo: call for the server's function
 
 }
 
@@ -81,7 +81,7 @@ void login(link_to_server &link,std::string &username,std::string &password) {
     // todo: call for the UI
         return;
     }
-    unsigned int myid = link.login(username, password);
+//    unsigned int myid = link.login(username, password);
 //    if (myid>0)
     //todo: link the local database
     // todo:call for the UI
