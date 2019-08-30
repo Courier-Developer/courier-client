@@ -45,7 +45,6 @@ ChatList::ChatList() {
         row[chatPeep.avatar] = ava;
 
 
-        row[chatPeep.Bt] = Gtk::UIManager::create();
     }
 
     show_all_children();
