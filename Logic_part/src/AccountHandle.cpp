@@ -87,24 +87,3 @@ void login(link_to_server &link,std::string &username,std::string &password) {
     // todo:call for the UI
 }
 
-/**
- *
- * @param link
- */
-void update_profile(const link_to_server &link)
-{
-    if (my_profile.check_nickname_length()){
-        //todo: call for UI
-        return;
-    }
-    if (my_profile.check_signature_length())
-    {
-        //todo: call for UI
-        return;
-    }
-    if (link.updateprofile(my_profile))
-    {
-        //todo:  call for the UI
-        return;
-    }
-}

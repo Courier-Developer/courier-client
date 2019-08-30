@@ -6,11 +6,9 @@
 #define COURIER_CLIENT_ACCOUNT_H
 
 #include <string>
-#include <user_info.h>
 #include "LinkToServer.h"
 
 //todo: there should be a full-scope my_profile
-extern user_info my_profile;
 
 void signin(const link_to_server &link,const std::string &username, const std::string &password, const std::string &nickname);
 
