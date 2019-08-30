@@ -32,6 +32,8 @@ protected:
     Gtk::Button chats_bt,contacts_bt,others_bt;
 
     int now_on;
+
+    Gtk::Frame windowFrame;
     ChatWindow chatWindow;
     ContactWindow contactWindow;
     OtherWindow otherWindow;

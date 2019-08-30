@@ -12,8 +12,8 @@
 
 class Message {
 private:
-    User *sender;
-    Chat *chat;
+    virtual User *getSender;
+    virtual Chat *getChat;
 
     virtual int getType() = 0;
 

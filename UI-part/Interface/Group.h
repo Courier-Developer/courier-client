@@ -8,9 +8,13 @@
 #include <vector>
 #include "User.h"
 #include "Message.h"
+#include "Chat.h"
+
 class Group {
 public:
-    std::vector<User *> users;
+    virtual std::vector<User *> &getUsers() = 0;
+
+    virtual Chat *getChat() = 0;
 
     virtual unsigned int getGroupId() = 0;
 
@@ -19,8 +23,6 @@ public:
     virtual std::string getAvatarPath() = 0;
 
     virtual std::string getNotice() = 0;
-
-    std::vector<Message*> msgList;
 
 
 };

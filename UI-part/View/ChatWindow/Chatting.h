@@ -16,7 +16,11 @@ protected:
     Gtk::ScrolledWindow scrolledWindow;
 
     Gtk::TreeView msgList;
-    Gtk::Toolbar toolbar;
+
+    Gtk::HBox tools;
+    Gtk::Button expressionBt;
+
+
     Gtk::TextView msgEdit;
 
     Glib::RefPtr<Gtk::TextBuffer> refMsgText;

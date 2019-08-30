@@ -8,10 +8,11 @@
 #include <string>
 #include <vector>
 #include "Message.h"
-
+#include "Chat.h"
 
 class User {
 public:
+
     virtual unsigned int getUserId() = 0;
 
     virtual std::string getUserName() = 0;
@@ -22,7 +23,7 @@ public:
 
     virtual std::string getSignature() = 0;
 
-
+    virtual Chat *getChat() = 0;
 
 
 };

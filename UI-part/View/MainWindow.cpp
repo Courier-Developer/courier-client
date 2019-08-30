@@ -42,11 +42,11 @@ MainWindow::MainWindow() : chats_bt("Chats"),
 
 
     now_on = CHATS;
-    box.pack_start(chatWindow);
 
-
-
-
+    windowFrame.add(chatWindow);
+    windowFrame.set_border_width(0);
+    box.pack_start(windowFrame);
+    windowFrame.set_shadow_type(Gtk::SHADOW_NONE);
 
     show_all_children();
 }
@@ -59,32 +59,19 @@ void MainWindow::on_bt(const int &bt_id) {
     switch (bt_id) {
         case CHATS: {
             std::cout << CHATS << " Chats Button Clicked" << std::endl;
-            if (now_on == CONTACTS) {
-                box.remove(contactWindow);
-            } else if (now_on == OTHERS) {
-                box.remove(otherWindow);
-            }
-            if (now_on != CHATS) {
-                box.pack_start(chatWindow);
-                now_on = CHATS;
-                box.show_all_children();
-            }
+            windowFrame.remove();
+            windowFrame.add(chatWindow);
+            windowFrame.show_all_children();
 
             break;
         }
         case CONTACTS: {
             std::cout << CONTACTS << " Contacts Button Clicked" << std::endl;
 
-            if (now_on == CHATS) {
-                box.remove(chatWindow);
-            } else if (now_on == OTHERS) {
-                box.remove(otherWindow);
-            }
-            if (now_on != CONTACTS) {
-                box.pack_start(contactWindow);
-                now_on = CONTACTS;
-                box.show_all_children();
-            }
+            windowFrame.remove();
+            windowFrame.add(contactWindow);
+            windowFrame.show_all_children();
+
             /*
             Gtk::Dialog dialog;
             dialog.add_button("OK",1);
@@ -98,16 +85,10 @@ void MainWindow::on_bt(const int &bt_id) {
         case OTHERS: {
             std::cout << OTHERS << " Others Button Clicked" << std::endl;
 
-            if (now_on == CONTACTS) {
-                box.remove(contactWindow);
-            } else if (now_on == CHATS) {
-                box.remove(chatWindow);
-            }
-            if (now_on != OTHERS) {
-                box.pack_start(otherWindow);
-                now_on = OTHERS;
-                box.show_all_children();
-            }
+            windowFrame.remove();
+            windowFrame.add(otherWindow);
+            windowFrame.show_all_children();
+
             break;
         }
         default: {
