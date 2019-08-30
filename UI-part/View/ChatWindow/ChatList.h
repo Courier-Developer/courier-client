@@ -22,10 +22,12 @@ protected:
         Gtk::TreeModelColumn<Glib::ustring> chatName;
         Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > avatar;
         Gtk::TreeModelColumn<int> msg_toread;
+        Gtk::TreeModelColumn<Glib::RefPtr<Gtk::Button> >Bt;
         ChatPeep() {
             add(chatName);
             add(avatar);
             add(msg_toread);
+            add(Bt);
         }
     }chatPeep;
 

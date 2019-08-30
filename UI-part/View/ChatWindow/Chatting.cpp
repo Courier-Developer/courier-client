@@ -34,7 +34,7 @@ Chatting::Chatting() :chatName("ChatEntity"){
 
     refMsgText = Gtk::TextBuffer::create();
     msgEdit.set_buffer(refMsgText);
-
+    msgEdit.set_size_request(100,100);
 
 
 

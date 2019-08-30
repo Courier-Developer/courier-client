@@ -7,8 +7,7 @@
 
 #include <string>
 #include <vector>
-#include "Message.h"
-#include "Chat.h"
+#include "Declare.h"
 
 class User {
 public:

@@ -6,7 +6,7 @@
 #define COURIER_CLIENT_PACKET_H
 
 #include <vector>
-#include "User.h"
+#include "Declare.h"
 
 class Packet {
     virtual std::vector<User *> &getUsers() = 0;

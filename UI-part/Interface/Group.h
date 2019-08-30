@@ -6,9 +6,7 @@
 #define COURIER_CLIENT_GROUP_H
 
 #include <vector>
-#include "User.h"
-#include "Message.h"
-#include "Chat.h"
+#include "Declare.h"
 
 class Group {
 public:
