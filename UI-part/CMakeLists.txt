@@ -8,6 +8,7 @@ INCLUDE_DIRECTORIES(${GTKmm_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GTKmm_LIBRARY_DIRS})
 
 
+
 add_executable(main main.cpp
         Interface/User.h
         Interface/Message.h
