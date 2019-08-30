@@ -9,6 +9,7 @@
 #include "Declare.h"
 
 class Packet {
+public:
     virtual std::vector<User *> *getUsers() = 0;
 
     virtual std::string getName() = 0;
