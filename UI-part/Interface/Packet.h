@@ -6,14 +6,14 @@
 #define COURIER_CLIENT_PACKET_H
 
 #include <vector>
-#include "User.h"
+#include "Declare.h"
 
 class Packet {
-    std::vector<User *> users;
+    virtual std::vector<User *> &getUsers() = 0;
 
     virtual std::string getName() = 0;
 
-    virtual int getPriority() = 0;
+    virtual int getPriority() = 0;//1:BlankList 2:Common 3:Favored
 };
 
 #endif //COURIER_CLIENT_PACKET_H

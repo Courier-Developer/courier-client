@@ -6,9 +6,16 @@
 #define COURIER_CLIENT_CHAT_H
 
 #include <vector>
-#include "Message.h"
+#include "Declare.h"
+
 class Chat {
-    std::vector<Message*> msgList;
+    virtual std::vector<Message *>& getMsgList() = 0;
+
+    virtual int getChatWith() = 0;// 1:Single Chat 2:GroupChat
+
+    virtual User *getUser() = 0;
+
+    virtual Group *getGroup() = 0;
 
 };
 

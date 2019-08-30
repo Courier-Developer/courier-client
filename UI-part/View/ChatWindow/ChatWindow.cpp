@@ -6,8 +6,10 @@
 
 ChatWindow::ChatWindow() {
 
+
     pack_start(chatList, Gtk::PACK_SHRINK);
     pack_start(chatting);
+//    pack_start(*Gtk::manage(new Gtk::Label("Chat Window")));
 
     set_vexpand(true);
     set_hexpand(true);

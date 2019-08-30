@@ -7,13 +7,12 @@
 
 #include <string>
 //排完序返回
-#include "User.h"
-#include "DateTime.h"
+#include "Declare.h"
 
 class Message {
 private:
-    User *sender;
-    Chat *chat;
+    virtual User *getSender();
+    virtual Chat *getChat();
 
     virtual int getType() = 0;
 

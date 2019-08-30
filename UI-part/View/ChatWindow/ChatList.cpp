@@ -8,9 +8,12 @@
 ChatList::ChatList() {
     set_size_request(200, 400);
     pack_start(searchEntry, Gtk::PACK_SHRINK);
+    set_spacing(10);
 
-
-    pack_start(scrolledWindow);
+    Gtk::Frame* frame = Gtk::manage(new Gtk::Frame);
+    frame->add(scrolledWindow);
+    frame->set_border_width(0);
+    pack_start(*frame);
 
     scrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
     scrolledWindow.add(chatListView);
@@ -40,6 +43,9 @@ ChatList::ChatList() {
         auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
         ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
         row[chatPeep.avatar] = ava;
+
+
+        row[chatPeep.Bt] = Gtk::UIManager::create();
     }
 
     show_all_children();
