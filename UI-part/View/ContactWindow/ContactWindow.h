@@ -6,11 +6,16 @@
 #define GTKMM_CONTACTWINDOW_H
 
 #include <gtkmm.h>
+#include "ContactList.h"
 class ContactWindow : public Gtk::HBox{
 
 public:
     ContactWindow();
     virtual ~ContactWindow();
+
+protected:
+    ContactList contactList;
+
 
 };
 

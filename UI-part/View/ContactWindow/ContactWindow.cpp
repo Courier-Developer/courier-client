@@ -7,12 +7,12 @@
 ContactWindow::ContactWindow() {
     set_border_width(10);
 
-    pack_start(*Gtk::manage(new Gtk::Label("Contact Window")));
-
     set_vexpand(true);
     set_hexpand(true);
     set_valign(Gtk::ALIGN_FILL);
     set_halign(Gtk::ALIGN_FILL);
+
+    pack_start(contactList);
 
 
     show_all_children();

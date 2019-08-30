@@ -58,7 +58,6 @@ void ChatList::on_select_change() {
     Gtk::TreeModel::iterator iter = select->get_selected();
     if (iter) {
         Gtk::TreeModel::Row row = *iter;
-
         std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. " << std::endl;
         //Do something with the row.
     }
