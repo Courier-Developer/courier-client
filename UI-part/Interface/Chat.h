@@ -9,7 +9,7 @@
 #include "Declare.h"
 
 class Chat {
-    virtual std::vector<Message *>& getMsgList() = 0;
+    virtual std::vector<Message *>* getMsgList() = 0;
 
     virtual int getChatWith() = 0;// 1:Single Chat 2:GroupChat
 

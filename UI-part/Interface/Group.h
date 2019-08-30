@@ -10,7 +10,7 @@
 
 class Group {
 public:
-    virtual std::vector<User *> &getUsers() = 0;
+    virtual std::vector<User *> *getUsers() = 0;
 
     virtual Chat *getChat() = 0;
 
