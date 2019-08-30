@@ -10,7 +10,7 @@
 #include "Declare.h"
 
 class Message {
-private:
+public:
     virtual User *getSender();
     virtual Chat *getChat();
 
