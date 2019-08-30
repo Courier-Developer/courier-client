@@ -20,7 +20,7 @@ ChatList::ChatList() {
 
     chatListView.set_model(refChatPeep);
     chatListView.append_column("Avatar", chatPeep.avatar);
-    chatListView.append_column("Chat Name", chatPeep.chatName);
+    chatListView.append_column("ChatEntity Name", chatPeep.chatName);
     chatListView.append_column("", chatPeep.msg_toread);
     chatListView.set_headers_visible(false);
 
@@ -34,7 +34,7 @@ ChatList::ChatList() {
             row = *(refChatPeep->append());
         else
             row = *(refChatPeep->prepend());
-        row[chatPeep.chatName] = "Chat Name";
+        row[chatPeep.chatName] = "ChatEntity Name";
         row[chatPeep.msg_toread] = i;
 
         auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");

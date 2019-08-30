@@ -4,7 +4,7 @@
 
 #include "Chatting.h"
 
-Chatting::Chatting() :chatName("Chat"){
+Chatting::Chatting() :chatName("ChatEntity"){
     pack_start(chatName,Gtk::PACK_SHRINK);
 
     msgList.set_vexpand(true);
