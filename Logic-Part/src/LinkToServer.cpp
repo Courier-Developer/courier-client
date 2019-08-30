@@ -28,7 +28,9 @@
 
 void link_to_server::heartbeat() {
     while (1) {
+        lock.lock();
         std::cout << "..." << std::endl;
+        lock.unlock();
         sleep(1);
     }
 }

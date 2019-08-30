@@ -15,7 +15,7 @@
  */
 class link_to_server {
 private:
-    std::mutex lock;
+    static std::mutex lock;
     std::string auth_code;
     unsigned int auth_id;
 
