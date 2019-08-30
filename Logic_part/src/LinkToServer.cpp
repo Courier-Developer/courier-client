@@ -2,7 +2,7 @@
 // Created by 孙璋亮 on 2019-08-29.
 //
 
-#include "link_to_server.h"
+#include "LinkToServer.h"
 
 
 const unsigned int link_to_server::login(const std::string &username,const std::string &password) {

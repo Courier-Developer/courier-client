@@ -3,7 +3,7 @@
 //
 
 #include "user_info.h"
-#include "../src/Macro_Definition.h"
+#include "../src/MacroDefinition.h"
 
 const bool user_info::check_nickname_length() const {
     if (nickname.length()<1 || nickname.length()>20)

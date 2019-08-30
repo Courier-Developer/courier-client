@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-#include "link_to_server.h"
+#include "LinkToServer.h"
 
 int main()
 {

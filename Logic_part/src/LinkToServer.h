@@ -8,7 +8,9 @@
 #include <string>
 #include <user_info.h>
 
-
+/**
+ * 负责和服务器的交互部分
+ */
 class link_to_server {
 private:
     std::string auth_code;

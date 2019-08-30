@@ -7,8 +7,9 @@
 
 #include <string>
 #include <user_info.h>
-#include "link_to_server.h"
+#include "LinkToServer.h"
 
+//todo: there should be a full-scope my_profile
 extern user_info my_profile;
 
 void signin(const link_to_server &link,const std::string &username, const std::string &password, const std::string &nickname);
@@ -19,7 +20,9 @@ const bool check_password_length(const std::string &password);
 
 const bool check_nickname_length(const std::string &nickname);
 
+void login(link_to_server &link,std::string &username,std::string &password);
 
+void update_profile(const link_to_server &link);
 
 
 

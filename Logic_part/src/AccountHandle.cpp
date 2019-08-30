@@ -2,18 +2,17 @@
 // Created by 孙璋亮 on 2019-08-27.
 //
 
-#include "account_handle.h"
-#include "Macro_Definition.h"
-#include "link_to_server.h"
+#include "AccountHandle.h"
+#include "MacroDefinition.h"
+#include "LinkToServer.h"
 
-/*
+/**
  *
- * @param username 用户名
- * @param password 密码
- * @param nickname 昵称
- * @return 注册状态 REGIST——SUCCESS,INVALID_USERNAME,INCORRECT_INFO,LINK_ERROR
+ * @param link
+ * @param username
+ * @param password
+ * @param nickname
  */
-
 void signin(const link_to_server &link,const std::string &username, const std::string &password, const std::string &nickname) {
     if (check_username_length(username) || check_password_length(password) || check_nickname_length(nickname)){
         //todo: call for UI
@@ -21,16 +20,16 @@ void signin(const link_to_server &link,const std::string &username, const std::s
     }
     if (link.signin(username,password,nickname))
     {
-
+        //todo: call for UI
     }
     // todo: call for the server's function
 
 }
 
-/*
+/**
  *
- * @param username 用户名
- * @return 长度状态 USERNAME_LENGTH,SUCCESS
+ * @param username
+ * @return
  */
 const bool check_username_length(const std::string &username) {
     if (username.length() < 5 || username.length() > 20)
@@ -39,10 +38,10 @@ const bool check_username_length(const std::string &username) {
         return SUCCESS;
 }
 
-/*
+/**
  *
- * @param password 用户名
- * @return 长度状态 USERNAME_LENGTH,SUCCESS
+ * @param password
+ * @return
  */
 const bool check_password_length(const std::string &password) {
     if (password.length() < 6 || password.length() > 16)
@@ -51,10 +50,10 @@ const bool check_password_length(const std::string &password) {
         return SUCCESS;
 }
 
-/*
+/**
  *
- * @param nickname 昵称
- * @return 长度状态 USERNAME_LENGTH,SUCCESS
+ * @param nickname
+ * @return
  */
 const bool check_nickname_length(const std::string &nickname) {
     if (nickname.length() < 1 || nickname.length() > 20)
@@ -101,6 +100,11 @@ void update_profile(const link_to_server &link)
     if (my_profile.check_signature_length())
     {
         //todo: call for UI
+        return;
+    }
+    if (link.updateprofile(my_profile))
+    {
+        //todo:  call for the UI
         return;
     }
 }
