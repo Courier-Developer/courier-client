@@ -5,20 +5,15 @@
 #include "ChatWindow.h"
 
 ChatWindow::ChatWindow() {
-    set_border_width(10);
 
-    pack_start(*Gtk::manage(new Gtk::Label("Chat Window")));
-
-    pack_start(chatList);
+    pack_start(chatList, Gtk::PACK_SHRINK);
     pack_start(chatting);
 
     set_vexpand(true);
     set_hexpand(true);
 
 
-
     show_all_children();
-
 }
 
 ChatWindow::~ChatWindow() {

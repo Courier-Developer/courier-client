@@ -44,6 +44,10 @@ MainWindow::MainWindow() : chats_bt("Chats"),
     now_on = CHATS;
     box.pack_start(chatWindow);
 
+
+
+
+
     show_all_children();
 }
 

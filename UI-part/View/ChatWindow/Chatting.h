@@ -12,6 +12,16 @@ public:
     virtual ~Chatting();
 
 protected:
+    Gtk::Label chatName;
+    Gtk::ScrolledWindow scrolledWindow;
+
+    Gtk::TreeView msgList;
+    Gtk::Toolbar toolbar;
+    Gtk::TextView msgEdit;
+
+    Glib::RefPtr<Gtk::TextBuffer> refMsgText;
+
+
 };
 
 
