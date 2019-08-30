@@ -18,7 +18,7 @@ private:
     Chat *chat;
     std::vector<User *> *Members;
 public:
-    std::vector<User *> &getUsers() override;
+    std::vector<User *> *getUsers() override;
 
     Chat *getChat() override;
 

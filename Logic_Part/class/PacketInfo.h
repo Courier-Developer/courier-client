@@ -16,17 +16,25 @@ private:
     std::vector<unsigned int> MemberId;
     std::string PacketName;
     int PacketId;   //分组id
-    std::vector<Userinfo *> Members;
-
+    std::vector<UserInfo *> *Members;
 public:
+    PacketInfo(const std::vector<unsigned int> &memberId, const std::string &packetName, int packetId);
+
+    const std::vector<unsigned int> &getMemberId() const;
+
+    const std::string &getPacketName() const;
+
+    int getPacketId() const;
+
+    std::vector<UserInfo *> *getMembers() const;
+
 private:
-    std::vector<User *> &getUsers() override;
 
-public:
+    std::vector<User *> *getUsers() override;
+
     std::string getName() override;
 
     int getPriority() override;
-
 };
 
 

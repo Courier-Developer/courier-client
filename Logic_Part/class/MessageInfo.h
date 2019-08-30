@@ -5,8 +5,10 @@
 #ifndef LOGIC_PART_MESSAGEINFO_H
 #define LOGIC_PART_MESSAGEINFO_H
 
+#include <Message.h>
+#include "predeclare.h"
 
-class MessageInfo {
+class MessageInfo: public Message {
 
 };
 

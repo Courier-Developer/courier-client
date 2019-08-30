@@ -5,14 +5,33 @@
 #include "PacketInfo.h"
 
 
+std::vector<User *> *PacketInfo::getUsers() {
+    return nullptr;
+}
+
 std::string PacketInfo::getName() {
-    return std::string();
+    return PacketName;
 }
 
 int PacketInfo::getPriority() {
-    return 0;
+    return PacketId;
 }
 
-std::vector<User *> &PacketInfo::getUsers() {
+const std::vector<unsigned int> &PacketInfo::getMemberId() const {
+    return MemberId;
+}
+
+PacketInfo::PacketInfo(const std::vector<unsigned int> &memberId, const std::string &packetName, int packetId)
+        : MemberId(memberId), PacketName(packetName), PacketId(packetId) {}
+
+const std::string &PacketInfo::getPacketName() const {
+    return PacketName;
+}
+
+int PacketInfo::getPacketId() const {
+    return PacketId;
+}
+
+std::vector<UserInfo *> *PacketInfo::getMembers() const {
     return Members;
 }
