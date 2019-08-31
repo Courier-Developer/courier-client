@@ -27,11 +27,15 @@ public:
 
     unsigned int getGroupId();
 
+    const std::vector<unsigned int> &getMemberId() const;
+
     std::string getNickName();
 
     std::string getAvatarPath();
 
     std::string getNotice();
+
+    void AddUser(UserInfo * user);
 };
 
 

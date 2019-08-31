@@ -27,7 +27,7 @@ public:
         t[5]=s;
     }
 
-    bool operator<(const DateTime &b) {
+    bool operator<(const DateTime &b) const{
         for (int i = 0; i < 6; i++) {
             if (t[i] < b.t[i]) {
                 return true;

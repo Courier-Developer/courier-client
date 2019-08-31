@@ -6,6 +6,7 @@
 #define COURIER_CLIENT_CHATINFO_H
 
 #include "predeclare.h"
+#include "MessageInfo.h"
 
 class ChatInfo{
 
@@ -14,6 +15,7 @@ private:
     UserInfo *ToUser;
     GroupInfo *ToGroup;
     int UnreadNumbers; //未读消息数量
+    MessageInfo *LastContent;
 public:
     std::vector<MessageInfo *> *getMsgList();
 
@@ -24,6 +26,8 @@ public:
     GroupInfo *getGroup();
 
     ~ChatInfo();
+
+    void AddMessage(MessageInfo * msg);
 };
 
 
