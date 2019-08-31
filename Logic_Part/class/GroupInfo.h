@@ -5,10 +5,7 @@
 #ifndef COURIER_CLIENT_GROUPINFO_H
 #define COURIER_CLIENT_GROUPINFO_H
 
-
-#include "UserInfo.h"
-#include <string>
-#include <vector>
+#include "predeclare.h"
 
 class GroupInfo  {
 private:
