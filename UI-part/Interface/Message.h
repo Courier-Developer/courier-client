@@ -11,8 +11,9 @@
 
 class Message {
 public:
-    virtual User *getSender();
-    virtual Chat *getChat();
+    virtual User *getSender() = 0;
+
+    virtual Chat *getChat() = 0;
 
     virtual int getType() = 0;
 
