@@ -6,7 +6,6 @@
 #define COURIER_CLIENT_USEEINFO_H
 
 #include "predeclare.h"
-#include "User.h"
 #include "GroupInfo.h"
 #include "PacketInfo.h"
 #include "ChatInfo.h"
