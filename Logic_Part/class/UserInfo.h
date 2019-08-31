@@ -58,6 +58,9 @@ public:
     ChatInfo *getChat();
 
     void setInPacket(PacketInfo *inPacket);
+
+    void setInGroup(GroupInfo *inGroup);
+    int getPacket() const;
 };
 
 

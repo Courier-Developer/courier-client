@@ -54,6 +54,10 @@ void UserInfo::setSignature(const std::string &Signature) {
     UserInfo::Signature = Signature;
 }
 
+int UserInfo::getPacket() const {
+    return packet;
+}
+
 void UserInfo::setAvatorPath(const std::string &AvatorPath) {
     UserInfo::AvatorPath = AvatorPath;
 }
@@ -78,6 +82,16 @@ UserInfo::UserInfo(unsigned int userId, const std::string &userName, const std::
 
 void UserInfo::setInPacket(PacketInfo *inPacket) {
     InPacket = inPacket;
+}
+
+
+void UserInfo::setInGroup(GroupInfo *inGroup) {
+    if (InGroups) {
+        InGroups->push_back(inGroup);
+    } else {
+        InGroups = new std::vector<GroupInfo *>;
+        InGroups->push_back(inGroup);
+    }
 }
 
 

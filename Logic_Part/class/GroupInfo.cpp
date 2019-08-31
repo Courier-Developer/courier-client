@@ -41,3 +41,16 @@ GroupInfo::~GroupInfo() {
     if (Members)
         delete Members;
 }
+
+const std::vector<unsigned int> &GroupInfo::getMemberId() const {
+    return MemberId;
+}
+
+void GroupInfo::AddUser(UserInfo *user) {
+    if (Members) {
+        Members->push_back(user);
+    } else {
+        Members = new std::vector<UserInfo *>;
+        Members->push_back(user);
+    }
+}

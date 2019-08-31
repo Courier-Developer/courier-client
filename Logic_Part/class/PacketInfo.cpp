@@ -43,6 +43,7 @@ void PacketInfo::AddUser(UserInfo *user) {
     else
     {
         Members=new std::vector<UserInfo *>;
+        Members->push_back(user);
     }
 }
 
