@@ -47,7 +47,7 @@ ContactList::ContactList() {
 
     row = *(refTreeStore->append());
 
-
+    row[contact.nickName]="Black List";
     for (int i = 0; i < 5; i++) {
         Gtk::TreeModel::Row childRow = *(refTreeStore->append(row.children()));
         childRow[contact.nickName] = "Nick Name " + std::to_string(i * i);
@@ -63,7 +63,6 @@ ContactList::ContactList() {
 
 bool ContactList::on_search_equal(const Glib::RefPtr<Gtk::TreeModel> &model, int column, const Glib::ustring &key,
                                   const Gtk::TreeModel::iterator &iter) {
-
     Gtk::TreeModel::Row row = *iter;
     Glib::ustring s = row[contact.nickName];
     if(s.find(key))

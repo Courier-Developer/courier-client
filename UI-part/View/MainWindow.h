@@ -21,10 +21,11 @@ const int OTHERS = 3;
 
 class MainWindow : public Gtk::Window{
 public:
-    MainWindow();
+    MainWindow(Glib::RefPtr<Gtk::Application> app);
     virtual ~MainWindow();
 
 protected:
+    Glib::RefPtr<Gtk::Application> app;
     void on_bt(const int& bt_id);
 
     Gtk::VBox bt_box;

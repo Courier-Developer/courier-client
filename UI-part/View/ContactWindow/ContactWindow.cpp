@@ -5,7 +5,7 @@
 #include "ContactWindow.h"
 
 ContactWindow::ContactWindow() {
-    set_border_width(10);
+    set_border_width(0);
 
     set_vexpand(true);
     set_hexpand(true);
@@ -14,6 +14,8 @@ ContactWindow::ContactWindow() {
 
     pack_start(contactList);
 
+    contactInfo = new ContactInfo;
+    pack_start(*contactInfo);
 
     show_all_children();
 }
