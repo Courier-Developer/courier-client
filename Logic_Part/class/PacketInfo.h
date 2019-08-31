@@ -13,28 +13,29 @@
 class PacketInfo: public Packet {
 
 private:
-    std::vector<unsigned int> MemberId;
+//    std::vector<unsigned int> MemberId; //成员ID
     std::string PacketName;
     int PacketId;   //分组id
     std::vector<UserInfo *> *Members;
 public:
-    PacketInfo(const std::vector<unsigned int> &memberId, const std::string &packetName, int packetId);
-
-    const std::vector<unsigned int> &getMemberId() const;
 
     const std::string &getPacketName() const;
+
+    PacketInfo(const std::string &packetName, int packetId);
 
     int getPacketId() const;
 
     std::vector<UserInfo *> *getMembers() const;
 
-private:
-
     std::vector<User *> *getUsers() override;
 
     std::string getName() override;
 
+    virtual ~PacketInfo();
+
     int getPriority() override;
+
+    void AddUser(UserInfo *user);
 };
 
 

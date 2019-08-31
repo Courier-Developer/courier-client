@@ -5,11 +5,54 @@
 #ifndef LOGIC_PART_MESSAGEINFO_H
 #define LOGIC_PART_MESSAGEINFO_H
 
-#include <Message.h>
 #include "predeclare.h"
-
+#include "Message.h"
+#include "UserInfo.h"
+#include "ChatInfo.h"
+#include "DateTime.h"
 class MessageInfo: public Message {
+private:
+    unsigned int SenderId;
+    unsigned int ReceiverId;
+    std::string Content;
+    int Status; //是否发送成功
+    int type;      //1 个人 2 群聊
+    int ContentKind;   //消息类型 1 文本消息 2 文件
+    DateTime CreatedTime;
+    UserInfo *Sender;
+    ChatInfo *InChat;
 
+public:
+    MessageInfo(unsigned int senderId, unsigned int receiverId, const std::string &content, int status, int type,
+                int contentKind, const DateTime &createdTime);
+
+    User *getSender() override;
+
+    Chat *getChat() override;
+
+    int getType() override;
+
+    DateTime getCreateTime() override;
+
+    unsigned int getSenderId() const;
+
+    unsigned int getReceiverId() const;
+
+    int getContentKind() const;
+
+    const DateTime &getCreatedTime() const;
+
+    ChatInfo *getInChat() const;
+
+    std::string getContent() override;
+
+    int getStatus() override;
+
+    void setStatus(int status);
+
+    virtual ~MessageInfo();
+
+    MessageInfo();
 };
 
 

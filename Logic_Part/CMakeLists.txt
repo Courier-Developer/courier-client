@@ -9,4 +9,5 @@ INCLUDE_DIRECTORIES(../UI-part/Interface)
 
 AUX_SOURCE_DIRECTORY(class DIR_CLS)
 
-add_executable(Logic_Part ${DIR_CLS})
+AUX_SOURCE_DIRECTORY(../UI-part/Interface DIR_INT)
+add_executable(Logic_Part main.cpp ${DIR_CLS})

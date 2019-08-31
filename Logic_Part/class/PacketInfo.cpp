@@ -17,12 +17,6 @@ int PacketInfo::getPriority() {
     return PacketId;
 }
 
-const std::vector<unsigned int> &PacketInfo::getMemberId() const {
-    return MemberId;
-}
-
-PacketInfo::PacketInfo(const std::vector<unsigned int> &memberId, const std::string &packetName, int packetId)
-        : MemberId(memberId), PacketName(packetName), PacketId(packetId) {}
 
 const std::string &PacketInfo::getPacketName() const {
     return PacketName;
@@ -35,3 +29,21 @@ int PacketInfo::getPacketId() const {
 std::vector<UserInfo *> *PacketInfo::getMembers() const {
     return Members;
 }
+
+PacketInfo::~PacketInfo() {
+    if(Members)
+        delete Members;
+}
+
+void PacketInfo::AddUser(UserInfo *user) {
+    if (Members)
+    {
+        Members->push_back(user);
+    }
+    else
+    {
+        Members=new std::vector<UserInfo *>;
+    }
+}
+
+PacketInfo::PacketInfo(const std::string &packetName, int packetId) : PacketName(packetName), PacketId(packetId) {}
