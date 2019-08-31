@@ -7,10 +7,7 @@
 #include <gtkmm/messagedialog.h>
 #include "ContactWindow/ContactInfo.h"
 
-MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) : chats_bt("Chats"),
-                           contacts_bt("Contacts"),
-                           others_bt("Others"),
-                           bt_box(Gtk::ORIENTATION_VERTICAL) {
+MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) {
 
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
@@ -23,14 +20,28 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) : chats_bt("Chats"),
 
     box.pack_start(bt_box, false, false);
 
+    auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
+    ava = ava->scale_simple(64,64,Gdk::INTERP_BILINEAR);
+    avatar.set(ava);
+    bt_box.pack_start(avatar);
+
+    chats_bt.set_label("CHAT");
     bt_box.pack_start(chats_bt);
+    contacts_bt.set_label("CONT");
     bt_box.pack_start(contacts_bt);
+    others_bt.set_label("OTHE");
     bt_box.pack_start(others_bt);
 
-    bt_box.set_valign(Gtk::ALIGN_CENTER);
+
+    bt_box.set_valign(Gtk::ALIGN_START);
     bt_box.set_halign(Gtk::ALIGN_CENTER);
     bt_box.set_hexpand(false);
     bt_box.set_vexpand(false);
+    bt_box.set_spacing(20);
+    bt_box.set_margin_top(10);
+    bt_box.set_margin_bottom(10);
+    bt_box.set_margin_left(10);
+    bt_box.set_margin_right(10);
 
     chats_bt.signal_clicked().connect(sigc::bind<int>(
             sigc::mem_fun(*this, &MainWindow::on_bt), CHATS));
@@ -42,7 +53,6 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) : chats_bt("Chats"),
             sigc::mem_fun(*this, &MainWindow::on_bt), OTHERS));
 
 
-    now_on = CHATS;
 
     windowFrame.add(chatWindow);
     windowFrame.set_border_width(0);

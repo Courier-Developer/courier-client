@@ -30,9 +30,9 @@ protected:
 
     Gtk::VBox bt_box;
     Gtk::HBox box;
+    Gtk::Image avatar;
     Gtk::Button chats_bt,contacts_bt,others_bt;
 
-    int now_on;
 
     Gtk::Frame windowFrame;
     ChatWindow chatWindow;
