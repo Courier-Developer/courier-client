@@ -2,13 +2,12 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "UserInfo.h"
-#include "GroupInfo.h"
-#include "MessageInfo.h"
-#include "PacketInfo.h"
-#include "ChatInfo.h"
-//#include "GlobalVar.h"
-#include "predeclare.h"
+#include "UI-Interface/UserInfo.h"
+#include "UI-Interface/GroupInfo.h"
+#include "UI-Interface/MessageInfo.h"
+#include "UI-Interface/PacketInfo.h"
+#include "UI-Interface/ChatInfo.h"
+#include "UI-Interface/predeclare.h"
 #include <functional>
 #include <fstream>
 
@@ -59,32 +58,29 @@ void init() {
     GroupMap.clear();
 }
 
-using  std::cin,std::cout,std::string,std::map;
+using  std::cin,std::cout,std::string,std::map,std::endl;
 void LoginInit()
 {
 
-    {
-        freopen("/test/myprofile","r",stdin);
-        int id,s,p;
-        string username,nickname,signature,avator;
-        cin>>id>>username>>nickname>>signature>>avator>>s>>p;
-
+//    {
         //todo: requset from server
-        UserInfo myprofile=UserInfo(id,username,nickname,signature,avator,s,p);;
-        UserInfo *temp = new UserInfo(myprofile);
-        AllUser[temp->getUserId()] = temp;
-        //todo: update the local server
-        ChatTo=MyProfile=temp;
-    }
+//        freopen("/Users/ironhead/CLionProjects/courier-client/Logic_Part/test/pac")
+        UserInfo myprofile;
+
+//        AllUser[temp->getUserId()] = temp;
+//        //todo: update the local server
+//        ChatTo=MyProfile=temp;
+//    }
     //todo: request the information from server
     {
-        freopen("/test/packettest","r",stdin);
+        freopen("/Users/ironhead/CLionProjects/courier-client/Logic_Part/test/packettest","r",stdin);
         string name;
         int id;
         std::vector<PacketInfo> allpackets;
         while (cin>>name>>id)
         {
             allpackets.push_back(PacketInfo(name,id));
+//            cout<<"fuck"<<endl;
         }
 
         //todo: update the local database
@@ -96,7 +92,7 @@ void LoginInit()
     }
     //todo:request the information from server
     {
-        freopen("/test/usertest","r",stdin);
+        freopen("/Users/ironhead/CLionProjects/courier-client/Logic_Part/test/usertest","r",stdin);
         std::vector<UserInfo> users;
         int id,s,p;
         string username,nickname,signature,avator;
@@ -114,14 +110,14 @@ void LoginInit()
         }
     }
     {
-        freopen("/test/grouptest","r",stdin);
+        freopen("/Users/ironhead/CLionProjects/courier-client/Logic_Part/test/grouptest","r",stdin);
         //todo: get information from server
         int id,num;
         string name,notice,avator;
         std::vector<GroupInfo> groups;
         while (cin>>id>>name>>avator>>notice>>num)
         {
-
+//            cout<<"??"<<endl;
             std::vector<unsigned int> pp;
             while (num--){
                 int tmp;
@@ -145,7 +141,7 @@ void LoginInit()
 
     {
         //todo: get information form local database
-        freopen("/test/messagetest","r",stdin);
+        freopen("/Users/ironhead/CLionProjects/courier-client/Logic_Part/test/messagetest","r",stdin);
         int id,sta,to,type,ye,mon,dd,hh,mm,ss,toid;
         string content;
         std::vector<MessageInfo> messages;
@@ -188,10 +184,16 @@ int main()
     LoginInit();
     for (auto &tmp:AllGroup)
         cout<<tmp->getNickName()<<std::endl;
-    for (auto &tmp:AllPacket)
-        cout<<tmp->getName()<<std::endl;
+//    for (auto &tmp:AllPacket)
+//        cout<<tmp->getName()<<std::endl;
     for (auto &tmp:AllChat)
         cout<<tmp->getChatWith()<<std::endl;
+//    freopen("/Logic_Part/test/grouptest","r",stdin);
+//    string tmp;
+//    while (cin>>tmp)
+//    {
+//        cout<<tmp<<endl;
+//    }
     return 0;
 }
 

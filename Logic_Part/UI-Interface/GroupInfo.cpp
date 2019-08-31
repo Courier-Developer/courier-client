@@ -3,7 +3,7 @@
 //
 
 #include "GroupInfo.h"
-extern std::vector<ChatInfo *> AllChat;
+
 
 
 // todo:
@@ -19,8 +19,7 @@ ChatInfo *GroupInfo::getChat() {
         chat=new ChatInfo;
         chat->setTotype(2);
         chat->setToGroup(this);
-//        AddChat(chat);
-        AllChat.push_back(chat);
+        Dealer::AddChat(chat);
         return chat;
     }
 }

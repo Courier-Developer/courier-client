@@ -6,7 +6,12 @@
 
 //todo:
 std::vector<MessageInfo *> *ChatInfo::getMsgList() {
-    return nullptr;
+    if (MessageList)
+        return MessageList;
+    else{
+        MessageList=new std::vector<MessageInfo *>;
+        return MessageList;
+    }
 }
 
 //todo

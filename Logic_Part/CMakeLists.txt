@@ -7,10 +7,10 @@ INCLUDE_DIRECTORIES(../UI-part/Interface)
 
 #AUX_SOURCE_DIRECTORY(Interface DIR_INT)
 
-AUX_SOURCE_DIRECTORY(class DIR_CLS)
+AUX_SOURCE_DIRECTORY(UI-Interface DIR_CLS)
 
+add_subdirectory(FeverRPC)
 
-
-add_executable(Logic_Part ${DIR_CLS} class/main.cpp)
+add_executable(Logic_Part ${DIR_CLS} main.cpp Dealer.cpp Dealer.h)
 
 #add_executable(Test main.cpp ${DIR_CLS})

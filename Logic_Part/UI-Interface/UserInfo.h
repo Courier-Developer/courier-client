@@ -6,7 +6,7 @@
 #define COURIER_CLIENT_USEEINFO_H
 
 #include "predeclare.h"
-
+#include "../Dealer.h"
 
 class UserInfo  {
 private:
@@ -63,7 +63,6 @@ public:
 
     int getPacket() const;
 
-    void AddMessage(MessageInfo *);
 };
 
 

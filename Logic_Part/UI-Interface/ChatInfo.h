@@ -15,7 +15,7 @@ private:
     UserInfo *ToUser;
     GroupInfo *ToGroup;
     int UnreadNumbers; //未读消息数量
-    MessageInfo *LastContent;
+//    MessageInfo *LastContent;
 public:
     std::vector<MessageInfo *> *getMsgList();
 
