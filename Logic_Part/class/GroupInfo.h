@@ -9,7 +9,7 @@
 #include "Group.h"
 #include "UserInfo.h"
 
-class GroupInfo : public Group {
+class GroupInfo  {
 private:
     unsigned int GroupId;
     std::string NickName;
@@ -19,21 +19,21 @@ private:
     ChatInfo *chat = nullptr;
     std::vector<UserInfo *> *Members = nullptr;
 public:
-    std::vector<User *> *getUsers() override;
+    std::vector<UserInfo *> *getUsers();
 
-    Chat *getChat() override;
+    ChatInfo *getChat();
 
     virtual ~GroupInfo();
 
     GroupInfo();
 
-    unsigned int getGroupId() override;
+    unsigned int getGroupId();
 
-    std::string getNickName() override;
+    std::string getNickName();
 
-    std::string getAvatarPath() override;
+    std::string getAvatarPath();
 
-    std::string getNotice() override;
+    std::string getNotice();
 };
 
 

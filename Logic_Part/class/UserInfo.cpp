@@ -25,7 +25,7 @@ std::string UserInfo::getSignature() {
 }
 
 // todo:
-Chat *UserInfo::getChat() {
+ChatInfo *UserInfo::getChat() {
     return InChat;
 }
 

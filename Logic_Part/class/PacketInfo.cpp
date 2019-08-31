@@ -5,7 +5,7 @@
 #include "PacketInfo.h"
 
 
-std::vector<User *> *PacketInfo::getUsers() {
+std::vector<UserInfo *> *PacketInfo::getUsers() {
     return nullptr;
 }
 

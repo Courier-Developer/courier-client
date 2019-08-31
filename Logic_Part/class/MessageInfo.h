@@ -10,7 +10,8 @@
 #include "UserInfo.h"
 #include "ChatInfo.h"
 #include "DateTime.h"
-class MessageInfo: public Message {
+
+class MessageInfo {
 private:
     unsigned int SenderId;
     unsigned int ReceiverId;
@@ -26,13 +27,13 @@ public:
     MessageInfo(unsigned int senderId, unsigned int receiverId, const std::string &content, int status, int type,
                 int contentKind, const DateTime &createdTime);
 
-    User *getSender() override;
+    UserInfo *getSender();
 
-    Chat *getChat() override;
+    ChatInfo *getChat();
 
-    int getType() override;
+    int getType();
 
-    DateTime getCreateTime() override;
+    DateTime getCreateTime();
 
     unsigned int getSenderId() const;
 
@@ -44,9 +45,9 @@ public:
 
     ChatInfo *getInChat() const;
 
-    std::string getContent() override;
+    std::string getContent();
 
-    int getStatus() override;
+    int getStatus();
 
     void setStatus(int status);
 

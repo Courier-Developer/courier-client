@@ -5,10 +5,10 @@
 #ifndef COURIER_CLIENT_CHATINFO_H
 #define COURIER_CLIENT_CHATINFO_H
 
-#include <Chat.h>
+#include "Chat.h"
 #include "UserInfo.h"
 
-class ChatInfo : public Chat {
+class ChatInfo{
 
 private:
     std::vector<MessageInfo *> *MessageList;
@@ -16,13 +16,13 @@ private:
     GroupInfo *ToGroup;
     int UnreadNumbers; //未读消息数量
 public:
-    std::vector<Message *> *getMsgList() override;
+    std::vector<MessageInfo *> *getMsgList();
 
-    int getChatWith() override; //1.个人 2.群
+    int getChatWith(); //1.个人 2.群
 
-    User *getUser() override;
+    UserInfo *getUser();
 
-    Group *getGroup() override;
+    GroupInfo *getGroup();
 
     ~ChatInfo();
 };

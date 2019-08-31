@@ -5,7 +5,7 @@
 #include "ChatInfo.h"
 
 //todo:
-std::vector<Message *> *ChatInfo::getMsgList() {
+std::vector<MessageInfo *> *ChatInfo::getMsgList() {
     return nullptr;
 }
 //todo
@@ -13,11 +13,11 @@ int ChatInfo::getChatWith() {
     return 0;
 }
 //todo
-User *ChatInfo::getUser() {
+UserInfo *ChatInfo::getUser() {
     return nullptr;
 }
 //todo
-Group *ChatInfo::getGroup() {
+GroupInfo *ChatInfo::getGroup() {
     return nullptr;
 }
 

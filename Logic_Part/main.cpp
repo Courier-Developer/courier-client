@@ -12,6 +12,8 @@ std::vector<GroupInfo> AllGroup;
 
 
 int main() {
+
+//    AllPacket=
     //todo: achieve the table of all available User
     vector<UserInfo> gg;
     //todo: call for the local database

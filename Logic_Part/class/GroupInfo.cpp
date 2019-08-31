@@ -5,12 +5,12 @@
 #include "GroupInfo.h"
 
 // todo:
-std::vector<User *> *GroupInfo::getUsers() {
-    return nullptr;
+std::vector<UserInfo *> *GroupInfo::getUsers() {
+    return Members;
 }
 
 // todo:
-Chat *GroupInfo::getChat() {
+ChatInfo *GroupInfo::getChat() {
     return nullptr;
 }
 

@@ -5,12 +5,12 @@
 #include "MessageInfo.h"
 
 //todo:
-User *MessageInfo::getSender() {
-    return nullptr;
+UserInfo *MessageInfo::getSender() {
+    return Sender;
 }
 // todo:
-Chat *MessageInfo::getChat() {
-    return nullptr;
+ChatInfo *MessageInfo::getChat() {
+    return InChat;
 }
 
 int MessageInfo::getType() {

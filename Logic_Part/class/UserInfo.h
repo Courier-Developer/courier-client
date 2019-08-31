@@ -11,7 +11,7 @@
 #include "PacketInfo.h"
 #include "ChatInfo.h"
 
-class UserInfo : public User {
+class UserInfo  {
 private:
     unsigned int UserId;
     std::string UserName;
@@ -48,17 +48,17 @@ public:
 
     int getStatus() const;
 
-    unsigned int getUserId() override;
+    unsigned int getUserId();
 
-    std::string getUserName() override;
+    std::string getUserName();
 
-    std::string getNickName() override;
+    std::string getNickName();
 
-    std::string getAvatarPath() override;
+    std::string getAvatarPath();
 
-    std::string getSignature() override;
+    std::string getSignature();
 
-    Chat *getChat() override;
+    ChatInfo *getChat();
 
     void setInPacket(PacketInfo *inPacket);
 };
