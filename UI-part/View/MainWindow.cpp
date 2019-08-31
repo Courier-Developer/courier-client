@@ -7,12 +7,13 @@
 #include <gtkmm/messagedialog.h>
 #include "ContactWindow/ContactInfo.h"
 
-MainWindow::MainWindow() : chats_bt("Chats"),
+MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) : chats_bt("Chats"),
                            contacts_bt("Contacts"),
                            others_bt("Others"),
                            bt_box(Gtk::ORIENTATION_VERTICAL) {
 
     std::cout << "Building Main Window" << std::endl;
+    this->app = app;
 
     set_title("MainWindow");
     set_position(Gtk::WIN_POS_CENTER);

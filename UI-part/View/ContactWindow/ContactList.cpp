@@ -47,7 +47,7 @@ ContactList::ContactList() {
 
     row = *(refTreeStore->append());
 
-
+    row[contact.nickName]="Black List";
     for (int i = 0; i < 5; i++) {
         Gtk::TreeModel::Row childRow = *(refTreeStore->append(row.children()));
         childRow[contact.nickName] = "Nick Name " + std::to_string(i * i);

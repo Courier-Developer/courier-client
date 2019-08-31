@@ -4,13 +4,16 @@
 
 #include "OtherWindow.h"
 
+
 OtherWindow::OtherWindow() {
     set_vexpand(true);
     set_hexpand(true);
     set_valign(Gtk::ALIGN_FILL);
     set_halign(Gtk::ALIGN_FILL);
 
-    pack_start(*Gtk::manage(new Gtk::Label("Other Window")));
+    myInfo = new ContactInfo;
+    pack_start(*myInfo);
+
 
 
     show_all_children();

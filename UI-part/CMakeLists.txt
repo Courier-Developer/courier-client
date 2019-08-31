@@ -32,7 +32,7 @@ add_executable(main main.cpp
         View/OtherWindow/OtherWindow.h
         View/ContactWindow/ContactList.cpp View/ContactWindow/ContactList.h
 
-        )
+        View/SignUp.cpp View/SignUp.h)
 
 
 add_executable(test test.cpp)
