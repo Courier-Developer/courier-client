@@ -5,7 +5,6 @@
 #ifndef COURIER_CLIENT_CHATINFO_H
 #define COURIER_CLIENT_CHATINFO_H
 
-#include "Chat.h"
 #include "UserInfo.h"
 
 class ChatInfo{
