@@ -10,13 +10,7 @@ LINK_DIRECTORIES(${GTKmm_LIBRARY_DIRS})
 
 
 add_executable(main main.cpp
-        Interface/User.h
-        Interface/Message.h
-        Interface/Group.h
-        Interface/Packet.h
-        Interface/Chat.h
-        Interface/DateTime.h
-        Interface/Declare.h
+
         View/LogIn.cpp
         View/LogIn.h
         View/MainWindow.cpp
