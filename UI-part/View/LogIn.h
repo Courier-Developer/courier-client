@@ -9,28 +9,24 @@
 #include <gtkmm.h>
 #include "MainWindow.h"
 
-class LogIn :public Gtk::Window{
+class LogIn : public Gtk::Window {
 public:
-    LogIn();
+    LogIn(Glib::RefPtr<Gtk::Application> app);
+
     virtual ~LogIn();
 
-    Glib::RefPtr<Gtk::Application>* app;
 
 protected:
-
-    void on_login();
-    void on_signin();
-
-
+    Glib::RefPtr<Gtk::Application> app;
 
     Gtk::Grid grid;
 
-    Gtk::Entry username,password;
-    Gtk::Label usernameLable,passwordLable;
+    Gtk::Entry username, password;
+    Gtk::Label usernameLabel, passwordLabel;
 
-
+    Gtk::CheckButton showPassword;
+    Gtk::Button signUpBt;
     Gtk::Button logInBt;
-    Gtk::Button signInBt;
 
 };
 

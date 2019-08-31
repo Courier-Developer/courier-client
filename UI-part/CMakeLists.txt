@@ -7,16 +7,13 @@ PKG_CHECK_MODULES(GTKmm REQUIRED gtkmm-3.0)
 INCLUDE_DIRECTORIES(${GTKmm_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GTKmm_LIBRARY_DIRS})
 
-
+AUX_SOURCE_DIRECTORY(../Logic_Part/class CLASS_DIR)
 
 add_executable(main main.cpp
-        Interface/User.h
-        Interface/Message.h
-        Interface/Group.h
-        Interface/Packet.h
-        Interface/Chat.h
-        Interface/DateTime.h
-        Interface/Declare.h
+
+
+        ${CLASS_DIR}
+
         View/LogIn.cpp
         View/LogIn.h
         View/MainWindow.cpp
@@ -33,9 +30,12 @@ add_executable(main main.cpp
         View/ContactWindow/ContactWindow.h
         View/OtherWindow/OtherWindow.cpp
         View/OtherWindow/OtherWindow.h
+        View/ContactWindow/ContactList.cpp View/ContactWindow/ContactList.h
 
-        View/ContactWindow/ContactList.cpp View/ContactWindow/ContactList.h)
+        View/SignUp.cpp View/SignUp.h)
+
 
 add_executable(test test.cpp)
+
 TARGET_LINK_LIBRARIES(main ${GTKmm_LIBRARIES})
 
