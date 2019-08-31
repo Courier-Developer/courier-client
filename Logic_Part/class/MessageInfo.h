@@ -6,10 +6,10 @@
 #define LOGIC_PART_MESSAGEINFO_H
 
 #include "predeclare.h"
-#include "Message.h"
 #include "UserInfo.h"
 #include "ChatInfo.h"
 #include "DateTime.h"
+#include <string>
 
 class MessageInfo {
 private:

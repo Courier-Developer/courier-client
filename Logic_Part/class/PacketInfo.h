@@ -5,9 +5,8 @@
 #ifndef COURIER_CLIENT_PACKETINFO_H
 #define COURIER_CLIENT_PACKETINFO_H
 
-
-#include "Packet.h"
 #include "UserInfo.h"
+#include <string>
 
 //分组类
 class PacketInfo {

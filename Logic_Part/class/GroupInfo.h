@@ -6,8 +6,9 @@
 #define COURIER_CLIENT_GROUPINFO_H
 
 
-#include "Group.h"
 #include "UserInfo.h"
+#include <string>
+#include <vector>
 
 class GroupInfo  {
 private:
