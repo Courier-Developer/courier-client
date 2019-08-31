@@ -13,8 +13,9 @@ ContactWindow::ContactWindow() {
     set_halign(Gtk::ALIGN_FILL);
 
     pack_start(contactList);
-    pack_start(*contactInfo);
 
+    contactInfo = new ContactInfo;
+    pack_start(*contactInfo);
 
     show_all_children();
 }

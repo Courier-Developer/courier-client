@@ -63,7 +63,6 @@ ContactList::ContactList() {
 
 bool ContactList::on_search_equal(const Glib::RefPtr<Gtk::TreeModel> &model, int column, const Glib::ustring &key,
                                   const Gtk::TreeModel::iterator &iter) {
-
     Gtk::TreeModel::Row row = *iter;
     Glib::ustring s = row[contact.nickName];
     if(s.find(key))

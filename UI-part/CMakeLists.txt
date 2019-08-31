@@ -8,13 +8,34 @@ INCLUDE_DIRECTORIES(${GTKmm_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GTKmm_LIBRARY_DIRS})
 
 AUX_SOURCE_DIRECTORY(../Logic_Part/class CLASS_DIR)
-AUX_SOURCE_DIRECTORY(View VIEW_DIR)
 
 add_executable(main main.cpp
 
+
         ${CLASS_DIR}
-        ${VIEW_DIR}
+
+        View/LogIn.cpp
+        View/LogIn.h
+        View/MainWindow.cpp
+        View/MainWindow.h
+        View/ChatWindow/ChatWindow.cpp
+        View/ChatWindow/ChatWindow.h
+        View/ContactWindow/ContactInfo.cpp
+        View/ContactWindow/ContactInfo.h
+        View/ChatWindow/ChatList.cpp
+        View/ChatWindow/ChatList.h
+        View/ChatWindow/Chatting.cpp
+        View/ChatWindow/Chatting.h
+        View/ContactWindow/ContactWindow.cpp
+        View/ContactWindow/ContactWindow.h
+        View/OtherWindow/OtherWindow.cpp
+        View/OtherWindow/OtherWindow.h
+        View/ContactWindow/ContactList.cpp View/ContactWindow/ContactList.h
+
         )
+
+
 add_executable(test test.cpp)
+
 TARGET_LINK_LIBRARIES(main ${GTKmm_LIBRARIES})
 
