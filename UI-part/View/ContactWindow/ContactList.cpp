@@ -17,23 +17,35 @@ ContactList::ContactList() {
     filter = Gtk::TreeModelFilter::create(refTreeStore);
     filter->set_visible_func(
             [this](const Gtk::TreeModel::const_iterator &iter) -> bool {
-                std::cout << searchEntry.get_text() << std::endl;
                 Gtk::TreeModel::Row row = *iter;
+                if(row[contact.isPacket])
+                    return true;
                 Glib::ustring s = row[contact.nickName];
-                if (s.find(this->searchEntry.get_text()) != Glib::ustring::npos) {
+                s=s.lowercase();
+                if (s.find(this->searchEntry.get_text().lowercase()) != Glib::ustring::npos) {
                     return true;
                 } else {
                     return false;
                 }
             }
     );
-    contacts.set_model(filter);
+
+    searchEntry.signal_search_changed().connect([this](){
+        if(searchEntry.get_text()==""){
+            contacts.collapse_all();
+        }else {
+            contacts.expand_all();
+        }
+        filter->refilter();
+    });
 
     contacts.set_headers_visible(false);
     contacts.append_column("avatar", contact.avatar);
     contacts.append_column("Nick Name", contact.nickName);
     contacts.append_column("others", contact.others);
     contacts.set_level_indentation(0);
+
+    contacts.set_model(filter);
 
 
     select = contacts.get_selection();
