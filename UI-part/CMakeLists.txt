@@ -11,7 +11,6 @@ AUX_SOURCE_DIRECTORY(../Logic_Part/class CLASS_DIR)
 
 add_executable(main main.cpp
 
-
         ${CLASS_DIR}
 
         View/LogIn.cpp

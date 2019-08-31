@@ -8,7 +8,8 @@
 ChatList::ChatList() {
     set_size_request(200, 400);
     pack_start(searchEntry, Gtk::PACK_SHRINK);
-    set_spacing(10);
+    set_margin_top(5);
+    set_spacing(5);
 
     Gtk::Frame* frame = Gtk::manage(new Gtk::Frame);
     frame->add(scrolledWindow);
@@ -18,7 +19,6 @@ ChatList::ChatList() {
     scrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
     scrolledWindow.add(chatListView);
 
-
     refChatPeep = Gtk::ListStore::create(chatPeep);
 
     chatListView.set_model(refChatPeep);
@@ -26,6 +26,8 @@ ChatList::ChatList() {
     chatListView.append_column("ChatEntity Name", chatPeep.chatName);
     chatListView.append_column("", chatPeep.msg_toread);
     chatListView.set_headers_visible(false);
+
+
 
     select = chatListView.get_selection();
     select->signal_changed().connect(sigc::mem_fun(*this, &ChatList::on_select_change));
@@ -43,8 +45,6 @@ ChatList::ChatList() {
         auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
         ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
         row[chatPeep.avatar] = ava;
-
-
     }
 
     show_all_children();

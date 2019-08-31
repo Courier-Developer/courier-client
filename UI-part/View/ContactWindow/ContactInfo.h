@@ -14,9 +14,10 @@ public:
     ContactInfo();
     ContactInfo(UserInfo* userInfo);
     virtual ~ContactInfo();
+    void ChangeUser(UserInfo* newUser);
 
 protected:
-    void ChangeUser(UserInfo* newUser);
+
 
     Glib::RefPtr<Gdk::Pixbuf> avatar;
     Gtk::Label nickName;
