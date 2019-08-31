@@ -10,4 +10,9 @@ class GroupInfo;
 class PacketInfo;
 class UserInfo;
 class MessageInfo;
+
+#include "DateTime.h"
+#include <string>
+#include <vector>
+
 #endif //LOGIC_PART_PREDECLARE_H
