@@ -19,6 +19,8 @@ protected:
 
     Gtk::HBox tools;
     Gtk::Button expressionBt;
+    Gtk::Button fileBt;
+    Gtk::Button chatDetailBt;
 
 
     Gtk::TextView msgEdit;

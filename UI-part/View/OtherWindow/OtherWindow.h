@@ -14,7 +14,7 @@ public:
     virtual ~OtherWindow();
 
 protected:
-    ContactInfo* myInfo;
+    ContactInfo myInfo;
 
 
 };
