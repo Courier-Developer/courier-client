@@ -7,7 +7,18 @@
 #include <iostream>
 
 ContactList::ContactList() {
+    set_margin_top(5);
+    set_spacing(5);
+
     pack_start(searchEntry, Gtk::PACK_SHRINK);
+    searchEntry.signal_search_changed().connect([this]() {
+        if (searchEntry.get_text() == "") {
+            contacts.collapse_all();
+        } else {
+            contacts.expand_all();
+        }
+        filter->refilter();
+    });
 
     scrolledWindow.add(contacts);
     pack_start(scrolledWindow);
@@ -18,10 +29,10 @@ ContactList::ContactList() {
     filter->set_visible_func(
             [this](const Gtk::TreeModel::const_iterator &iter) -> bool {
                 Gtk::TreeModel::Row row = *iter;
-                if(row[contact.isPacket])
+                if (row[contact.isPacket])
                     return true;
                 Glib::ustring s = row[contact.nickName];
-                s=s.lowercase();
+                s = s.lowercase();
                 if (s.find(this->searchEntry.get_text().lowercase()) != Glib::ustring::npos) {
                     return true;
                 } else {
@@ -30,22 +41,16 @@ ContactList::ContactList() {
             }
     );
 
-    searchEntry.signal_search_changed().connect([this](){
-        if(searchEntry.get_text()==""){
-            contacts.collapse_all();
-        }else {
-            contacts.expand_all();
-        }
-        filter->refilter();
-    });
+    sort = Gtk::TreeModelSort::create(filter);
+    sort->set_sort_column(contact.sortPriority, Gtk::SORT_DESCENDING);
 
+
+    contacts.set_model(sort);
     contacts.set_headers_visible(false);
     contacts.append_column("avatar", contact.avatar);
     contacts.append_column("Nick Name", contact.nickName);
     contacts.append_column("others", contact.others);
     contacts.set_level_indentation(0);
-
-    contacts.set_model(filter);
 
 
     select = contacts.get_selection();
@@ -63,6 +68,7 @@ ContactList::ContactList() {
 
     row[contact.nickName] = "Group";
     row[contact.isPacket] = true;
+    row[contact.sortPriority] = 40;
 
     for (int i = 0; i < 10; i++) {
         Gtk::TreeModel::Row childRow = *(refTreeStore->append(row.children()));
@@ -71,6 +77,7 @@ ContactList::ContactList() {
         ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
         childRow[contact.avatar] = ava;
         childRow[contact.others] = "Others";
+        childRow[contact.sortPriority] = i * 10;
 
     }
 
@@ -78,6 +85,7 @@ ContactList::ContactList() {
 
     row[contact.nickName] = "Black List";
     row[contact.isPacket] = true;
+    row[contact.sortPriority] = 50;
     for (int i = 0; i < 5; i++) {
         Gtk::TreeModel::Row childRow = *(refTreeStore->append(row.children()));
         childRow[contact.nickName] = "Nick Name " + std::to_string(i * i);
@@ -85,6 +93,7 @@ ContactList::ContactList() {
         ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
         childRow[contact.avatar] = ava;
         childRow[contact.others] = "Others";
+        childRow[contact.sortPriority] = i;
     }
 
 

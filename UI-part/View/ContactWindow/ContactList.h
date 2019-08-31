@@ -22,11 +22,13 @@ protected:
         Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > avatar;
         Gtk::TreeModelColumn<Glib::ustring> others;
         Gtk::TreeModelColumn<bool> isPacket;
+        Gtk::TreeModelColumn<int> sortPriority;
         Contact(){
             add(nickName);
             add(avatar);
             add(others);
             add(isPacket);
+            add(sortPriority);
         }
     }contact;
 
@@ -34,6 +36,7 @@ protected:
     Gtk::TreeView contacts;
     Glib::RefPtr<Gtk::TreeStore> refTreeStore;
     Glib::RefPtr<Gtk::TreeModelFilter> filter;
+    Glib::RefPtr<Gtk::TreeModelSort> sort;
 
     Glib::RefPtr<Gtk::TreeSelection> select;
 
