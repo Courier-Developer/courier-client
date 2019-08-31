@@ -6,37 +6,34 @@
 #define COURIER_CLIENT_GROUPINFO_H
 
 
-#include <Group.h>
+#include "Group.h"
+#include "UserInfo.h"
 
-class GroupInfo: public Group {
+class GroupInfo  {
 private:
     unsigned int GroupId;
     std::string NickName;
     std::string AvatorPath;
     std::string Notice;
     std::vector<unsigned int> MemberId;
-    Chat *chat;
-    std::vector<User *> *Members;
+    ChatInfo *chat = nullptr;
+    std::vector<UserInfo *> *Members = nullptr;
 public:
-    std::vector<User *> &getUsers() override;
+    std::vector<UserInfo *> *getUsers();
 
-    Chat *getChat() override;
+    ChatInfo *getChat();
 
     virtual ~GroupInfo();
 
     GroupInfo();
 
-    unsigned int getGroupId() override;
+    unsigned int getGroupId();
 
-    GroupInfo(unsigned int GroupId, const std::string &NickName, const std::string &AvatorPath,
-              const std::string &Notice, const std::vector<unsigned int> &MemberId, Chat *chat,
-              std::vector<User *> *Members);
+    std::string getNickName();
 
-    std::string getNickName() override;
+    std::string getAvatarPath();
 
-    std::string getAvatarPath() override;
-
-    std::string getNotice() override;
+    std::string getNotice();
 };
 
 

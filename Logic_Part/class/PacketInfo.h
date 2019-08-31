@@ -6,27 +6,36 @@
 #define COURIER_CLIENT_PACKETINFO_H
 
 
-#include <Packet.h>
+#include "Packet.h"
 #include "UserInfo.h"
 
 //分组类
-class PacketInfo: public Packet {
+class PacketInfo {
 
 private:
-    std::vector<unsigned int> MemberId;
+//    std::vector<unsigned int> MemberId; //成员ID
     std::string PacketName;
     int PacketId;   //分组id
-    std::vector<Userinfo *> Members;
-
+    std::vector<UserInfo *> *Members;
 public:
-private:
-    std::vector<User *> &getUsers() override;
 
-public:
-    std::string getName() override;
+    const std::string &getPacketName() const;
 
-    int getPriority() override;
+    PacketInfo(const std::string &packetName, int packetId);
 
+    int getPacketId() const;
+
+    std::vector<UserInfo *> *getMembers() const;
+
+    std::vector<UserInfo *> *getUsers();
+
+    std::string getName();
+
+    virtual ~PacketInfo();
+
+    int getPriority();
+
+    void AddUser(UserInfo *user);
 };
 
 

@@ -17,7 +17,6 @@ void init()
 
 int main()
 {
-//    link_to_server link;
-//    link.init();
-//    sleep(10);
+    MessageInfo fuck;
+    printf("%s..\n",fuck.getContent());
 }

@@ -25,7 +25,7 @@ std::string UserInfo::getSignature() {
 }
 
 // todo:
-Chat *UserInfo::getChat() {
+ChatInfo *UserInfo::getChat() {
     return InChat;
 }
 
@@ -67,6 +67,17 @@ UserInfo::UserInfo() {}
 UserInfo::~UserInfo() {
     if (InChat)
         delete InChat;
+    if (InGroups)
+        delete InGroups;
+}
+
+UserInfo::UserInfo(unsigned int userId, const std::string &userName, const std::string &nickName,
+                   const std::string &signature, const std::string &avatorPath, int status, int packet) : UserId(
+        userId), UserName(userName), NickName(nickName), Signature(signature), AvatorPath(avatorPath), Status(status),
+                                                                                                          packet(packet) {}
+
+void UserInfo::setInPacket(PacketInfo *inPacket) {
+    InPacket = inPacket;
 }
 
 

@@ -11,7 +11,7 @@
 #include "PacketInfo.h"
 #include "ChatInfo.h"
 
-class UserInfo : public User {
+class UserInfo  {
 private:
     unsigned int UserId;
     std::string UserName;
@@ -19,7 +19,7 @@ private:
     std::string Signature;
     std::string AvatorPath;
     int Status;  //登录状态，是否在线 1在线 0不在线
-    int packet;  //所属分组号
+    int packet;  //所属分组号  0没有好友关系 -1为黑名单 1，2，3，4...为分组
     ChatInfo *InChat = nullptr;
     PacketInfo *InPacket = nullptr;
     std::vector<GroupInfo *> *InGroups = nullptr;
@@ -30,6 +30,9 @@ public:
     void setUserId(unsigned int UserId);
 
     void setUserName(const std::string &UserName);
+
+    UserInfo(unsigned int userId, const std::string &userName, const std::string &nickName,
+             const std::string &signature, const std::string &avatorPath, int status, int packet);
 
     virtual ~UserInfo();
 
@@ -45,17 +48,19 @@ public:
 
     int getStatus() const;
 
-    unsigned int getUserId() override;
+    unsigned int getUserId();
 
-    std::string getUserName() override;
+    std::string getUserName();
 
-    std::string getNickName() override;
+    std::string getNickName();
 
-    std::string getAvatarPath() override;
+    std::string getAvatarPath();
 
-    std::string getSignature() override;
+    std::string getSignature();
 
-    Chat *getChat() override;
+    ChatInfo *getChat();
+
+    void setInPacket(PacketInfo *inPacket);
 };
 
 

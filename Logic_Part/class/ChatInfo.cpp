@@ -5,19 +5,24 @@
 #include "ChatInfo.h"
 
 //todo:
-std::vector<Message *> &ChatInfo::getMsgList() {
-    return <#initializer#>;
+std::vector<MessageInfo *> *ChatInfo::getMsgList() {
+    return nullptr;
 }
 //todo
 int ChatInfo::getChatWith() {
     return 0;
 }
 //todo
-User *ChatInfo::getUser() {
+UserInfo *ChatInfo::getUser() {
     return nullptr;
 }
 //todo
-Group *ChatInfo::getGroup() {
+GroupInfo *ChatInfo::getGroup() {
     return nullptr;
+}
+
+ChatInfo::~ChatInfo() {
+    if (MessageList)
+        delete MessageList;
 }
 

@@ -5,12 +5,12 @@
 #include "GroupInfo.h"
 
 // todo:
-std::vector<User *> &GroupInfo::getUsers() {
-    return <#initializer#>;
+std::vector<UserInfo *> *GroupInfo::getUsers() {
+    return Members;
 }
 
 // todo:
-Chat *GroupInfo::getChat() {
+ChatInfo *GroupInfo::getChat() {
     return nullptr;
 }
 
@@ -41,10 +41,3 @@ GroupInfo::~GroupInfo() {
     if (Members)
         delete Members;
 }
-
-GroupInfo::GroupInfo(unsigned int GroupId, const std::string &NickName, const std::string &AvatorPath,
-                     const std::string &Notice, const std::vector<unsigned int> &MemberId, Chat *chat = nullptr,
-                     std::vector<User *> *Members = nullptr) : GroupId(GroupId), NickName(NickName),
-                                                               AvatorPath(AvatorPath),
-                                                               Notice(Notice), MemberId(MemberId), chat(chat),
-                                                               Members(Members) {}
