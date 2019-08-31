@@ -60,7 +60,10 @@ public:
     void setInPacket(PacketInfo *inPacket);
 
     void setInGroup(GroupInfo *inGroup);
+
     int getPacket() const;
+
+    void AddMessage(MessageInfo *);
 };
 
 

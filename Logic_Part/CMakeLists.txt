@@ -9,5 +9,8 @@ INCLUDE_DIRECTORIES(../UI-part/Interface)
 
 AUX_SOURCE_DIRECTORY(class DIR_CLS)
 
-AUX_SOURCE_DIRECTORY(../UI-part/Interface DIR_INT)
-add_executable(Logic_Part main.cpp ${DIR_CLS} class/DateTime.h class/GlobalVar.h)
+
+
+add_executable(Logic_Part ${DIR_CLS} class/main.cpp)
+
+#add_executable(Test main.cpp ${DIR_CLS})

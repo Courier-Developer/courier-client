@@ -6,11 +6,11 @@
 #define COURIER_CLIENT_CHATINFO_H
 
 #include "predeclare.h"
-#include "MessageInfo.h"
+
 
 class ChatInfo{
-
 private:
+    int Totype;
     std::vector<MessageInfo *> *MessageList;
     UserInfo *ToUser;
     GroupInfo *ToGroup;
@@ -28,6 +28,20 @@ public:
     ~ChatInfo();
 
     void AddMessage(MessageInfo * msg);
+
+    GroupInfo *getToGroup() const;
+
+    int getUnreadNumbers() const;
+
+    void setToUser(UserInfo *toUser);
+
+    void setToGroup(GroupInfo *toGroup);
+
+    int getTotype() const;
+
+    UserInfo *getToUser() const;
+
+    void setTotype(int totype);
 };
 
 

@@ -3,6 +3,8 @@
 //
 
 #include "GroupInfo.h"
+extern std::vector<ChatInfo *> AllChat;
+
 
 // todo:
 std::vector<UserInfo *> *GroupInfo::getUsers() {
@@ -11,7 +13,16 @@ std::vector<UserInfo *> *GroupInfo::getUsers() {
 
 // todo:
 ChatInfo *GroupInfo::getChat() {
-    return nullptr;
+    if (chat)
+        return chat;
+    else{
+        chat=new ChatInfo;
+        chat->setTotype(2);
+        chat->setToGroup(this);
+//        AddChat(chat);
+        AllChat.push_back(chat);
+        return chat;
+    }
 }
 
 unsigned int GroupInfo::getGroupId() {
@@ -54,3 +65,10 @@ void GroupInfo::AddUser(UserInfo *user) {
         Members->push_back(user);
     }
 }
+
+GroupInfo::GroupInfo(unsigned int groupId, const std::string &nickName, const std::string &avatorPath,
+                     const std::string &notice, const std::vector<unsigned int> &memberId) : GroupId(groupId),
+                                                                                             NickName(nickName),
+                                                                                             AvatorPath(avatorPath),
+                                                                                             Notice(notice),
+                                                                                             MemberId(memberId) {}

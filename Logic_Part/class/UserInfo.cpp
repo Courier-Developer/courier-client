@@ -3,6 +3,7 @@
 //
 
 #include "UserInfo.h"
+extern std::vector<ChatInfo *> AllChat;
 
 unsigned int UserInfo::getUserId() {
     return UserId;
@@ -26,7 +27,17 @@ std::string UserInfo::getSignature() {
 
 // todo:
 ChatInfo *UserInfo::getChat() {
-    return InChat;
+    if (InChat)
+        return InChat;
+    else
+    {
+        InChat=new ChatInfo;
+        InChat->setTotype(1);
+        InChat->setToUser(this);
+//        AddChat(InChat);
+        AllChat.push_back(InChat);
+        return InChat;
+    }
 }
 
 
@@ -92,6 +103,10 @@ void UserInfo::setInGroup(GroupInfo *inGroup) {
         InGroups = new std::vector<GroupInfo *>;
         InGroups->push_back(inGroup);
     }
+}
+
+void UserInfo::AddMessage(MessageInfo *) {
+
 }
 
 
