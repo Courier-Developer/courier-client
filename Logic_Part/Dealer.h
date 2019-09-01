@@ -12,39 +12,10 @@
 #include "UI-Interface/GroupInfo.h"
 #include <map>
 #include <string>
-
+//#include "FeverRPC/utils.cpp"
+//#include "FeverRPC/lock.cpp"
+//#include "FeverRPC/feverrpc.cpp"
 class Dealer {
-public:
-    std::map<unsigned int, UserInfo *> UserMap;
-    std::vector<PacketInfo *> PacketList;
-    std::vector<GroupInfo *> GroupList;
-    std::map<int, PacketInfo *> PacketMap;
-    std::map<int, GroupInfo *> GroupMap;
-    std::vector<UserInfo *> UserList;
-    std::vector<ChatInfo *> ChatList;
-
-    void AddChat(ChatInfo *newchat);
-
-    UserInfo MyProfile;
-
-    //function for server to call
-    void update_message();
-
-
-    // UI
-    void UI_get_packet_list();
-
-    void UI_get_group_list();
-
-    void UI_get_chat_list();
-
-    void UI_send_message();
-
-    void UI_get_my_profile();
-
-    const std::map<unsigned int, UserInfo *> &getUserMap();
-
-
 private:
 
     //get something from server or local
@@ -80,6 +51,8 @@ private:
 
     void get_message();
 
+    GroupInfo* add_group(GroupInfo newgroup);
+
     std::vector<UserInfo> get_users_from_server();
 
     void update_local_user();
@@ -89,6 +62,50 @@ private:
     ChatInfo *get_chat(UserInfo *user);
 
     ChatInfo *get_chat(GroupInfo *group);
+
+    UserInfo *add_user(const unsigned int &tmpmember);
+
+    UserInfo find_user_from_server(const unsigned int &tmpmember);
+
+    UserInfo *add_user(UserInfo user);
+
+    PacketInfo *add_packet(int packetid,std::string name="Stranger");
+public:
+    std::map<unsigned int, UserInfo *> UserMap;
+    std::vector<PacketInfo *> PacketList;
+    std::vector<GroupInfo *> GroupList;
+    std::map<int, PacketInfo *> PacketMap;
+    std::map<int, GroupInfo *> GroupMap;
+    std::vector<UserInfo *> UserList;
+    std::vector<ChatInfo *> ChatList;
+
+    void AddChat(ChatInfo *newchat);
+
+    UserInfo MyProfile;
+
+    //function for server to call
+    void update_message();
+
+
+    // UI
+    void UI_get_packet_list();
+
+    void UI_get_group_list();
+
+    void UI_get_chat_list();
+
+    void UI_send_message();
+
+    void UI_get_my_profile();
+
+    void UI_log_in(std::string username,std::string password);
+
+    void UI_add_friend();
+
+    void UI_delete_friend();
+
+
+
 };
 
 #endif //COURIER_CLIENT_DEALER_H

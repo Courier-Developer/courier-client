@@ -9,7 +9,7 @@ INCLUDE_DIRECTORIES(../UI-part/Interface)
 
 AUX_SOURCE_DIRECTORY(UI-Interface DIR_CLS)
 
-add_subdirectory(FeverRPC)
+#add_subdirectory(FeverRPC)
 
 add_executable(Logic_Part ${DIR_CLS} main.cpp Dealer.cpp Dealer.h)
 
