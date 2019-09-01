@@ -6,7 +6,7 @@
 #define COURIER_CLIENT_GROUPINFO_H
 
 #include "predeclare.h"
-
+#include "UserInfo.h"
 
 class GroupInfo  {
 private:

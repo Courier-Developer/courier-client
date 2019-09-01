@@ -107,6 +107,14 @@ bool UserInfo::HasChat() const {
     return InChat != nullptr;
 }
 
+PacketInfo *UserInfo::getInPacket() const {
+    return InPacket;
+}
+
+std::vector<GroupInfo *> *UserInfo::getInGroups() const {
+    return InGroups;
+}
+
 
 
 

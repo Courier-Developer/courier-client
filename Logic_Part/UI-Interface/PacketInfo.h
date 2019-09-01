@@ -6,7 +6,7 @@
 #define COURIER_CLIENT_PACKETINFO_H
 
 #include "predeclare.h"
-
+#include "UserInfo.h"
 //分组类
 class PacketInfo {
 
@@ -34,6 +34,8 @@ public:
     int getPriority();
 
     void AddUser(UserInfo *user);
+
+    void DeleteMember(UserInfo *oldmember);
 };
 
 

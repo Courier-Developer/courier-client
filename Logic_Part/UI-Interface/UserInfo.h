@@ -64,6 +64,10 @@ public:
     int getPacket() const;
 
     bool HasChat() const;
+
+    PacketInfo *getInPacket() const;
+
+    std::vector<GroupInfo *> *getInGroups() const;
 };
 
 

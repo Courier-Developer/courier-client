@@ -77,6 +77,28 @@ bool GroupInfo::HasChat() const {
     return chat != nullptr;
 }
 
+//删除成员，此处使用了auto
 void GroupInfo::delete_member(UserInfo *member) {
+    auto mark=getUsers()->end();
+    for (auto it=getUsers()->begin();it!=getUsers()->end();it++){
+        if ((*it)==member)
+        {
+            mark=it;
+            break;
+        }
+    }
+    if (mark!=getUsers()->end())
+        getUsers()->erase(mark);
 
+    auto userid=getMemberId().end();
+    userid=MemberId.end();
+    int hasid=member->getUserId();
+    for (auto id=MemberId.begin();id!=MemberId.end();id++){
+        if(*id==hasid) {
+            userid = id;
+            break;
+        }
+    }
+    if (userid!=MemberId.end())
+        MemberId.erase(userid);
 }

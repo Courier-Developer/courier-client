@@ -60,13 +60,13 @@ private:
 
     void log_in(std::string username, std::string password, std::function<void()> success, std::function<void()> fail);
 
-    ChatInfo *get_chat(UserInfo *user);
-
-    ChatInfo *get_chat(GroupInfo *group);
-
     UserInfo *add_user(const unsigned int &tmpmember);
 
+    UserInfo *add_user(const std::string &tmpmember);
+
     UserInfo find_user_from_server(const unsigned int &tmpmember);
+
+    UserInfo find_user_from_server(const std::string &username);
 
     UserInfo *add_user(UserInfo user);
 
@@ -76,7 +76,13 @@ private:
 
     void delete_friend(UserInfo *oldfriend);
 
+    void delete_friend(UserInfo oldfriend);
+
     PacketInfo *get_packet_from_id(int packetid);
+
+    void local_delete_friend(const UserInfo& oldfriend);
+
+    void update_local_user(UserInfo userinfo);
 
 public:
     std::map<unsigned int, UserInfo *> UserMap;
@@ -101,7 +107,7 @@ public:
 
     void UI_get_chat_list();
 
-    void UI_send_message();
+    void UI_send_message(const std::string &content,ChatInfo* chat);
 
     void UI_get_my_profile();
 
@@ -111,8 +117,25 @@ public:
 
     void UI_delete_friend();
 
+    void UI_delete_friend(UserInfo *oldfriend);
 
+    void server_delete_friend(const UserInfo& oldfriend);
 
+    ChatInfo *get_chat(UserInfo *user);
+
+    ChatInfo *get_chat(GroupInfo *group);
+
+    void UI_add_friend(UserInfo *user,int packetid=1);
+
+    void UI_move_friend(UserInfo *user,int packetid=1);
+
+    void UI_add_friend(UserInfo *user,PacketInfo* packet);
+
+    void UI_move_friend(UserInfo *user,PacketInfo* packet);
+
+    void UI_search_user(const std::string &username);
+
+    void UI_search_user(const unsigned int& id);
 };
 
 #endif //COURIER_CLIENT_DEALER_H
