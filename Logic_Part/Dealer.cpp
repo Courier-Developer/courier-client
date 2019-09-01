@@ -5,14 +5,14 @@
 #include <iostream>
 #include "Dealer.h"
 
-
+//从服务器拉取好友分组信息
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server
     std::vector<PacketInfo> packets;
     return packets;
 }
 
-
+//登录时我拉取初始化信息
 void Dealer::get_information_and_update() {
     //MyProfile
     UserInfo myprofile = get_my_profile_from_server();
@@ -66,56 +66,67 @@ void Dealer::get_information_and_update() {
     }
 }
 
+//从服务器获取我的个人信息
 UserInfo Dealer::get_my_profile_from_server() {
     //todo: call for server
     UserInfo myprofile;
     return myprofile;
 }
 
+//添加聊天回话
 void Dealer::AddChat(ChatInfo *newchat) {
     ChatList.push_back(newchat);
 }
 
+//更新本地好友分组信息
 void Dealer::update_local_packet(const std::vector<PacketInfo> &packet) {
     // todo: call for local database
 }
 
+//从服务端获取有关用户信息
 std::vector<UserInfo> Dealer::get_users_from_server() {
     //todo: call for the server
     std::vector<UserInfo> users;
     return users;
 }
 
+//更新用户信息到数据库
 void Dealer::update_local_users(const std::vector<UserInfo> &user) {
     //todo: call for local database
 }
 
+//从服务端获取群组信息
 std::vector<GroupInfo> Dealer::get_group_from_server() {
     //todo: call for the server
     std::vector<GroupInfo> groups;
     return groups;
 }
 
+//更新本地群组信息
 void Dealer::update_local_group(const std::vector<GroupInfo> &group) {
     //todo: call for the local database
 }
 
+//从服务端获取消息信息
 std::vector<MessageInfo> Dealer::get_message_from_server() {
     //todo: call for the server;
     std::vector<MessageInfo> messages;
     return messages;
 }
 
+//更新本地消息信息
 void Dealer::update_local_messages(const std::vector<MessageInfo> &message) {
     //todo: call for the local database
 }
 
+//从本地获取消息信息
 std::vector<MessageInfo> Dealer::get_messages_from_local() {
     //todo: call for the local database
     std::vector<MessageInfo> msgs;
     return msgs;
 }
 
+//处理新信息
 MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
     MessageInfo *tmpmsg = new MessageInfo(msg);
     if (tmpmsg->getType() == 1) {
@@ -137,6 +148,7 @@ MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
     return tmpmsg;
 }
 
+//获取用户会话信息
 ChatInfo *Dealer::get_chat(UserInfo *user) {
     if (user->HasChat())
         return user->getChat();
@@ -147,6 +159,7 @@ ChatInfo *Dealer::get_chat(UserInfo *user) {
     }
 }
 
+//获取群组会话信息
 ChatInfo *Dealer::get_chat(GroupInfo *group) {
     if (group->HasChat())
         return group->getChat();
@@ -184,8 +197,8 @@ GroupInfo *Dealer::add_group(GroupInfo newgroup) {
 
 //用id添加新用户
 UserInfo *Dealer::add_user(const unsigned int &tmpmember) {
-    if (UserMap.count(tmpmember)){
-        std::cerr<<"some mistakes, try to add an existed user whose id is "<<tmpmember<<std::endl;
+    if (UserMap.count(tmpmember)) {
+        std::cerr << "some mistakes, try to add an existed user whose id is " << tmpmember << std::endl;
         return UserMap[tmpmember];
     }
     UserInfo tmpuser = find_user_from_server(tmpmember);
@@ -195,8 +208,8 @@ UserInfo *Dealer::add_user(const unsigned int &tmpmember) {
 
 //用id向服务器请求对方信息
 UserInfo Dealer::find_user_from_server(const unsigned int &tmpmember) {
-    if (UserMap.count(tmpmember)){
-        std::cerr<<"some mistakes, try to find an existed user from server whose id is "<<tmpmember<<std::endl;
+    if (UserMap.count(tmpmember)) {
+        std::cerr << "some mistakes, try to find an existed user from server whose id is " << tmpmember << std::endl;
         return *UserMap[tmpmember];
     }
     //todo: get userinfo from the server
@@ -204,7 +217,7 @@ UserInfo Dealer::find_user_from_server(const unsigned int &tmpmember) {
 }
 
 
-//添加新成员
+//好友分组添加新成员
 UserInfo *Dealer::add_user(UserInfo user) {
     UserInfo *tmp = new UserInfo(user);
     if (PacketMap.count(tmp->getPacket())) {
@@ -212,13 +225,23 @@ UserInfo *Dealer::add_user(UserInfo user) {
         packet->AddUser(tmp);
         tmp->setInPacket(packet);
     } else {
-
         PacketInfo *packet = add_packet(tmp->getPacket());
         packet->AddUser(tmp);
         tmp->setInPacket(packet);
     }
     return tmp;
 }
+
+// 通过id获取相应好友分组列表
+PacketInfo *Dealer::get_packet_from_id(int packetid) {
+    if (PacketMap.count(packetid)){
+        std::cerr<<"try to find a no-existed packet by packetid"<<std::endl;
+        return nullptr;
+    } else{
+        return  PacketMap[packetid];
+    }
+}
+
 
 //添加新分组
 PacketInfo *Dealer::add_packet(int packetid, std::string name) {
@@ -227,6 +250,24 @@ PacketInfo *Dealer::add_packet(int packetid, std::string name) {
     PacketList.push_back(tmppacket);
     return tmppacket;
 }
+
+
+
+
+//删除好友（实际上仅仅是删除User的好友分组关系，因为好友关系仅仅体现在分组列表上
+void Dealer::delete_friend(const unsigned int &id) {
+    if (UserMap.count(id)) {
+        UserInfo *user = UserMap[id];
+        delete_friend(user);
+    } else {
+        std::cerr << "try to delete a no-existed friend!" << std::endl;
+        return;
+    }
+}
+
+void Dealer::delete_friend(UserInfo *) {
+}
+
 
 
 

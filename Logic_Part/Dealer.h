@@ -15,6 +15,7 @@
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
+
 class Dealer {
 private:
 
@@ -70,6 +71,13 @@ private:
     UserInfo *add_user(UserInfo user);
 
     PacketInfo *add_packet(int packetid,std::string name="Stranger");
+
+    void delete_friend(const unsigned int &id);
+
+    void delete_friend(UserInfo *oldfriend);
+
+    PacketInfo *get_packet_from_id(int packetid);
+
 public:
     std::map<unsigned int, UserInfo *> UserMap;
     std::vector<PacketInfo *> PacketList;
@@ -85,7 +93,6 @@ public:
 
     //function for server to call
     void update_message();
-
 
     // UI
     void UI_get_packet_list();

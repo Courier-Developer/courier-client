@@ -42,6 +42,8 @@ public:
     void AddUser(UserInfo * user);
 
     bool HasChat() const;
+
+    void delete_member(UserInfo *member);
 };
 
 

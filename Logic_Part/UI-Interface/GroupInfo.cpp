@@ -76,3 +76,7 @@ GroupInfo::GroupInfo(unsigned int groupId, const std::string &nickName, const st
 bool GroupInfo::HasChat() const {
     return chat != nullptr;
 }
+
+void GroupInfo::delete_member(UserInfo *member) {
+
+}
