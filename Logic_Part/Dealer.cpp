@@ -6,15 +6,6 @@
 #include "Dealer.h"
 
 
-std::map<unsigned int, UserInfo *> Dealer::UserMap = std::map<unsigned int, UserInfo *>();
-std::vector<PacketInfo *> Dealer::PacketList = std::vector<PacketInfo *>();
-std::vector<GroupInfo *>  Dealer::GroupList = std::vector<GroupInfo *>();
-std::map<int, PacketInfo *> Dealer::PacketMap = std::map<int, PacketInfo *>();
-std::map<int, GroupInfo *> Dealer::GroupMap = std::map<int, GroupInfo *>();
-std::vector<UserInfo *> Dealer::UserList = std::vector<UserInfo *>();
-std::vector<ChatInfo *> Dealer::ChatList = std::vector<ChatInfo *>();
-UserInfo Dealer::MyProfile = UserInfo();
-
 
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server

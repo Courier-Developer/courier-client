@@ -15,75 +15,80 @@
 
 class Dealer {
 public:
-    static std::map<unsigned int, UserInfo *> UserMap;
-    static std::vector<PacketInfo *> PacketList;
-    static std::vector<GroupInfo *> GroupList;
-    static std::map<int, PacketInfo *> PacketMap;
-    static std::map<int, GroupInfo *> GroupMap;
-    static std::vector<UserInfo *> UserList;
-    static std::vector<ChatInfo *> ChatList;
-    static void AddChat(ChatInfo *newchat);
-    static UserInfo MyProfile;
+    std::map<unsigned int, UserInfo *> UserMap;
+    std::vector<PacketInfo *> PacketList;
+    std::vector<GroupInfo *> GroupList;
+    std::map<int, PacketInfo *> PacketMap;
+    std::map<int, GroupInfo *> GroupMap;
+    std::vector<UserInfo *> UserList;
+    std::vector<ChatInfo *> ChatList;
+
+    void AddChat(ChatInfo *newchat);
+
+    UserInfo MyProfile;
 
     //function for server to call
-    static void update_message() ;
-
-
+    void update_message();
 
 
     // UI
-    static void UI_get_packet_list();
-    static void UI_get_group_list();
-    static void UI_get_chat_list();
-    static void UI_send_message();
-    static void UI_get_my_profile();
-    static const std::map<unsigned int, UserInfo *> &getUserMap();
+    void UI_get_packet_list();
+
+    void UI_get_group_list();
+
+    void UI_get_chat_list();
+
+    void UI_send_message();
+
+    void UI_get_my_profile();
+
+    const std::map<unsigned int, UserInfo *> &getUserMap();
 
 
 private:
 
     //get something from server or local
-    static std::vector<PacketInfo> get_packet_from_server();
+    std::vector<PacketInfo> get_packet_from_server();
 
-    static void update_local_packet(const std::vector<PacketInfo> &packet);
+    void update_local_packet(const std::vector<PacketInfo> &packet);
 
-    static void update_local_users(const std::vector<UserInfo> &user);
+    void update_local_users(const std::vector<UserInfo> &user);
 
-    static void update_local_group(const std::vector<GroupInfo> &group);
+    void update_local_group(const std::vector<GroupInfo> &group);
 
-    static void update_local_messages(const std::vector<MessageInfo> &message);
+    void update_local_messages(const std::vector<MessageInfo> &message);
 
-    static void get_information_and_update();
+    void get_information_and_update();
 
-    static void get_user_list_form_local();
+    void get_user_list_form_local();
 
-    static std::vector<MessageInfo> get_messages_from_local();
+    std::vector<MessageInfo> get_messages_from_local();
 
-    static void get_packet_list();
+    void get_packet_list();
 
-    static MessageInfo* cope_new_message(const MessageInfo &msg);
+    MessageInfo *cope_new_message(const MessageInfo &msg);
 
-    static UserInfo get_my_profile_from_server();
+    UserInfo get_my_profile_from_server();
 
-    static std::vector<GroupInfo> get_group_from_server();
+    std::vector<GroupInfo> get_group_from_server();
 
-    static std::vector<MessageInfo> get_message_from_server();
+    std::vector<MessageInfo> get_message_from_server();
 
-    static void get_user_list();
+    void get_user_list();
 
-    static void get_group_list();
+    void get_group_list();
 
-    static void get_message();
+    void get_message();
 
-    static std::vector<UserInfo> get_users_from_server();
+    std::vector<UserInfo> get_users_from_server();
 
-    static void update_local_user();
+    void update_local_user();
 
-    static void log_in(std::string username,std::string password,std::function<void()> success,std::function<void()> fail);
+    void log_in(std::string username, std::string password, std::function<void()> success, std::function<void()> fail);
 
-    static ChatInfo *get_chat(UserInfo* user);
+    ChatInfo *get_chat(UserInfo *user);
 
-    static ChatInfo *get_chat(GroupInfo *group);
+    ChatInfo *get_chat(GroupInfo *group);
 };
 
 #endif //COURIER_CLIENT_DEALER_H
