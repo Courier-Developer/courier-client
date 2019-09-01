@@ -32,6 +32,7 @@ void Dealer::get_information_and_update() {
     std::vector<PacketInfo> packets = get_packet_from_server();
     update_local_packet(packets);
     for (auto &tmp:packets) {
+        if (PacketMap.count(tmp.getPacketId())) continue;
         PacketInfo *tmppacket = new PacketInfo(tmp);
         PacketMap[tmppacket->getPacketId()] = tmppacket;
         PacketList.push_back(tmppacket);
@@ -41,6 +42,7 @@ void Dealer::get_information_and_update() {
     std::vector<UserInfo> users = get_users_from_server();
     update_local_users(users);
     for (auto &tmp:users) {
+        if (UserMap.count(tmp.getUserId())) continue;
         UserInfo *tmpuser = new UserInfo(tmp);
         UserMap[tmpuser->getUserId()] = tmpuser;
         UserList.push_back(tmpuser);
@@ -53,6 +55,7 @@ void Dealer::get_information_and_update() {
     std::vector<GroupInfo> groups = get_group_from_server();
     update_local_group(groups);
     for (auto &tmp:groups) {
+        if (GroupMap.count(tmp.getGroupId())) continue;
         GroupInfo *tmpgroup = new GroupInfo(tmp);
         GroupList.push_back(tmpgroup);
         GroupMap[tmpgroup->getGroupId()] = tmpgroup;
