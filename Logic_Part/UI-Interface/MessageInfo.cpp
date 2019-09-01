@@ -26,7 +26,7 @@ std::string MessageInfo::getContent() {
 }
 
 int MessageInfo::getStatus() {
-    return 0;
+    return Status;
 }
 
 unsigned int MessageInfo::getSenderId() const {
@@ -64,4 +64,23 @@ MessageInfo::MessageInfo() {}
 
 MessageInfo::~MessageInfo() {
 
+}
+
+MessageInfo::MessageInfo(unsigned int senderId, unsigned int receiverId, int messageId, const std::string &content,
+                         int status, int type, int contentKind, const DateTime &createdTime) : SenderId(senderId),
+                                                                                               ReceiverId(receiverId),
+                                                                                               MessageId(messageId),
+                                                                                               Content(content),
+                                                                                               Status(status),
+                                                                                               type(type),
+                                                                                               ContentKind(contentKind),
+                                                                                               CreatedTime(
+                                                                                                       createdTime) {}
+
+int MessageInfo::getMessageId() const {
+    return MessageId;
+}
+
+void MessageInfo::setMessageId(int messageId) {
+    MessageId = messageId;
 }

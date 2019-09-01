@@ -4,6 +4,7 @@
 
 #include "UserInfo.h"
 
+
 unsigned int UserInfo::getUserId() {
     return UserId;
 }
@@ -26,7 +27,15 @@ std::string UserInfo::getSignature() {
 
 // todo:
 ChatInfo *UserInfo::getChat() {
-    return InChat;
+    if (InChat)
+        return InChat;
+    else
+    {
+        InChat=new ChatInfo;
+        InChat->setTotype(1);
+        InChat->setToUser(this);
+        return InChat;
+    }
 }
 
 
@@ -93,6 +102,11 @@ void UserInfo::setInGroup(GroupInfo *inGroup) {
         InGroups->push_back(inGroup);
     }
 }
+
+bool UserInfo::HasChat() const {
+    return InChat != nullptr;
+}
+
 
 
 

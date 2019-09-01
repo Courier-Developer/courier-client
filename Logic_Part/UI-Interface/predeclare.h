@@ -14,5 +14,7 @@ class MessageInfo;
 #include "DateTime.h"
 #include <string>
 #include <vector>
-
+#include "ChatInfo.h"
+//#include "GlobalVar.h"
+//#include "GlobalVar.h"
 #endif //LOGIC_PART_PREDECLARE_H

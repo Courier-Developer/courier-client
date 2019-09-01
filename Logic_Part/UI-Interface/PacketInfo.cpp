@@ -6,7 +6,12 @@
 
 
 std::vector<UserInfo *> *PacketInfo::getUsers() {
-    return nullptr;
+    if (Members)
+        return Members;
+    else {
+        Members = new std::vector<UserInfo *>;
+        return Members;
+    }
 }
 
 std::string PacketInfo::getName() {
