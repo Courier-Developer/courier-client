@@ -3,7 +3,7 @@
 //
 
 #include "ChatWindow.h"
-#include "../../../Logic_Part/class/GlobalVar.h"
+
 ChatWindow::ChatWindow() {
 
 

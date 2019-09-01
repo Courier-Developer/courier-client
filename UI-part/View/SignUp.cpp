@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include "SignUp.h"
 #include "LogIn.h"
 SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
     this->app = app;

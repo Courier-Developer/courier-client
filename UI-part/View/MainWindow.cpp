@@ -2,12 +2,12 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "MainWindow.h"
+#include "LogIn.h"
 #include <iostream>
 #include <gtkmm/messagedialog.h>
-#include "ContactWindow/ContactInfo.h"
 
-MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) {
+
+MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):otherWindow(this) {
 
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
@@ -78,7 +78,6 @@ void MainWindow::on_bt(const int &bt_id) {
         }
         case CONTACTS: {
             std::cout << CONTACTS << " Contacts Button Clicked" << std::endl;
-
             windowFrame.remove();
             windowFrame.add(contactWindow);
             windowFrame.show_all_children();

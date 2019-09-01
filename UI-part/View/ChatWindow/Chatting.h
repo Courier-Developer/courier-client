@@ -6,10 +6,13 @@
 #define GTKMM_CHATTING_H
 
 #include <gtkmm.h>
+
+class ChatWindow;
 class Chatting : public  Gtk::VBox{
 public:
     Chatting();
     virtual ~Chatting();
+    ChatWindow* chatWindow;
 
 protected:
     Gtk::Label chatName;

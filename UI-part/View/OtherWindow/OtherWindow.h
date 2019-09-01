@@ -8,13 +8,22 @@
 #include <gtkmm.h>
 #include "../ContactWindow/ContactInfo.h"
 
-class OtherWindow :public Gtk::HBox{
+class MainWindow;
+class LogIn;
+class OtherWindow :public Gtk::VBox{
 public:
-    OtherWindow();
+
+    OtherWindow(MainWindow* mainWindow);
     virtual ~OtherWindow();
+    MainWindow* mainWindow;
 
 protected:
     ContactInfo myInfo;
+    Gtk::HBox bt_box;
+    Gtk::Button skinChoose;
+
+    Gtk::Button logOut;
+
 
 
 };

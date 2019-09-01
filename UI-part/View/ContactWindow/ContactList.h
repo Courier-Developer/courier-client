@@ -40,8 +40,6 @@ protected:
 
     Glib::RefPtr<Gtk::TreeSelection> select;
 
-    void on_select_change();
-    bool on_search_equal(const Glib::RefPtr<Gtk::TreeModel>& model, int column, const Glib::ustring& key, const Gtk::TreeModel::iterator& iter);
 
 };
 

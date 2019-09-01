@@ -7,14 +7,15 @@
 
 
 #include <gtkmm.h>
-#include "../../../Logic_Part/class/UserInfo.h"
+#include "../../../Logic_Part/UI-Interface/UserInfo.h"
 
 class ContactInfo : public Gtk::Grid{
 public:
-    ContactInfo();
-    ContactInfo(UserInfo* userInfo);
+    ContactInfo(int avatarSize = 64);
+    ContactInfo(UserInfo* userInfo,int avatarSize = 64);
     virtual ~ContactInfo();
     void ChangeUser(UserInfo* newUser);
+    int avatarSize=64;
 
 protected:
 
