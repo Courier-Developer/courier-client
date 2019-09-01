@@ -6,16 +6,6 @@
 #include "Dealer.h"
 
 
-std::map<unsigned int, UserInfo *> Dealer::UserMap = std::map<unsigned int, UserInfo *>();
-std::vector<PacketInfo *> Dealer::PacketList = std::vector<PacketInfo *>();
-std::vector<GroupInfo *>  Dealer::GroupList = std::vector<GroupInfo *>();
-std::map<int, PacketInfo *> Dealer::PacketMap = std::map<int, PacketInfo *>();
-std::map<int, GroupInfo *> Dealer::GroupMap = std::map<int, GroupInfo *>();
-std::vector<UserInfo *> Dealer::UserList = std::vector<UserInfo *>();
-std::vector<ChatInfo *> Dealer::ChatList = std::vector<ChatInfo *>();
-UserInfo Dealer::MyProfile = UserInfo();
-
-
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server
     std::vector<PacketInfo> packets;
@@ -161,10 +151,81 @@ ChatInfo *Dealer::get_chat(GroupInfo *group) {
     if (group->HasChat())
         return group->getChat();
     else {
-        ChatInfo *tmpchat=group->getChat();
+        ChatInfo *tmpchat = group->getChat();
         ChatList.push_back(tmpchat);
         return tmpchat;
     }
+}
+
+//添加新群组
+GroupInfo *Dealer::add_group(GroupInfo newgroup) {
+    if (GroupMap.count(newgroup.getGroupId())) {
+        std::cerr << "Maybe something is wrong, there seems to be a same group" << std::endl;
+        return GroupMap[newgroup.getGroupId()];
+    } else {
+        GroupInfo *tmpgroup = new GroupInfo(newgroup);
+        GroupMap[tmpgroup->getGroupId()] = tmpgroup;
+        GroupList.push_back(tmpgroup);
+        for (auto &tmpmember:tmpgroup->getMemberId()) {
+            std::map<unsigned int, UserInfo *>::iterator it = UserMap.find(tmpmember);
+            if (it == UserMap.end()) {
+                UserInfo *tmp = add_user(tmpmember);
+                tmp->setInGroup(tmpgroup);
+                tmpgroup->AddUser(tmp);
+            } else {
+                UserInfo *tmp = it->second;
+                tmp->setInGroup(tmpgroup);
+                tmpgroup->AddUser(tmp);
+            }
+        }
+        return tmpgroup;
+    }
+}
+
+//用id添加新用户
+UserInfo *Dealer::add_user(const unsigned int &tmpmember) {
+    if (UserMap.count(tmpmember)){
+        std::cerr<<"some mistakes, try to add an existed user whose id is "<<tmpmember<<std::endl;
+        return UserMap[tmpmember];
+    }
+    UserInfo tmpuser = find_user_from_server(tmpmember);
+    return add_user(tmpuser);
+}
+
+
+//用id向服务器请求对方信息
+UserInfo Dealer::find_user_from_server(const unsigned int &tmpmember) {
+    if (UserMap.count(tmpmember)){
+        std::cerr<<"some mistakes, try to find an existed user from server whose id is "<<tmpmember<<std::endl;
+        return *UserMap[tmpmember];
+    }
+    //todo: get userinfo from the server
+    return UserInfo();
+}
+
+
+//添加新成员
+UserInfo *Dealer::add_user(UserInfo user) {
+    UserInfo *tmp = new UserInfo(user);
+    if (PacketMap.count(tmp->getPacket())) {
+        PacketInfo *packet = PacketMap[tmp->getPacket()];
+        packet->AddUser(tmp);
+        tmp->setInPacket(packet);
+    } else {
+
+        PacketInfo *packet = add_packet(tmp->getPacket());
+        packet->AddUser(tmp);
+        tmp->setInPacket(packet);
+    }
+    return tmp;
+}
+
+//添加新分组
+PacketInfo *Dealer::add_packet(int packetid, std::string name) {
+    PacketInfo *tmppacket = new PacketInfo(name, packetid);
+    PacketMap[tmppacket->getPacketId()] = tmppacket;
+    PacketList.push_back(tmppacket);
+    return tmppacket;
 }
 
 
