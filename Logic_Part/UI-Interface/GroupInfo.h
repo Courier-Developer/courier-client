@@ -7,6 +7,7 @@
 
 #include "predeclare.h"
 
+
 class GroupInfo  {
 private:
     unsigned int GroupId;
@@ -31,11 +32,16 @@ public:
 
     std::string getNickName();
 
+    GroupInfo(unsigned int groupId, const std::string &nickName, const std::string &avatorPath,
+              const std::string &notice, const std::vector<unsigned int> &memberId);
+
     std::string getAvatarPath();
 
     std::string getNotice();
 
     void AddUser(UserInfo * user);
+
+    bool HasChat() const;
 };
 
 
