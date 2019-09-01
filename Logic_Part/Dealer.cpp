@@ -6,18 +6,17 @@
 #include "Dealer.h"
 
 
-std::map<unsigned int, UserInfo *> Dealer::UserMap=std::map<unsigned int,UserInfo *>();
-std::vector<PacketInfo *> Dealer::PacketList=std::vector<PacketInfo *>();
-std::vector<GroupInfo *>  Dealer::GroupList=std::vector<GroupInfo *>();
-std::map<int, PacketInfo *> Dealer::PacketMap=std::map<int, PacketInfo *>();
-std::map<int, GroupInfo *> Dealer::GroupMap=std::map<int, GroupInfo *>();
-std::vector<UserInfo *> Dealer::UserList=std::vector<UserInfo *>();
-std::vector<ChatInfo *> Dealer::ChatList=std::vector<ChatInfo *>();
-UserInfo Dealer::MyProfile=UserInfo();
+std::map<unsigned int, UserInfo *> Dealer::UserMap = std::map<unsigned int, UserInfo *>();
+std::vector<PacketInfo *> Dealer::PacketList = std::vector<PacketInfo *>();
+std::vector<GroupInfo *>  Dealer::GroupList = std::vector<GroupInfo *>();
+std::map<int, PacketInfo *> Dealer::PacketMap = std::map<int, PacketInfo *>();
+std::map<int, GroupInfo *> Dealer::GroupMap = std::map<int, GroupInfo *>();
+std::vector<UserInfo *> Dealer::UserList = std::vector<UserInfo *>();
+std::vector<ChatInfo *> Dealer::ChatList = std::vector<ChatInfo *>();
+UserInfo Dealer::MyProfile = UserInfo();
 
 
-std::vector<PacketInfo> Dealer::get_packet_from_server()
-{
+std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server
     std::vector<PacketInfo> packets;
     return packets;
@@ -26,39 +25,39 @@ std::vector<PacketInfo> Dealer::get_packet_from_server()
 
 void Dealer::get_information_and_update() {
     //MyProfile
-    UserInfo myprofile=get_my_profile_from_server();
-    MyProfile=myprofile;
+    UserInfo myprofile = get_my_profile_from_server();
+    MyProfile = myprofile;
 
     //PacketInfo
-    std::vector<PacketInfo> packets=get_packet_from_server();
+    std::vector<PacketInfo> packets = get_packet_from_server();
     update_local_packet(packets);
-    for (auto &tmp:packets){
-        PacketInfo *tmppacket=new PacketInfo(tmp);
-        PacketMap[tmppacket->getPacketId()]=tmppacket;
+    for (auto &tmp:packets) {
+        PacketInfo *tmppacket = new PacketInfo(tmp);
+        PacketMap[tmppacket->getPacketId()] = tmppacket;
         PacketList.push_back(tmppacket);
     }
 
     // UserInfo
-    std::vector<UserInfo> users=get_users_from_server();
+    std::vector<UserInfo> users = get_users_from_server();
     update_local_users(users);
-    for (auto &tmp:users){
-        UserInfo *tmpuser=new UserInfo(tmp);
-        UserMap[tmpuser->getUserId()]=tmpuser;
+    for (auto &tmp:users) {
+        UserInfo *tmpuser = new UserInfo(tmp);
+        UserMap[tmpuser->getUserId()] = tmpuser;
         UserList.push_back(tmpuser);
-        PacketInfo* inpacket=PacketMap[tmpuser->getPacket()];
+        PacketInfo *inpacket = PacketMap[tmpuser->getPacket()];
         inpacket->AddUser(tmpuser);
         tmpuser->setInPacket(inpacket);
     }
 
     //GroupInfo
-    std::vector<GroupInfo> groups=get_group_from_server();
+    std::vector<GroupInfo> groups = get_group_from_server();
     update_local_group(groups);
-    for (auto &tmp:groups){
-        GroupInfo *tmpgroup=new GroupInfo(tmp);
+    for (auto &tmp:groups) {
+        GroupInfo *tmpgroup = new GroupInfo(tmp);
         GroupList.push_back(tmpgroup);
-        GroupMap[tmpgroup->getGroupId()]=tmpgroup;
-        for (auto &tmpmember:tmpgroup->getMemberId()){
-            UserInfo* memberp=UserMap[tmpmember];
+        GroupMap[tmpgroup->getGroupId()] = tmpgroup;
+        for (auto &tmpmember:tmpgroup->getMemberId()) {
+            UserInfo *memberp = UserMap[tmpmember];
             memberp->setInGroup(tmpgroup);
             tmpgroup->AddUser(memberp);
         }
@@ -66,11 +65,11 @@ void Dealer::get_information_and_update() {
 
 
     //MessageInfo
-    std::vector<MessageInfo> messages=get_message_from_server();
+    std::vector<MessageInfo> messages = get_message_from_server();
     update_local_messages(messages);
-    messages=get_messages_from_local();
+    messages = get_messages_from_local();
     for (auto &tmp:messages) {
-        MessageInfo* tmpmsg=cope_new_message(tmp);
+        MessageInfo *tmpmsg = cope_new_message(tmp);
     }
 }
 
@@ -125,25 +124,44 @@ std::vector<MessageInfo> Dealer::get_messages_from_local() {
 }
 
 MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
-    MessageInfo * tmpmsg=new MessageInfo(msg);
-    if (tmpmsg->getType()==1){
-        unsigned int chatto=tmpmsg->getSenderId();
-        if (chatto==MyProfile.getUserId())
-            chatto=tmpmsg->getReceiverId();
-        UserInfo *touser=UserMap[chatto];
-        ChatInfo *chat=touser->getChat();
+    MessageInfo *tmpmsg = new MessageInfo(msg);
+    if (tmpmsg->getType() == 1) {
+        unsigned int chatto = tmpmsg->getSenderId();
+        if (chatto == MyProfile.getUserId())
+            chatto = tmpmsg->getReceiverId();
+        UserInfo *touser = UserMap[chatto];
+        ChatInfo *chat = get_chat(touser);
         chat->AddMessage(tmpmsg);
-    }else{
-        if (tmpmsg->getType()==2){
-            GroupInfo *togroup=GroupMap[tmpmsg->getReceiverId()];
-            ChatInfo *chat=togroup->getChat();
+    } else {
+        if (tmpmsg->getType() == 2) {
+            GroupInfo *togroup = GroupMap[tmpmsg->getReceiverId()];
+            ChatInfo *chat = get_chat(togroup);
             chat->AddMessage(tmpmsg);
-        }
-        else{
-            std::cerr<<tmpmsg->getMessageId()<<" the message type seems to have some error"<<std::endl;
+        } else {
+            std::cerr << tmpmsg->getMessageId() << " the message type seems to have some error" << std::endl;
         }
     }
     return tmpmsg;
+}
+
+ChatInfo *Dealer::get_chat(UserInfo *user) {
+    if (user->HasChat())
+        return user->getChat();
+    else {
+        ChatInfo *tmpchat = user->getChat();
+        ChatList.push_back(tmpchat);
+        return tmpchat;
+    }
+}
+
+ChatInfo *Dealer::get_chat(GroupInfo *group) {
+    if (group->HasChat())
+        return group->getChat();
+    else {
+        ChatInfo *tmpchat=group->getChat();
+        ChatList.push_back(tmpchat);
+        return tmpchat;
+    }
 }
 
 

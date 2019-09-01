@@ -6,7 +6,7 @@
 #define COURIER_CLIENT_GROUPINFO_H
 
 #include "predeclare.h"
-#include "../Dealer.h"
+
 
 class GroupInfo  {
 private:
@@ -40,6 +40,8 @@ public:
     std::string getNotice();
 
     void AddUser(UserInfo * user);
+
+    bool HasChat() const;
 };
 
 

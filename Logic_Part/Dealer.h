@@ -78,6 +78,12 @@ private:
     static std::vector<UserInfo> get_users_from_server();
 
     static void update_local_user();
+
+    static void log_in(std::string username,std::string password,std::function<void()> success,std::function<void()> fail);
+
+    static ChatInfo *get_chat(UserInfo* user);
+
+    static ChatInfo *get_chat(GroupInfo *group);
 };
 
 #endif //COURIER_CLIENT_DEALER_H

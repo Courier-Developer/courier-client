@@ -5,21 +5,22 @@
 #include "GroupInfo.h"
 
 
-
 // todo:
 std::vector<UserInfo *> *GroupInfo::getUsers() {
-    return Members;
+    if (Members)
+        return Members;
+    else
+        return Members=new std::vector<UserInfo *>;
 }
 
 // todo:
 ChatInfo *GroupInfo::getChat() {
     if (chat)
         return chat;
-    else{
-        chat=new ChatInfo;
+    else {
+        chat = new ChatInfo;
         chat->setTotype(2);
-        chat->setToGroup(this);
-        Dealer::AddChat(chat);
+        chat->setToGroup(this);;
         return chat;
     }
 }
@@ -71,3 +72,7 @@ GroupInfo::GroupInfo(unsigned int groupId, const std::string &nickName, const st
                                                                                              AvatorPath(avatorPath),
                                                                                              Notice(notice),
                                                                                              MemberId(memberId) {}
+
+bool GroupInfo::HasChat() const {
+    return chat != nullptr;
+}
