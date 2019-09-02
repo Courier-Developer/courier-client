@@ -12,6 +12,7 @@
 #include "UI-Interface/GroupInfo.h"
 #include <map>
 #include <string>
+#include <functional>
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"

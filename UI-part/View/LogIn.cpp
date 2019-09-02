@@ -54,11 +54,40 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
-        MainWindow *mainWindow = new MainWindow(this->app);
-        this->app->add_window(*mainWindow);
-        mainWindow->show();
-        this->hide();
-        this->app->remove_window(*this);
+        dealer.login("", "", [this](std::vector<PacketInfo *> plist, std::vector<GroupInfo *> glist,
+                                    std::vector<ChatInfo *> clist) {
+            for (auto p : plist) {
+                std::cout << p->getName() << std::endl;
+                for (auto u : *(p->getUsers())) {
+                    std::cout << u->getNickName() << std::endl;
+                }
+            }
+            for (auto g : glist) {
+                std::cout << g->getNickName() << std::endl;
+                for (auto u : *(g->getUsers())) {
+                    std::cout << u->getNickName() << std::endl;
+                }
+            }
+            for (auto c : clist) {
+                std::cout << c->getTotype() << std::endl;
+                if (c->getTotype() == 1) {
+                    std::cout << c->getToUser()->getNickName() << std::endl;
+                } else {
+                    std::cout << c->getToGroup()->getNickName() << std::endl;
+                }
+                for (auto m : *(c->getMsgList())) {
+                    std::cout << m->getContent() << " " << m->getCreateTime().getString() << std::endl;
+                }
+            }
+            MainWindow *mainWindow = new MainWindow(this->app);
+            this->app->add_window(*mainWindow);
+            mainWindow->show();
+            this->hide();
+            this->app->remove_window(*this);
+        }, [this](std::string error) {
+            std::cout << error << std::endl;
+        });
+
     });
     grid.attach(logInBt, 0, 4, 2, 1);
 
