@@ -69,7 +69,7 @@ public:
 
     PacketInfo *getInPacket() const;
 
-    std::vector<GroupInfo *> *getInGroups() const;
+    std::vector<GroupInfo *> *getInGroups();
 };
 
 

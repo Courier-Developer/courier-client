@@ -6,11 +6,10 @@
 
 //todo:
 std::vector<MessageInfo *> *ChatInfo::getMsgList() {
-    if (MessageList)
+    if (MessageList!= nullptr)
         return MessageList;
     else{
-        MessageList=new std::vector<MessageInfo *>;
-        return MessageList;
+        return new std::vector<MessageInfo *>;
     }
 }
 
@@ -35,7 +34,7 @@ ChatInfo::~ChatInfo() {
 }
 
 void ChatInfo::AddMessage(MessageInfo *msg) {
-    if (MessageList) {
+    if (MessageList!= nullptr) {
         MessageList->push_back(msg);
     } else{
         MessageList=new std::vector<MessageInfo *>;

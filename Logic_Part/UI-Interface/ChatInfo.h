@@ -11,7 +11,7 @@
 class ChatInfo{
 private:
     int Totype;
-    std::vector<MessageInfo *> *MessageList= nullptr;
+    std::vector<MessageInfo *> *MessageList = nullptr;
     UserInfo *ToUser= nullptr;
     GroupInfo *ToGroup=nullptr;
     int UnreadNumbers; //未读消息数量

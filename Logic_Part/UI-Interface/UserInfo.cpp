@@ -111,8 +111,12 @@ PacketInfo *UserInfo::getInPacket() const {
     return InPacket;
 }
 
-std::vector<GroupInfo *> *UserInfo::getInGroups() const {
-    return InGroups;
+std::vector<GroupInfo *> *UserInfo::getInGroups() {
+    if (InGroups)
+        return InGroups;
+    else {
+        return InGroups=new std::vector<GroupInfo *>;
+    }
 }
 
 void UserInfo::setPacket(int packet) {

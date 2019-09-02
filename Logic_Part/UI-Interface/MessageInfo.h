@@ -20,6 +20,8 @@ private:
     DateTime CreatedTime;
     UserInfo *Sender = nullptr;
     ChatInfo *InChat = nullptr;
+public:
+    void setSender(UserInfo *sender);
 
 public:
     int getMessageId() const;
@@ -45,6 +47,8 @@ public:
     unsigned int getReceiverId() const;
 
     int getContentKind() const;
+
+    void setInChat(ChatInfo *inChat);
 
     const DateTime &getCreatedTime() const;
 

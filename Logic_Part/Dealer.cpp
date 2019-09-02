@@ -40,8 +40,11 @@ void Dealer::get_information_and_update() {
         inpacket->AddUser(tmpuser);
         tmpuser->setInPacket(inpacket);
     }
-    if (UserMap.count(myprofile.getUserId())==0)
-        UserMap[myprofile.getUserId()]=add_user(myprofile);
+    if (UserMap.count(myprofile.getUserId()) == 0) {
+        UserInfo *me = add_user(myprofile);
+        UserMap[myprofile.getUserId()] = me;
+        UserList.push_back(me);
+    }
 
     //GroupInfo
     std::vector<GroupInfo> groups = get_group_from_server();
@@ -131,6 +134,7 @@ std::vector<MessageInfo> Dealer::get_messages_from_local() {
 //处理新信息
 MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
     MessageInfo *tmpmsg = new MessageInfo(msg);
+    tmpmsg->setSender(UserMap[tmpmsg->getSenderId()]);
     if (tmpmsg->getType() == 1) {
         unsigned int chatto = tmpmsg->getSenderId();
         if (chatto == MyProfile.getUserId())
@@ -141,6 +145,7 @@ MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
         }
         UserInfo *touser = UserMap[chatto];
         ChatInfo *chat = get_chat(touser);
+        tmpmsg->setInChat(chat);
         chat->AddMessage(tmpmsg);
     } else {
         if (tmpmsg->getType() == 2) {
@@ -150,6 +155,7 @@ MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
             GroupInfo *togroup = GroupMap[tmpmsg->getReceiverId()];
             ChatInfo *chat = get_chat(togroup);
             chat->AddMessage(tmpmsg);
+            tmpmsg->setInChat(chat);
         } else {
             std::cerr << tmpmsg->getMessageId() << " the message type seems to have some error" << std::endl;
         }
@@ -345,7 +351,7 @@ UserInfo *Dealer::add_user(const UserInfo &user) {
     if (UserMap.count(user.getUserId()))
         return UserMap[user.getUserId()];
     UserInfo *tmp = new UserInfo(user);
-    UserMap[tmp->getUserId()]=tmp;
+    UserMap[tmp->getUserId()] = tmp;
     if (PacketMap.count(tmp->getPacket())) {
         PacketInfo *packet = PacketMap[tmp->getPacket()];
         packet->AddUser(tmp);
@@ -580,61 +586,62 @@ void Dealer::server_ask_to_add_friend(const UserInfo user) {
         if (user.getPacket() > 0) {
             std::cerr << "does exist this friend" << std::endl;
         }
-    }else{
-        UserInfo *newuser=add_user(user);
+    } else {
+        UserInfo *newuser = add_user(user);
         //todo: call for UI to choose whether to accept
     }
 }
+
 /******************************TesT************************************/
 UserInfo Dealer::test_create_myprofile() {
-    return UserInfo(10001,"ervinxienb","我，谢神，打钱","计算几何马斯特就是我！","",1,0);
+    return UserInfo(10001, "ervinxienb", "我，谢神，打钱", "计算几何马斯特就是我！", "", 1, 0);
 }
 
 std::vector<PacketInfo> Dealer::test_create_packet() {
     std::vector<PacketInfo> test;
 //    std::cout<<"ok!"<<std::endl;
-    test.push_back(PacketInfo("黑名单",-1));
+    test.push_back(PacketInfo("黑名单", -1));
 //    std::cout<<"ok!"<<std::endl;
-    test.push_back(PacketInfo("陌生人",0));
-    test.push_back(PacketInfo("默认分组",1));
-    test.push_back(PacketInfo("附近的人",2));
+    test.push_back(PacketInfo("陌生人", 0));
+    test.push_back(PacketInfo("默认分组", 1));
+    test.push_back(PacketInfo("附近的人", 2));
     return test;
 }
 
 std::vector<UserInfo> Dealer::test_create_users() {
     std::vector<UserInfo> test;
-    test.push_back(UserInfo(10002,"ironhead","大大大铁头","我的头真铁","",0,1));
-    test.push_back(UserInfo(10003,"fountain","fountain","no response","",1,2));
-    test.push_back(UserInfo(10004,"asdfs","fousf","no response","",1,1));
-    test.push_back(UserInfo(10005,"fky","fky","no response","",0,1));
-    test.push_back(UserInfo(10006,"yfh","yfh","no response","",1,2));
-    test.push_back(UserInfo(10007,"fosdf","AC自动机fail树上dfs序建可持久化线段树","CSLnb！","",0,-1));
+    test.push_back(UserInfo(10002, "ironhead", "大大大铁头", "我的头真铁", "", 0, 1));
+    test.push_back(UserInfo(10003, "fountain", "fountain", "no response", "", 1, 2));
+    test.push_back(UserInfo(10004, "asdfs", "fousf", "no response", "", 1, 1));
+    test.push_back(UserInfo(10005, "fky", "fky", "no response", "", 0, 1));
+    test.push_back(UserInfo(10006, "yfh", "yfh", "no response", "", 1, 2));
+    test.push_back(UserInfo(10007, "fosdf", "AC自动机fail树上dfs序建可持久化线段树", "CSLnb！", "", 0, -1));
     return test;
 }
 
 std::vector<GroupInfo> Dealer::test_create_group() {
     std::vector<GroupInfo> test;
     std::vector<unsigned int> members;
-    members.push_back(10001),members.push_back(10002),members.push_back(10004);
-    test.push_back(GroupInfo(10001,"雀魂交友群","","杠上开花",members));
+    members.push_back(10001), members.push_back(10002), members.push_back(10004);
+    test.push_back(GroupInfo(10001, "雀魂交友群", "", "杠上开花", members));
     members.clear();
-    members.push_back(10001),members.push_back(10003),members.push_back(10007);
-    test.push_back(GroupInfo(10002,"fky粉丝群","","膜就完事了",members));
+    members.push_back(10001), members.push_back(10003), members.push_back(10007);
+    test.push_back(GroupInfo(10002, "fky粉丝群", "", "膜就完事了", members));
     return test;
 }
 
 std::vector<MessageInfo> Dealer::test_create_message() {
     std::vector<MessageInfo> test;
-    test.push_back(MessageInfo(10001,10002,10001,"测试专用场地",1,1,1,DateTime("2019-8-31 12:31:55")));
-    test.push_back(MessageInfo(10001,10001,"test",1,2,1,DateTime("2019-8-31 12:31:55")));
-    test.push_back(MessageInfo(10002,10001,"accepted",1,2,1,DateTime("2019-8-31 12:32:05")));
-    test.push_back(MessageInfo(10002,10001,"蛤？",1,1,1,DateTime("2019-8-31 11:32:05")));
+    test.push_back(MessageInfo(10001, 10002, "测试专用场地", 1, 1, 1, DateTime("2019-8-31 12:31:55")));
+    test.push_back(MessageInfo(10001, 10001, "test", 1, 2, 1, DateTime("2019-8-31 12:31:55")));
+    test.push_back(MessageInfo(10002, 10001, "accepted", 1, 2, 1, DateTime("2019-8-31 12:32:05")));
+    test.push_back(MessageInfo(10002, 10001, "蛤？", 1, 1, 1, DateTime("2019-8-31 11:32:05")));
     return test;
 }
 
 void Dealer::test() {
     //MyProfile
-    using std::cout,std::endl;
+    using std::cout, std::endl;
     UserInfo myprofile = test_create_myprofile();
     MyProfile = myprofile;
     //PacketInfo
@@ -670,8 +677,12 @@ void Dealer::test() {
 //        std::cout<<"ok!"<<std::endl;
         tmpuser->setInPacket(inpacket);
     }
-    if (!UserMap.count(myprofile.getUserId()))
-        UserMap[myprofile.getUserId()]=add_user(myprofile);
+
+    if (UserMap.count(myprofile.getUserId()) == 0) {
+        UserInfo *me = add_user(myprofile);
+        UserMap[myprofile.getUserId()] = me;
+        UserList.push_back(me);
+    }
 
 //    std::cout<<"ok!"<<std::endl;
     //GroupInfo
@@ -701,16 +712,90 @@ void Dealer::test() {
     //MessageInfo
     std::vector<MessageInfo> messages = test_create_message();
     update_local_messages(messages);
-    messages = get_messages_from_local();
+//    messages = get_messages_from_local();
     for (auto &tmp:messages) {
         MessageInfo *tmpmsg = cope_new_message(tmp);
     }
 }
 
-void Dealer::showtestresult() {
-    using std::cout,std::endl;
-    for (auto &tmp:UserList)
+void Dealer::ShowTestUserInfo() {
+    using std::cout, std::endl;
+    cout << endl << endl;
+    cout << "***********************UserInfo********************" << endl;
+    for (auto &tmp:UserList) {
+        cout << tmp->getUserId() << " " << tmp->getNickName() << endl;
+        cout << "In Packet " << tmp->getInPacket()->getPacketName() << endl;
+        cout << "Whether there is a chat: " << tmp->HasChat() << endl;
+        cout << "In Groups:";
+        for (auto &ingroup:(*tmp->getInGroups()))
+            cout << " " << ingroup->getNickName();
+        cout << endl;
+        cout << "Status: " << tmp->getStatus() << endl;
+        cout << "---------------------------------------------------" << endl;
+    }
+}
 
+void Dealer::ShowTestGroupInfo() {
+    using std::cout, std::endl;
+    cout << endl << endl;
+    cout << "***********************GroupInfo********************" << endl;
+    for (auto &group:GroupList) {
+        cout << group->getGroupId() << " " << group->getNickName() << endl;
+        cout << "In this Group: " << endl;
+        for (auto &tmp:(*group->getUsers())) {
+            cout << "      ID: " << tmp->getUserId() << "     NickName: " << tmp->getNickName() << endl;
+        }
+        cout << "Members' id:";
+        for (auto &tmp:(group->getMemberId())) cout << " " << tmp;
+        cout << endl;
+        cout << "Whether there is a chat: " << group->HasChat() << endl;
+        cout << "Notice:    " << group->getNotice() << endl;
+        cout << "---------------------------------------------------" << endl;
+    }
+}
+
+void Dealer::ShowTestPacketInfo() {
+    using std::cout, std::endl;
+    cout << endl << endl;
+    cout << "***********************PacketInfo********************" << endl;
+    for (auto &tmp:PacketList){
+        cout<<" ID: "<<tmp->getPacketId()<<"  Name: "<<tmp->getPacketName()<<endl;
+        cout<<" Members:";
+        for (auto &tmpmember:(*tmp->getUsers()))
+            cout<<" "<<tmpmember->getNickName();
+        cout<<endl;
+        cout << "----------------------------------------------------" << endl;
+
+    }
+
+}
+
+void Dealer::ShowTestChatInfo() {
+    using std::cout, std::endl;
+    cout << endl << endl;
+    cout << "***********************ChatInfo********************" << endl;
+    for (auto &tmp:ChatList) {
+        cout << "Chat with ";
+        if (tmp->getChatWith() == 1) {
+            cout << "User" << endl;
+            cout << "   ID: " << tmp->getToUser()->getUserId() << "  NickName: " << tmp->getToUser()->getNickName()
+                 << endl;
+        } else {
+            if (tmp->getChatWith() == 2) {
+                cout << "Group" << endl;
+                cout << "  ID: " << tmp->getToGroup()->getGroupId() << "  NickName: " << tmp->getToGroup()->getGroupId()
+                     << endl;
+            } else {
+                cout << "Error" << endl;
+            }
+        }
+        cout<<"Number of Message: "<<(*tmp->getMsgList()).size()<<endl;
+        cout<<"Content: "<<endl;
+        for (auto *msgs:(*tmp->getMsgList())){
+            cout<<"  "<<msgs->getSender()->getNickName()<<": "<<msgs->getContent()<<endl;
+        }
+        cout << "--------------------------------------------------" << endl;
+    }
 }
 
 

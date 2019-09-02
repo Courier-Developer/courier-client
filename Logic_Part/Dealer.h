@@ -189,9 +189,19 @@ public:
 
     void server_ask_to_add_friend(const UserInfo user);
 
+    /**************************************Test*************************************/
+
     void test();
 
-    void showtestresult();
+    void ShowTestUserInfo();
+
+    void ShowTestGroupInfo();
+
+    void ShowTestPacketInfo();
+
+    void ShowTestChatInfo();
+
+    /*******************************************************************************/
 };
 
 #endif //COURIER_CLIENT_DEALER_H
