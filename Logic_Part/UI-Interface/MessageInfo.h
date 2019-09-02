@@ -13,16 +13,6 @@ private:
     unsigned int SenderId;
     unsigned int ReceiverId;
     int MessageId;
-public:
-    int getMessageId() const;
-
-    void setMessageId(int messageId);
-
-public:
-    MessageInfo(unsigned int senderId, unsigned int receiverId, int messageId, const std::string &content, int status,
-                int type, int contentKind, const DateTime &createdTime);
-
-private:
     std::string Content;
     int Status; //是否发送成功
     int type;      //1 个人 2 群聊
@@ -32,6 +22,13 @@ private:
     ChatInfo *InChat;
 
 public:
+    int getMessageId() const;
+
+    void setMessageId(int messageId);
+
+    MessageInfo(unsigned int senderId, unsigned int receiverId, int messageId, const std::string &content, int status,
+                int type, int contentKind, const DateTime &createdTime);
+
     MessageInfo(unsigned int senderId, unsigned int receiverId, const std::string &content, int status, int type,
                 int contentKind, const DateTime &createdTime);
 

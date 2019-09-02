@@ -195,7 +195,7 @@ PacketInfo *Dealer::add_packet(int packetid, std::string name) {
     PacketMap[tmppacket->getPacketId()] = tmppacket;
     PacketList.push_back(tmppacket);
     local_update_packet(*tmppacket);
-    if (packetid>1)
+    if (packetid > 1)
         server_update_packet(*tmppacket);
     return tmppacket;
 }
@@ -207,12 +207,11 @@ int Dealer::ask_server_to_add_packet(const std::string &packetname) {
 }
 
 void Dealer::UI_add_packet(const std::string &packetname) {
-    int packetid=ask_server_to_add_packet(packetname);
-    if (packetid){
-        PacketInfo *newpacket = add_packet(packetid,packetname);
-    }
-    else{
-        std::cerr<<"create packet Error"<<std::endl;
+    int packetid = ask_server_to_add_packet(packetname);
+    if (packetid) {
+        PacketInfo *newpacket = add_packet(packetid, packetname);
+    } else {
+        std::cerr << "create packet Error" << std::endl;
     }
 }
 
@@ -224,23 +223,23 @@ void Dealer::server_update_packet(const PacketInfo &packet) {
     //todo: call for server 有则修改，无则添加
 }
 
-void Dealer::UI_change_packetname(PacketInfo *packet,const std::string &name) {
-    if (packet->getPacketId()>0) {
+void Dealer::UI_change_packetname(PacketInfo *packet, const std::string &name) {
+    if (packet->getPacketId() > 0) {
         packet->setPacketName(name);
         local_update_packet(*packet);
         server_update_packet(*packet);
-    } else{
-        std::cerr<<"try to rename <0 packet"<<std::endl;
+    } else {
+        std::cerr << "try to rename <0 packet" << std::endl;
     }
 }
 
 void Dealer::UI_delete_packet(PacketInfo *packet) {
-    if (packet->getUsers()->size()){
-        std::cerr<<"try to delete a packet with friend"<<std::endl;
-    }else{
-        if (packet->getPacketId()<2){
-            std::cerr<<"try to delete necessary packet"<<std::endl;
-        } else{
+    if (packet->getUsers()->size()) {
+        std::cerr << "try to delete a packet with friend" << std::endl;
+    } else {
+        if (packet->getPacketId() < 2) {
+            std::cerr << "try to delete necessary packet" << std::endl;
+        } else {
             local_delete_packet(*packet);
             server_delete_packet(*packet);
         }
@@ -340,10 +339,11 @@ UserInfo Dealer::find_user_from_server(const std::string &username) {
 }
 
 //添加新成员
-UserInfo *Dealer::add_user(UserInfo user) {
+UserInfo *Dealer::add_user(const UserInfo &user) {
     if (UserMap.count(user.getUserId()))
         return UserMap[user.getUserId()];
     UserInfo *tmp = new UserInfo(user);
+    UserMap[tmp->getUserId()]=tmp;
     if (PacketMap.count(tmp->getPacket())) {
         PacketInfo *packet = PacketMap[tmp->getPacket()];
         packet->AddUser(tmp);
@@ -354,7 +354,7 @@ UserInfo *Dealer::add_user(UserInfo user) {
         tmp->setInPacket(packet);
     }
     update_local_user(*tmp);
-    if (tmp->getPacket()>0){
+    if (tmp->getPacket() > 0) {
         update_server_user(*tmp);
     }
     return tmp;
@@ -427,14 +427,14 @@ void Dealer::delete_friend(const unsigned int &id) {
 void Dealer::delete_friend(UserInfo *oldfriend) {
     PacketInfo *oldpacket = oldfriend->getInPacket();
     oldpacket->DeleteMember(oldfriend);
-    PacketInfo *stranger=get_packet_from_id(0);
+    PacketInfo *stranger = get_packet_from_id(0);
     stranger->AddUser(oldfriend);
     oldfriend->setInPacket(stranger);
 }
 
 
 void Dealer::delete_friend(const UserInfo &oldfriend) {
-    if (oldfriend.getPacket()!=0 && UserMap.count(oldfriend.getUserId()))
+    if (oldfriend.getPacket() != 0 && UserMap.count(oldfriend.getUserId()))
         delete_friend(UserMap[oldfriend.getUserId()]);
     else
         std::cerr << "try to delete a non-existed friend" << std::endl;
@@ -520,15 +520,13 @@ void Dealer::receive_new_message(const MessageInfo &msg) {
 
 /**********************************获取云端历史信息*********************************/
 void Dealer::UI_get_histroy(ChatInfo *chat) {
-    if (chat->getChatWith()>2 || chat->getChatWith()<1)
-    {
-        std::cerr<<"chat to what?"<<std::endl;
-    }else{
-        if (chat->getChatWith()==1)
-        {
-            std::vector<MessageInfo *> msgs=sync_message_histroy(chat->getToUser());
-        } else{
-            std::vector<MessageInfo *>msgs=sync_message_histroy(chat->getToGroup());
+    if (chat->getChatWith() > 2 || chat->getChatWith() < 1) {
+        std::cerr << "chat to what?" << std::endl;
+    } else {
+        if (chat->getChatWith() == 1) {
+            std::vector<MessageInfo *> msgs = sync_message_histroy(chat->getToUser());
+        } else {
+            std::vector<MessageInfo *> msgs = sync_message_histroy(chat->getToGroup());
         }
     }
 }
@@ -548,17 +546,17 @@ std::vector<MessageInfo> Dealer::get_histroy_of_group_from_server(GroupInfo *gro
 //同步内存数据
 std::vector<MessageInfo *> Dealer::sync_message_histroy(UserInfo *user) {
     std::vector<MessageInfo *> msgs;
-    std::vector<MessageInfo> newmsgs=sync_local_message(user);
-    for (auto &tmpmsg:newmsgs){
+    std::vector<MessageInfo> newmsgs = sync_local_message(user);
+    for (auto &tmpmsg:newmsgs) {
         msgs.push_back(cope_new_message(tmpmsg));
     }
     return msgs;
 }
 
 std::vector<MessageInfo *> Dealer::sync_message_histroy(GroupInfo *group) {
-    std::vector<MessageInfo *>msgs;
-    std::vector<MessageInfo> newmsgs=sync_local_message(group);
-    for (auto &tmpmsg:newmsgs){
+    std::vector<MessageInfo *> msgs;
+    std::vector<MessageInfo> newmsgs = sync_local_message(group);
+    for (auto &tmpmsg:newmsgs) {
         msgs.push_back(cope_new_message(tmpmsg));
     }
     return msgs;
@@ -573,6 +571,17 @@ std::vector<MessageInfo> Dealer::sync_local_message(UserInfo *user) {
 std::vector<MessageInfo> Dealer::sync_local_message(GroupInfo *group) {
     //todo: call for the database
     return std::vector<MessageInfo>();
+}
+
+void Dealer::server_ask_to_add_friend(const UserInfo user) {
+    if (UserMap.count(user.getUserId())) {
+        if (user.getPacket() > 0) {
+            std::cerr << "does exist this friend" << std::endl;
+        }
+    }else{
+        UserInfo *newuser=add_user(user);
+        //todo: call for UI to choose whether to accept
+    }
 }
 
 /******************************Attention******************************/

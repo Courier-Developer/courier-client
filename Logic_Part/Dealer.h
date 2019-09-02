@@ -68,7 +68,7 @@ private:
 
     UserInfo find_user_from_server(const std::string &username);
 
-    UserInfo *add_user(UserInfo user);
+    UserInfo *add_user(const UserInfo &user);
 
     PacketInfo *add_packet(int packetid,std::string name="Stranger");
 
@@ -175,6 +175,8 @@ public:
     void UI_change_packetname(PacketInfo* packet,const std::string &name);
 
     void UI_delete_packet(PacketInfo *packet);
+
+    void server_ask_to_add_friend(const UserInfo user);
 };
 
 #endif //COURIER_CLIENT_DEALER_H
