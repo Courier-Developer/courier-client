@@ -7,7 +7,7 @@
 
 #include <gtkmm.h>
 #include "ContactWindow.h"
-#include "../../../Logic_Part/UI-Interface/GroupInfo.h"
+
 class GroupContactInfo : public Gtk::VBox{
 public:
     GroupContactInfo();

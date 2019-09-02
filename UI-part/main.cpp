@@ -2,6 +2,7 @@
 
 #include "View/implement.h"
 #include <iostream>
+Dealer dealer;
 int main(int argc, char *argv[])
 {
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,"com.courier");
