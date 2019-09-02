@@ -110,3 +110,7 @@ void GroupInfo::setNickName(const std::string &nickName) {
 void GroupInfo::setAvatorPath(const std::string &avatorPath) {
     AvatorPath = avatorPath;
 }
+
+void GroupInfo::setNotice(const std::string &notice) {
+    Notice = notice;
+}

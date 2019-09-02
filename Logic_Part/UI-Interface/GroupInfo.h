@@ -22,6 +22,8 @@ public:
 
     ChatInfo *getChat();
 
+    void setNotice(const std::string &notice);
+
     virtual ~GroupInfo();
 
     GroupInfo();
