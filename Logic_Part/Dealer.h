@@ -117,6 +117,7 @@ private:
 
     bool tell_server_accept_friend(UserInfo newfriend);
 
+
     /******************************************Test**************************************/
     UserInfo test_create_myprofile();
 
@@ -141,24 +142,7 @@ public:
 
     UserInfo MyProfile;
 
-
-
-    // UI
-    void UI_get_packet_list();
-
-    void UI_get_group_list();
-
-    void UI_get_chat_list();
-
     void UI_send_message(const std::string &content,ChatInfo* chat);
-
-    void UI_get_my_profile();
-
-    void UI_log_in(std::string username,std::string password);
-
-    void UI_add_friend();
-
-    void UI_delete_friend();
 
     void UI_delete_friend(UserInfo *oldfriend);
 
@@ -186,9 +170,16 @@ public:
 
     void UI_delete_packet(PacketInfo *packet);
 
+    /************************************** UI ***************************************/
+
     void login(const std::string &username,const std::string &password,std::function<void(std::vector<PacketInfo *> &,std::vector<GroupInfo *> &,std::vector<ChatInfo *> &)> success,std::function<void(std::string)> fail);
 
     void UI_accept_add_friend(unsigned int userid,PacketInfo *packet);
+
+    void UI_get_myprofile(std::function<void(const UserInfo &)> getprofile,std::function<void(std::string)> error);
+
+
+    /**************************************Server*************************************/
 
     bool server_ask_to_add_friend(const UserInfo user);
 
