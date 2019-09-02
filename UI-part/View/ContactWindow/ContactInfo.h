@@ -6,7 +6,6 @@
 #define GTKMM_CONTACTINFO_H
 
 
-#include <gtkmm.h>
 #include "../ChatWindow/ChatWindow.h"
 #include "../../../Logic_Part/UI-Interface/UserInfo.h"
 
@@ -16,11 +15,11 @@ public:
     ContactInfo(UserInfo* userInfo,int avatarSize = 64);
     virtual ~ContactInfo();
     void ChangeUser(UserInfo* newUser);
-    int avatarSize=64;
+
 
 protected:
-
-
+    UserInfo* user;
+    int avatarSize=64;
     Glib::RefPtr<Gdk::Pixbuf> avatar;
     Gtk::Label nickName;
 };

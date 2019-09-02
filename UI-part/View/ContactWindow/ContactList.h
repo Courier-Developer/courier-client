@@ -11,11 +11,14 @@
 
 class ContactList :public Gtk::VBox{
 public:
-    ContactList();
+    ContactList(ContactWindow* contactWindow);
     virtual ~ContactList();
+    ContactWindow* contactWindow;
 
 protected:
     Gtk::SearchEntry searchEntry;
+    Gtk::HBox btBox;
+    Gtk::Button addNewUser,addNewGroup;
 
     class Contact:public Gtk::TreeModel::ColumnRecord{
     public:
@@ -38,10 +41,7 @@ protected:
     Glib::RefPtr<Gtk::TreeStore> refTreeStore;
     Glib::RefPtr<Gtk::TreeModelFilter> filter;
     Glib::RefPtr<Gtk::TreeModelSort> sort;
-
     Glib::RefPtr<Gtk::TreeSelection> select;
-
-
 };
 
 

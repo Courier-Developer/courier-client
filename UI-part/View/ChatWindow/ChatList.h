@@ -10,10 +10,9 @@
 #include "../predeclare.h"
 class ChatList : public Gtk::VBox {
 public:
-    ChatList();
-
+    ChatList(ChatWindow * chatWindow);
     virtual ~ChatList();
-
+    ChatWindow * chatWindow;
 protected:
     Gtk::SearchEntry searchEntry;
 

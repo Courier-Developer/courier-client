@@ -4,7 +4,7 @@
 
 #include "../implement.h"
 
-ChatWindow::ChatWindow() {
+ChatWindow::ChatWindow(MainWindow *mainWindow):mainWindow(mainWindow),chatList(this),chatting(this) {
 
 
     pack_start(chatList, Gtk::PACK_SHRINK);

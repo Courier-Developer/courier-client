@@ -6,6 +6,8 @@
 #define COURIER_CLIENT_PREDECLARE_H
 
 #endif //COURIER_CLIENT_PREDECLARE_H
+
+#include <gtkmm.h>
 class MainWindow;
 class SignUp;
 class LogIn;
