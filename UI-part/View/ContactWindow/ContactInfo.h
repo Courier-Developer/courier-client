@@ -10,14 +10,13 @@
 
 class ContactInfo : public Gtk::Grid{
 public:
-    ContactInfo(int avatarSize = 64);
-    ContactInfo(UserInfo* userInfo,int avatarSize = 64);
+    ContactInfo(int avatarSize=64);
+    ContactInfo(UserInfo* userInfo,int avatarSize=64);
     virtual ~ContactInfo();
     void ChangeUser(UserInfo* newUser);
-
-
-protected:
     UserInfo* user;
+protected:
+
     int avatarSize=64;
     Glib::RefPtr<Gdk::Pixbuf> avatar;
     Gtk::Label nickName;

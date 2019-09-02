@@ -3,15 +3,15 @@
 //
 
 #include "../implement.h"
+#include "GroupContactInfo.h"
+
 
 GroupContactInfo::GroupContactInfo() {
 
     refAvatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     refAvatar = refAvatar->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
-    Gtk::Image *avatarImg = Gtk::manage(new Gtk::Image(refAvatar));
-
-    avatarNameBox.pack_start(*avatarImg);
-
+    avatarImage.property_pixbuf()=refAvatar;
+    avatarNameBox.pack_start(avatarImage);
     groupName.set_text("Group Name");
     avatarNameBox.pack_start(groupName);
 
@@ -19,7 +19,7 @@ GroupContactInfo::GroupContactInfo() {
 
     groupNotice.set_text("Notification");
     pack_start(groupNotice, Gtk::PACK_SHRINK);
-
+    pack_start(scrolledWindow);
     scrolledWindow.add(contacts);
     contacts.append_column("avatar", groupContact.avatar);
     contacts.append_column("nickName", groupContact.nickName);
@@ -54,7 +54,6 @@ GroupContactInfo::GroupContactInfo() {
 
     for (int i = 0; i < 10; i++) {
         auto row = *(refListStore->append());
-
         row[groupContact.nickName] = "GroupMember Name";
         auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
         ava = ava->scale_simple(24, 24, Gdk::INTERP_BILINEAR);
@@ -64,15 +63,41 @@ GroupContactInfo::GroupContactInfo() {
     show_all_children();
 }
 
-GroupContactInfo::GroupContactInfo(GroupInfo *group) {
-    GroupContactInfo();
+GroupContactInfo::GroupContactInfo(GroupInfo *group):GroupContactInfo(){
     changeGroup(group);
 }
 
 void GroupContactInfo::changeGroup(GroupInfo *group) {
+    try {
+        refAvatar = Gdk::Pixbuf::create_from_file(group->getAvatarPath());
+        avatarImage.property_pixbuf() = refAvatar;
+    }catch (...){
+        std::cout<<group->getNickName()<<":Group Avatar Load Failed at"<<group->getAvatarPath()<<std::endl;
+    }
+    groupName.set_text(group->getNickName());
+    groupNotice.set_text(group->getNotice());
+    refListStore->clear();
+    for(auto u:*group->getUsers()){
+        addUserAsMember(u);
+    }
+}
 
+void GroupContactInfo::addUserAsMember(UserInfo *newUser) {
+    auto iter = refListStore->append();
+    iter->set_value(groupContact.nickName,Glib::ustring(newUser->getNickName()));
+    Glib::RefPtr<Gdk::Pixbuf> ava;
+    try {
+        ava = Gdk::Pixbuf::create_from_file(newUser->getAvatarPath());
+    }
+    catch (...){
+        std::cout<<newUser->getNickName()<<":Group Member Avatar Load Failed at"<<newUser->getAvatarPath()<<std::endl;
+        ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
+    }
+    ava = ava->scale_simple(24, 24, Gdk::INTERP_BILINEAR);
+    iter->set_value(groupContact.avatar,ava);
 }
 
 GroupContactInfo::~GroupContactInfo() {
-
+    hide();
 }
+

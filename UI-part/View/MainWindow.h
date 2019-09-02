@@ -14,15 +14,21 @@ const int CONTACTS = 2;
 const int OTHERS = 3;
 
 
-
 class MainWindow : public Gtk::Window{
 public:
-    MainWindow(Glib::RefPtr<Gtk::Application> app);
+    MainWindow(Glib::RefPtr<Gtk::Application> app,
+            std::vector<PacketInfo *>& plist,
+            std::vector<GroupInfo *>& glist,
+            std::vector<ChatInfo *>& clist);
     virtual ~MainWindow();
     Glib::RefPtr<Gtk::Application> app;
+
+    std::vector<PacketInfo *>& plist;
+    std::vector<GroupInfo *>& glist;
+    std::vector<ChatInfo *>& clist;
 protected:
 
-    void on_bt(const int& bt_id);
+    void changeWindow(int to);
 
     Gtk::VBox bt_box;
     Gtk::HBox box;

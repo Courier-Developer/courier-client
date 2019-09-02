@@ -4,8 +4,12 @@
 
 #include "../implement.h"
 
-ChatWindow::ChatWindow(MainWindow *mainWindow):mainWindow(mainWindow),chatList(this),chatting(this) {
-
+ChatWindow::ChatWindow(MainWindow *mainWindow,
+                       std::vector<ChatInfo *> &clist) :
+        mainWindow(mainWindow),
+        chatList(this,clist),
+        chatting(this,clist[0]),
+        clist(clist) {
 
     pack_start(chatList, Gtk::PACK_SHRINK);
     pack_start(chatting);
@@ -13,7 +17,6 @@ ChatWindow::ChatWindow(MainWindow *mainWindow):mainWindow(mainWindow),chatList(t
 
     set_vexpand(true);
     set_hexpand(true);
-
 
     show_all_children();
 }

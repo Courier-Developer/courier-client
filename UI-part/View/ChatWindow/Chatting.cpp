@@ -5,7 +5,11 @@
 #include "../implement.h"
 #include <iostream>
 
-Chatting::Chatting(ChatWindow *chatWindow) : chatName("ChatEntity"), chatWindow(chatWindow) {
+Chatting::Chatting(ChatWindow *chatWindow,
+                   ChatInfo *c) :
+        chatName("ChatEntity"),
+        chatWindow(chatWindow),
+        c(c) {
     set_size_request(400, 500);
 
     Gtk::Frame *chatNameFrame = Gtk::manage(new Gtk::Frame);
@@ -94,16 +98,17 @@ Chatting::Chatting(ChatWindow *chatWindow) : chatName("ChatEntity"), chatWindow(
     msgEdit.set_buffer(refMsgText);
 
     msgEdit.set_size_request(100, 100);
-    refMsgText->signal_changed().connect([this]{
+    refMsgText->signal_changed().connect([this] {
 //        std::cout<<refMsgText->get_text()<<std::endl;
     });
-    refMsgText->signal_insert().connect([this](const Gtk::TextBuffer::iterator& it, const Glib::ustring& ustring, int x){
-        std::cout<<x<<std::endl;
-        if(ustring.length()==1&&ustring[0]=='\n'){
-            this->addMessage(refMsgText->get_text());
-            refMsgText->set_text("");
-        }
-    });
+    refMsgText->signal_insert().connect(
+            [this](const Gtk::TextBuffer::iterator &it, const Glib::ustring &ustring, int x) {
+                std::cout << x << std::endl;
+                if (ustring.length() == 1 && ustring[0] == '\n') {
+                    this->addMessage(refMsgText->get_text());
+                    refMsgText->set_text("");
+                }
+            });
 
     show_all_children();
 }

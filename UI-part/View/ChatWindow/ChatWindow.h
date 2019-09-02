@@ -11,9 +11,10 @@
 
 class ChatWindow : public Gtk::HBox{
 public:
-    ChatWindow(MainWindow* mainWindow);
+    ChatWindow(MainWindow* mainWindow,std::vector<ChatInfo *>& clist);
     virtual ~ChatWindow();
     MainWindow *mainWindow;
+    std::vector<ChatInfo *>& clist;
     bool showingDetail=0;
 protected:
     ChatList chatList;

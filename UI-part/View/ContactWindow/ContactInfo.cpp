@@ -4,9 +4,8 @@
 
 #include "../implement.h"
 
-ContactInfo::ContactInfo(int avatarSize){
+ContactInfo::ContactInfo(int avatarSize) : avatarSize(avatarSize) {
 
-    this->avatarSize = avatarSize;
     set_valign(Gtk::ALIGN_FILL);
     set_halign(Gtk::ALIGN_FILL);
     set_border_width(10);
@@ -14,23 +13,23 @@ ContactInfo::ContactInfo(int avatarSize){
     set_column_spacing(10);
 
     avatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    avatar = avatar->scale_simple(avatarSize,avatarSize,Gdk::INTERP_BILINEAR);
-    Gtk::Image *avatarImg = Gtk::manage(new Gtk::Image(avatar));
+    avatar = avatar->scale_simple(avatarSize, avatarSize, Gdk::INTERP_BILINEAR);
 
-    this->attach(*avatarImg,0,0,1,1);
+    Gtk::Image *avatarImg = Gtk::manage(new Gtk::Image(avatar));
+    this->attach(*avatarImg, 0, 0, 1, 1);
 
     nickName.set_text("Nick Name");
-    this->attach(nickName,1,0,1,1);
+    this->attach(nickName, 1, 0, 1, 1);
 
 
 //    attach(*(new Gtk::Button("test")),0,0,1,1);
     show_all_children();
 }
-ContactInfo::ContactInfo(UserInfo *userInfo,int avatarSize) {
-    this->avatarSize=avatarSize;
-    ContactInfo();
-    ChangeUser(userInfo);
 
+ContactInfo::ContactInfo(UserInfo *userInfo, int avatarSize) : ContactInfo(avatarSize) {
+    this->user = userInfo;
+    ChangeUser(userInfo);
+    show_all_children();
 }
 
 
@@ -40,10 +39,16 @@ ContactInfo::~ContactInfo() {
 
 
 void ContactInfo::ChangeUser(UserInfo *newUser) {
-    avatar = Gdk::Pixbuf::create_from_file(newUser->getAvatarPath());
-    avatar = avatar->scale_simple(avatarSize,avatarSize,Gdk::INTERP_BILINEAR);
+    try {
+        avatar = Gdk::Pixbuf::create_from_file(newUser->getAvatarPath());
+    } catch (...) {
+        std::cout << newUser->getNickName() << ":ContactInfo Avatar Load Failed at" << newUser->getAvatarPath()
+                  << std::endl;
+        avatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
+    }
+    avatar = avatar->scale_simple(avatarSize, avatarSize, Gdk::INTERP_BILINEAR);
     nickName.set_text(newUser->getNickName());
-
+    show_all_children();
 }
 
 

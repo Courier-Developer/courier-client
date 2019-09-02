@@ -8,17 +8,21 @@
 #include <gtkmm.h>
 #include "ContactList.h"
 
-class ContactWindow : public Gtk::HBox{
+class ContactWindow : public Gtk::HBox {
 
 public:
-    ContactWindow(MainWindow* mainWindow);
-    virtual ~ContactWindow();
-    MainWindow* mainWindow;
+    ContactWindow(MainWindow *mainWindow,
+                  std::vector<PacketInfo *> &plist,
+                  std::vector<GroupInfo *> &glist);
 
+    virtual ~ContactWindow();
+
+    MainWindow *mainWindow;
+    std::vector<PacketInfo *> &plist;
+    std::vector<GroupInfo *> &glist;
+    Gtk::Frame frame;
 protected:
     ContactList contactList;
-    ContactInfo* contactInfo;
-
 
 };
 

@@ -5,8 +5,19 @@
 #include <iostream>
 #include <gtkmm/messagedialog.h>
 #include "implement.h"
+#include "MainWindow.h"
 
-MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):chatWindow(this),contactWindow(this),otherWindow(this) {
+
+MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
+                       std::vector<PacketInfo *> &plist,
+                       std::vector<GroupInfo *> &glist,
+                       std::vector<ChatInfo *> &clist) :
+        chatWindow(this,clist),
+        contactWindow(this,plist,glist),
+        otherWindow(this),
+        plist(plist),
+        clist(clist),
+        glist(glist){
 
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
@@ -20,7 +31,7 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):chatWindow(this),cont
     box.pack_start(bt_box, false, false);
 
     auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    ava = ava->scale_simple(64,64,Gdk::INTERP_BILINEAR);
+    ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
     avatar.set(ava);
     avatar.get_style_context()->add_class("avatar");
     bt_box.pack_start(avatar);
@@ -43,15 +54,18 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):chatWindow(this),cont
     bt_box.set_margin_left(10);
     bt_box.set_margin_right(10);
 
-    chats_bt.signal_clicked().connect(sigc::bind<int>(
-            sigc::mem_fun(*this, &MainWindow::on_bt), CHATS));
+    chats_bt.signal_clicked().connect([this]{
+        changeWindow(CHATS);
+    });
 
-    contacts_bt.signal_clicked().connect(sigc::bind<int>(
-            sigc::mem_fun(*this, &MainWindow::on_bt), CONTACTS));
 
-    others_bt.signal_clicked().connect(sigc::bind<int>(
-            sigc::mem_fun(*this, &MainWindow::on_bt), OTHERS));
+    contacts_bt.signal_clicked().connect([this]{
+        changeWindow(CONTACTS);
+    });
 
+    others_bt.signal_clicked().connect([this]{
+        changeWindow(OTHERS);
+    });
 
 
     windowFrame.add(chatWindow);
@@ -66,10 +80,9 @@ MainWindow::~MainWindow() {
 
 }
 
-void MainWindow::on_bt(const int &bt_id) {
-    switch (bt_id) {
+void MainWindow::changeWindow(int to) {
+    switch (to) {
         case CHATS: {
-            std::cout << CHATS << " Chats Button Clicked" << std::endl;
             windowFrame.remove();
             windowFrame.add(chatWindow);
             windowFrame.show_all_children();
@@ -77,24 +90,12 @@ void MainWindow::on_bt(const int &bt_id) {
             break;
         }
         case CONTACTS: {
-            std::cout << CONTACTS << " Contacts Button Clicked" << std::endl;
             windowFrame.remove();
             windowFrame.add(contactWindow);
             windowFrame.show_all_children();
-
-            /*
-            Gtk::Dialog dialog;
-            dialog.add_button("OK",1);
-            dialog.set_title("User Info");
-            dialog.get_content_area()->pack_start(*Gtk::manage(new ContactInfo));
-            dialog.show_all_children();
-            int re = dialog.run();
-             */
             break;
         }
         case OTHERS: {
-            std::cout << OTHERS << " Others Button Clicked" << std::endl;
-
             windowFrame.remove();
             windowFrame.add(otherWindow);
             windowFrame.show_all_children();
@@ -107,3 +108,4 @@ void MainWindow::on_bt(const int &bt_id) {
         }
     }
 }
+

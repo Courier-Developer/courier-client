@@ -54,8 +54,9 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
-        dealer.login("", "", [this](std::vector<PacketInfo *> plist, std::vector<GroupInfo *> glist,
-                                    std::vector<ChatInfo *> clist) {
+
+        dealer.login("", "", [this](std::vector<PacketInfo *>& plist, std::vector<GroupInfo *>& glist,
+                                    std::vector<ChatInfo *>& clist) {
             for (auto p : plist) {
                 std::cout << p->getName() << std::endl;
                 for (auto u : *(p->getUsers())) {
@@ -79,7 +80,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
                     std::cout << m->getContent() << " " << m->getCreateTime().getString() << std::endl;
                 }
             }
-            MainWindow *mainWindow = new MainWindow(this->app);
+            MainWindow *mainWindow = new MainWindow(this->app,plist,glist,clist);
             this->app->add_window(*mainWindow);
             mainWindow->show();
             this->hide();
