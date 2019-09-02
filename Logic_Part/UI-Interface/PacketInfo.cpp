@@ -36,12 +36,12 @@ std::vector<UserInfo *> *PacketInfo::getMembers() const {
 }
 
 PacketInfo::~PacketInfo() {
-    if(Members)
-        delete Members;
+//    if (Members != nullptr)
+//        delete Members;
 }
 
 void PacketInfo::AddUser(UserInfo *user) {
-    if (Members)
+    if (Members!= nullptr)
     {
         Members->push_back(user);
     }
@@ -53,3 +53,17 @@ void PacketInfo::AddUser(UserInfo *user) {
 }
 
 PacketInfo::PacketInfo(const std::string &packetName, int packetId) : PacketName(packetName), PacketId(packetId) {}
+
+void PacketInfo::DeleteMember(UserInfo *oldmember) {
+    auto member=Members->begin();
+    for (;member!=Members->end();member++)
+        if (*member==oldmember){
+            break;
+        }
+    if (member!=Members->end())
+        Members->erase(member);
+}
+
+void PacketInfo::setPacketName(const std::string &packetName) {
+    PacketName = packetName;
+}

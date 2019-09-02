@@ -5,7 +5,7 @@
 #include "UserInfo.h"
 
 
-unsigned int UserInfo::getUserId() {
+unsigned int UserInfo::getUserId() const {
     return UserId;
 }
 
@@ -78,10 +78,10 @@ void UserInfo::setStatus(int status) {
 UserInfo::UserInfo() {}
 
 UserInfo::~UserInfo() {
-    if (InChat)
-        delete InChat;
-    if (InGroups)
-        delete InGroups;
+//    if (InChat)
+//        delete InChat;
+//    if (InGroups)
+//        delete InGroups;
 }
 
 UserInfo::UserInfo(unsigned int userId, const std::string &userName, const std::string &nickName,
@@ -105,6 +105,22 @@ void UserInfo::setInGroup(GroupInfo *inGroup) {
 
 bool UserInfo::HasChat() const {
     return InChat != nullptr;
+}
+
+PacketInfo *UserInfo::getInPacket() const {
+    return InPacket;
+}
+
+std::vector<GroupInfo *> *UserInfo::getInGroups() {
+    if (InGroups)
+        return InGroups;
+    else {
+        return InGroups=new std::vector<GroupInfo *>;
+    }
+}
+
+void UserInfo::setPacket(int packet) {
+    UserInfo::packet = packet;
 }
 
 

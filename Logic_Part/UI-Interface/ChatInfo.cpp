@@ -6,11 +6,10 @@
 
 //todo:
 std::vector<MessageInfo *> *ChatInfo::getMsgList() {
-    if (MessageList)
+    if (MessageList!= nullptr)
         return MessageList;
     else{
-        MessageList=new std::vector<MessageInfo *>;
-        return MessageList;
+        return new std::vector<MessageInfo *>;
     }
 }
 
@@ -30,12 +29,12 @@ GroupInfo *ChatInfo::getGroup() {
 }
 
 ChatInfo::~ChatInfo() {
-    if (MessageList)
-        delete MessageList;
+//    if (MessageList)
+//        delete MessageList;
 }
 
 void ChatInfo::AddMessage(MessageInfo *msg) {
-    if (MessageList) {
+    if (MessageList!= nullptr) {
         MessageList->push_back(msg);
     } else{
         MessageList=new std::vector<MessageInfo *>;

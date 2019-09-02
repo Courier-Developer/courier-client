@@ -45,7 +45,7 @@ public:
 
     int getStatus() const;
 
-    unsigned int getUserId();
+    unsigned int getUserId() const;
 
     std::string getUserName();
 
@@ -61,9 +61,15 @@ public:
 
     void setInGroup(GroupInfo *inGroup);
 
+    void setPacket(int packet);
+
     int getPacket() const;
 
     bool HasChat() const;
+
+    PacketInfo *getInPacket() const;
+
+    std::vector<GroupInfo *> *getInGroups();
 };
 
 

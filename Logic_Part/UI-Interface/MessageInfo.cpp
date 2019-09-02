@@ -84,3 +84,11 @@ int MessageInfo::getMessageId() const {
 void MessageInfo::setMessageId(int messageId) {
     MessageId = messageId;
 }
+
+void MessageInfo::setSender(UserInfo *sender) {
+    Sender = sender;
+}
+
+void MessageInfo::setInChat(ChatInfo *inChat) {
+    InChat = inChat;
+}
