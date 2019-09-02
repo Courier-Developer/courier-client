@@ -43,7 +43,11 @@ public:
 
     bool HasChat() const;
 
+    void setNickName(const std::string &nickName);
+
     void delete_member(UserInfo *member);
+
+    void setAvatorPath(const std::string &avatorPath);
 };
 
 

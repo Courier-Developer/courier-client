@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Dealer.h"
-/**********************************登录初始化*****************************/
+/*************************************登录初始化*********************************/
 //从服务器拉取好友分组信息
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server
@@ -134,18 +134,16 @@ MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
         if (chatto == MyProfile.getUserId())
             chatto = tmpmsg->getReceiverId();
         //there maybe some bug
-        if (UserMap.count(chatto)==0)
-        {
-            std::cerr<<"there exists a message can't find the person chat with"<<std::endl;
+        if (UserMap.count(chatto) == 0) {
+            std::cerr << "there exists a message can't find the person chat with" << std::endl;
         }
         UserInfo *touser = UserMap[chatto];
         ChatInfo *chat = get_chat(touser);
         chat->AddMessage(tmpmsg);
     } else {
         if (tmpmsg->getType() == 2) {
-            if (GroupMap.count(tmpmsg->getReceiverId())==0)
-            {
-                std::cerr<<"there exists a message can't find the group chat in"<<std::endl;
+            if (GroupMap.count(tmpmsg->getReceiverId()) == 0) {
+                std::cerr << "there exists a message can't find the group chat in" << std::endl;
             }
             GroupInfo *togroup = GroupMap[tmpmsg->getReceiverId()];
             ChatInfo *chat = get_chat(togroup);
@@ -180,9 +178,8 @@ ChatInfo *Dealer::get_chat(GroupInfo *group) {
     }
 }
 
-
-//todo: 需要完善分组列表的内容
-// 通过id获取相应好友分组列表
+/************************************好友分组操作******************************/
+//通过id获取相应好友分组列表
 PacketInfo *Dealer::get_packet_from_id(int packetid) {
     if (PacketMap.count(packetid)) {
         std::cerr << "try to find a no-existed packet by packetid" << std::endl;
@@ -192,16 +189,73 @@ PacketInfo *Dealer::get_packet_from_id(int packetid) {
     }
 }
 
-
 //添加新分组
 PacketInfo *Dealer::add_packet(int packetid, std::string name) {
     PacketInfo *tmppacket = new PacketInfo(name, packetid);
     PacketMap[tmppacket->getPacketId()] = tmppacket;
     PacketList.push_back(tmppacket);
+    local_update_packet(*tmppacket);
+    if (packetid>1)
+        server_update_packet(*tmppacket);
     return tmppacket;
 }
 
 
+int Dealer::ask_server_to_add_packet(const std::string &packetname) {
+    //todo: ask server to add packet
+    return packetnum++;
+}
+
+void Dealer::UI_add_packet(const std::string &packetname) {
+    int packetid=ask_server_to_add_packet(packetname);
+    if (packetid){
+        PacketInfo *newpacket = add_packet(packetid,packetname);
+    }
+    else{
+        std::cerr<<"create packet Error"<<std::endl;
+    }
+}
+
+void Dealer::local_update_packet(const PacketInfo &packet) {
+    //todo: call for database 有则修改，无则添加
+}
+
+void Dealer::server_update_packet(const PacketInfo &packet) {
+    //todo: call for server 有则修改，无则添加
+}
+
+void Dealer::UI_change_packetname(PacketInfo *packet,const std::string &name) {
+    if (packet->getPacketId()>0) {
+        packet->setPacketName(name);
+        local_update_packet(*packet);
+        server_update_packet(*packet);
+    } else{
+        std::cerr<<"try to rename <0 packet"<<std::endl;
+    }
+}
+
+void Dealer::UI_delete_packet(PacketInfo *packet) {
+    if (packet->getUsers()->size()){
+        std::cerr<<"try to delete a packet with friend"<<std::endl;
+    }else{
+        if (packet->getPacketId()<2){
+            std::cerr<<"try to delete necessary packet"<<std::endl;
+        } else{
+            local_delete_packet(*packet);
+            server_delete_packet(*packet);
+        }
+    }
+}
+
+void Dealer::local_delete_packet(const PacketInfo &packet) {
+    //todo: call for local database
+}
+
+void Dealer::server_delete_packet(const PacketInfo &packet) {
+    //todo: call for server
+}
+
+/************************************群组**********************************/
 // todo: 需要完善添加群组
 //添加新群组
 GroupInfo *Dealer::add_group(GroupInfo newgroup) {
@@ -299,52 +353,60 @@ UserInfo *Dealer::add_user(UserInfo user) {
         packet->AddUser(tmp);
         tmp->setInPacket(packet);
     }
+    update_local_user(*tmp);
+    if (tmp->getPacket()>0){
+        update_server_user(*tmp);
+    }
     return tmp;
 }
 
 //更新数据库信息,无则添加，有则修改
-void Dealer::update_local_user(UserInfo userinfo) {
+void Dealer::update_local_user(const UserInfo &userinfo) {
     //todo: call for local database
 }
 
 void Dealer::UI_add_friend(UserInfo *user, int packetid) {
-    UI_move_friend(user,packetid);
+    UI_move_friend(user, packetid);
 }
 
 void Dealer::UI_move_friend(UserInfo *user, int packetid) {
     if (PacketMap.count(packetid))
-        UI_move_friend(user,PacketMap[packetid]);
-    else
-    {
-        std::cerr<<"don't exist this packet"<<std::endl;
+        UI_move_friend(user, PacketMap[packetid]);
+    else {
+        std::cerr << "don't exist this packet" << std::endl;
     }
+}
+
+void Dealer::update_server_user(const UserInfo &user) {
+    //todo: call for server to update user
 }
 
 
 void Dealer::UI_move_friend(UserInfo *user, PacketInfo *packet) {
-    if (user->getInPacket()==packet){
-        std::cerr<<"the user does exist in this packet"<<std::endl;
+    if (user->getInPacket() == packet) {
+        std::cerr << "the user does exist in this packet" << std::endl;
         return;
-    } else{
+    } else {
         user->getInPacket()->DeleteMember(user);
         user->setInPacket(packet);
         packet->AddUser(user);
         update_local_user(*user);
+        update_server_user(*user);
     }
 }
 
 
 void Dealer::UI_add_friend(UserInfo *user, PacketInfo *packet) {
-    UI_move_friend(user,packet);
+    UI_move_friend(user, packet);
 }
 
 //username 和 id 寻找用户
 void Dealer::UI_search_user(const std::string &username) {
-    UserInfo* tmp=add_user(username);
+    UserInfo *tmp = add_user(username);
 }
 
 void Dealer::UI_search_user(const unsigned int &id) {
-    UserInfo* tmp=add_user(id);
+    UserInfo *tmp = add_user(id);
 }
 
 
@@ -365,12 +427,14 @@ void Dealer::delete_friend(const unsigned int &id) {
 void Dealer::delete_friend(UserInfo *oldfriend) {
     PacketInfo *oldpacket = oldfriend->getInPacket();
     oldpacket->DeleteMember(oldfriend);
-    get_packet_from_id(0)->AddUser(oldfriend);
+    PacketInfo *stranger=get_packet_from_id(0);
+    stranger->AddUser(oldfriend);
+    oldfriend->setInPacket(stranger);
 }
 
 
-void Dealer::delete_friend(UserInfo oldfriend) {
-    if (UserMap.count(oldfriend.getUserId()))
+void Dealer::delete_friend(const UserInfo &oldfriend) {
+    if (oldfriend.getPacket()!=0 && UserMap.count(oldfriend.getUserId()))
         delete_friend(UserMap[oldfriend.getUserId()]);
     else
         std::cerr << "try to delete a non-existed friend" << std::endl;
@@ -386,6 +450,7 @@ void Dealer::UI_delete_friend(UserInfo *oldfriend) {
 void Dealer::server_delete_friend(const UserInfo &oldfriend) {
     local_delete_friend(oldfriend);
     delete_friend(oldfriend);
+    //todo: call for UI
 }
 
 void Dealer::local_delete_friend(const UserInfo &oldfriend) {
@@ -393,15 +458,15 @@ void Dealer::local_delete_friend(const UserInfo &oldfriend) {
     return;
 }
 
-/*******************************发送消息*********************************/
+/*********************************发送消息***********************************/
 void Dealer::UI_send_message(const std::string &content, ChatInfo *chat) {
-    MessageInfo *newmsg=send_message(content,chat);
+    MessageInfo *newmsg = send_message(content, chat);
 }
 
-
-bool Dealer::send_message_to_server(const MessageInfo &newmsg) {
+//获得messageid
+int Dealer::send_message_to_server(const MessageInfo &newmsg) {
     //todo: call for server
-    return true;
+    return 0;
 }
 
 void Dealer::add_local_message(const MessageInfo &newmsg) {
@@ -411,40 +476,104 @@ void Dealer::add_local_message(const MessageInfo &newmsg) {
 MessageInfo *Dealer::send_message(const std::string &content, ChatInfo *chat) {
     tm *local;
     time_t t;
-    t=time(NULL);
-    local=localtime(&t);
+    t = time(NULL);
+    local = localtime(&t);
     MessageInfo *tmp;
-    DateTime sendtime(local->tm_year,local->tm_mon,local->tm_mday,local->tm_hour,local->tm_min,local->tm_sec);
-    if (chat->getChatWith()==1){
-        MessageInfo newmsg = MessageInfo(MyProfile.getUserId(),chat->getToUser()->getUserId(),content,1,1,1,sendtime);
+    DateTime sendtime(local->tm_year, local->tm_mon, local->tm_mday, local->tm_hour, local->tm_min, local->tm_sec);
+    if (chat->getChatWith() == 1) {
+        MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToUser()->getUserId(), content, 1, 1, 1,
+                                         sendtime);
         // maybe some bug here
-        bool success=send_message_to_server(newmsg);
+        int success = send_message_to_server(newmsg);
         if (success)
+            newmsg.setMessageId(success);
+        else
             newmsg.setStatus(0);
         add_local_message(newmsg);
-        tmp=cope_new_message(newmsg);
-    }else{
-        if (chat->getChatWith()==2) {
+        tmp = cope_new_message(newmsg);
+    } else {
+        if (chat->getChatWith() == 2) {
             MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToGroup()->getGroupId(), content, 1, 2, 1,
                                              sendtime);
             bool success = send_message_to_server(newmsg);
-            if (success)
+            if (success) {
+                newmsg.setMessageId(success);
+            } else {
                 newmsg.setStatus(0);
+            }
             add_local_message(newmsg);
             tmp = cope_new_message(newmsg);
-        }
-        else{
-            std::cerr<<"Wrong chatType"<<std::endl;
+        } else {
+            std::cerr << "Wrong chatType" << std::endl;
         }
     }
     return tmp;
 }
 
-/*********************************接收信息*******************************/
+/**************************************接收信息************************************/
+
+void Dealer::receive_new_message(const MessageInfo &msg) {
+    add_local_message(msg);
+    MessageInfo *newmsg = cope_new_message(msg); //may exist bug here
+    //todo: call for UI
+}
+
+/**********************************获取云端历史信息*********************************/
+void Dealer::UI_get_histroy(ChatInfo *chat) {
+    if (chat->getChatWith()>2 || chat->getChatWith()<1)
+    {
+        std::cerr<<"chat to what?"<<std::endl;
+    }else{
+        if (chat->getChatWith()==1)
+        {
+            std::vector<MessageInfo *> msgs=sync_message_histroy(chat->getToUser());
+        } else{
+            std::vector<MessageInfo *>msgs=sync_message_histroy(chat->getToGroup());
+        }
+    }
+}
 
 
+//获取会话历史记录
+std::vector<MessageInfo> Dealer::get_histroy_of_user_from_server(UserInfo *user) {
+    //todo: call for server
+    return std::vector<MessageInfo>();
+}
 
+std::vector<MessageInfo> Dealer::get_histroy_of_group_from_server(GroupInfo *group) {
+    //todo: call for server
+    return std::vector<MessageInfo>();
+}
 
+//同步内存数据
+std::vector<MessageInfo *> Dealer::sync_message_histroy(UserInfo *user) {
+    std::vector<MessageInfo *> msgs;
+    std::vector<MessageInfo> newmsgs=sync_local_message(user);
+    for (auto &tmpmsg:newmsgs){
+        msgs.push_back(cope_new_message(tmpmsg));
+    }
+    return msgs;
+}
+
+std::vector<MessageInfo *> Dealer::sync_message_histroy(GroupInfo *group) {
+    std::vector<MessageInfo *>msgs;
+    std::vector<MessageInfo> newmsgs=sync_local_message(group);
+    for (auto &tmpmsg:newmsgs){
+        msgs.push_back(cope_new_message(tmpmsg));
+    }
+    return msgs;
+}
+
+//同步本地数据库数据
+std::vector<MessageInfo> Dealer::sync_local_message(UserInfo *user) {
+    //todo: call for the database
+    return std::vector<MessageInfo>();
+}
+
+std::vector<MessageInfo> Dealer::sync_local_message(GroupInfo *group) {
+    //todo: call for the database
+    return std::vector<MessageInfo>();
+}
 
 /******************************Attention******************************/
 //UI的会话消息需要调用我的函数，不能直接使用数据否则会话列表可能发生错误

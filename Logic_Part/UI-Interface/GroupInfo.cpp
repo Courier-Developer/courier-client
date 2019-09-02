@@ -102,3 +102,11 @@ void GroupInfo::delete_member(UserInfo *member) {
     if (userid!=MemberId.end())
         MemberId.erase(userid);
 }
+
+void GroupInfo::setNickName(const std::string &nickName) {
+    NickName = nickName;
+}
+
+void GroupInfo::setAvatorPath(const std::string &avatorPath) {
+    AvatorPath = avatorPath;
+}

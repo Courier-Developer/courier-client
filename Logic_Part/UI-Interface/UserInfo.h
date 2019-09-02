@@ -45,7 +45,7 @@ public:
 
     int getStatus() const;
 
-    unsigned int getUserId();
+    unsigned int getUserId() const;
 
     std::string getUserName();
 
@@ -60,6 +60,8 @@ public:
     void setInPacket(PacketInfo *inPacket);
 
     void setInGroup(GroupInfo *inGroup);
+
+    void setPacket(int packet);
 
     int getPacket() const;
 

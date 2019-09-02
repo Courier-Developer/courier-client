@@ -36,6 +36,8 @@ public:
     void AddUser(UserInfo *user);
 
     void DeleteMember(UserInfo *oldmember);
+
+    void setPacketName(const std::string &packetName);
 };
 
 

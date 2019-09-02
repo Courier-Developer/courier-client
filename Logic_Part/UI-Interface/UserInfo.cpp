@@ -5,7 +5,7 @@
 #include "UserInfo.h"
 
 
-unsigned int UserInfo::getUserId() {
+unsigned int UserInfo::getUserId() const {
     return UserId;
 }
 
@@ -113,6 +113,10 @@ PacketInfo *UserInfo::getInPacket() const {
 
 std::vector<GroupInfo *> *UserInfo::getInGroups() const {
     return InGroups;
+}
+
+void UserInfo::setPacket(int packet) {
+    UserInfo::packet = packet;
 }
 
 

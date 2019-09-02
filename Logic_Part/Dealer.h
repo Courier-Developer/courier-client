@@ -18,7 +18,7 @@
 
 class Dealer {
 private:
-
+    int packetnum=1;
     //get something from server or local
     std::vector<PacketInfo> get_packet_from_server();
 
@@ -76,20 +76,43 @@ private:
 
     void delete_friend(UserInfo *oldfriend);
 
-    void delete_friend(UserInfo oldfriend);
+    void delete_friend(const UserInfo &oldfriend);
 
     PacketInfo *get_packet_from_id(int packetid);
 
     void local_delete_friend(const UserInfo& oldfriend);
 
-    void update_local_user(UserInfo userinfo);
+    void update_local_user(const UserInfo &userinfo);
 
-    bool send_message_to_server(const MessageInfo &newmsg);
+    void update_server_user(const UserInfo &user);
+
+    int send_message_to_server(const MessageInfo &newmsg);
 
     void add_local_message(const MessageInfo &newmsg);
 
     MessageInfo* send_message(const std::string &content,ChatInfo *chat);
 
+    std::vector<MessageInfo> get_histroy_of_user_from_server(UserInfo *user);
+
+    std::vector<MessageInfo> get_histroy_of_group_from_server(GroupInfo *group);
+
+    std::vector<MessageInfo *> sync_message_histroy(UserInfo *user);
+
+    std::vector<MessageInfo *> sync_message_histroy(GroupInfo *group);
+
+    std::vector<MessageInfo> sync_local_message(UserInfo *user);
+
+    std::vector<MessageInfo> sync_local_message(GroupInfo *group);
+
+    int ask_server_to_add_packet(const std::string &packetname);
+
+    void local_update_packet(const PacketInfo &packet);
+
+    void server_update_packet(const PacketInfo &packet);
+
+    void local_delete_packet(const PacketInfo &packet);
+
+    void server_delete_packet(const PacketInfo &packet);
 public:
     std::map<unsigned int, UserInfo *> UserMap;
     std::vector<PacketInfo *> PacketList;
@@ -142,6 +165,16 @@ public:
     void UI_search_user(const std::string &username);
 
     void UI_search_user(const unsigned int& id);
+
+    void receive_new_message(const MessageInfo &msg);
+
+    void UI_get_histroy(ChatInfo* chat);
+
+    void UI_add_packet(const std::string &packetname);
+
+    void UI_change_packetname(PacketInfo* packet,const std::string &name);
+
+    void UI_delete_packet(PacketInfo *packet);
 };
 
 #endif //COURIER_CLIENT_DEALER_H

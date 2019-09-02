@@ -63,3 +63,7 @@ void PacketInfo::DeleteMember(UserInfo *oldmember) {
     if (member!=Members->end())
         Members->erase(member);
 }
+
+void PacketInfo::setPacketName(const std::string &packetName) {
+    PacketName = packetName;
+}
