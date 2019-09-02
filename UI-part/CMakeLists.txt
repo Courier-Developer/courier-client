@@ -3,7 +3,7 @@
 # Use the package PkgConfig to detect GTK+ headers/library files
 FIND_PACKAGE(PkgConfig REQUIRED)
 PKG_CHECK_MODULES(GTKmm REQUIRED gtkmm-3.0)
-
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 INCLUDE_DIRECTORIES(${GTKmm_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GTKmm_LIBRARY_DIRS})
 
@@ -39,8 +39,7 @@ add_executable(main main.cpp
         View/predeclare.h
         View/implement.h
 
-        )
-
+        Receiver.cpp Receiver.h)
 
 
 TARGET_LINK_LIBRARIES(main ${GTKmm_LIBRARIES})

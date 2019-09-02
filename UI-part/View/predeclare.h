@@ -8,6 +8,8 @@
 #endif //COURIER_CLIENT_PREDECLARE_H
 
 #include <gtkmm.h>
+class Receiver;
+
 class MainWindow;
 class SignUp;
 class LogIn;

@@ -1,6 +1,7 @@
 #todo for this project
-- new group choose friends
+- OK new group choose friends
 - invite friends to group
+- multi-threads
 - loadings
 - flat window
 - image button
