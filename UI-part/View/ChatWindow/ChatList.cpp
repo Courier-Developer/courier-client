@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "ChatList.h"
+#include "../implement.h"
 
-ChatList::ChatList() {
+ChatList::ChatList(ChatWindow *chatWindow) : chatWindow(chatWindow) {
 
     set_margin_top(5);
     set_spacing(5);
@@ -30,29 +30,29 @@ ChatList::ChatList() {
     chatListView.append_column("", chatPeep.msg_toread);
     chatListView.set_headers_visible(false);
 
+
     filter = Gtk::TreeModelFilter::create(refChatPeep);
-    filter->set_visible_func(
-            [this](const Gtk::TreeModel::const_iterator &iter) -> bool {
-                Gtk::TreeModel::Row row = *iter;
-                Glib::ustring s = row[chatPeep.chatName];
-                s = s.lowercase();
-                if (s.find(this->searchEntry.get_text().lowercase()) != Glib::ustring::npos) {
-                    return true;
-                } else {
-                    return false;
-                }
+    filter->set_visible_func([this](const Gtk::TreeModel::const_iterator &iter) -> bool {
+        Gtk::TreeModel::Row row = *iter;
+        Glib::ustring s = row[chatPeep.chatName];
+        s = s.lowercase();
+        if (s.find(this->searchEntry.get_text().lowercase()) != Glib::ustring::npos) {
+            return true;
+        } else {
+            return false;
+        }
     });
 
     sort = Gtk::TreeModelSort::create(filter);
-    sort->set_default_sort_func([this](const Gtk::TreeModel::iterator& a, const Gtk::TreeModel::iterator& b)->int{
-         int x = (*a)[chatPeep.sortPriority]-(*b)[chatPeep.sortPriority];
-         if(x>0){
-             return -1;
-         }else if(x==0){
-             return 0;
-         }else{
-             return 1;
-         }
+    sort->set_default_sort_func([this](const Gtk::TreeModel::iterator &a, const Gtk::TreeModel::iterator &b) -> int {
+        int x = (*a)[chatPeep.sortPriority] - (*b)[chatPeep.sortPriority];
+        if (x > 0) {
+            return -1;
+        } else if (x == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     });
 
     chatListView.set_model(sort);
@@ -70,7 +70,7 @@ ChatList::ChatList() {
             row = *(refChatPeep->prepend());
         row[chatPeep.chatName] = "ChatEntity Name";
         row[chatPeep.msg_toread] = i;
-        row[chatPeep.sortPriority]=i*10;
+        row[chatPeep.sortPriority] = i * 10;
 
         auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
         ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);

@@ -7,14 +7,18 @@
 
 
 #include <gtkmm.h>
+#include "ContactInfo.h"
 
 class ContactList :public Gtk::VBox{
 public:
-    ContactList();
+    ContactList(ContactWindow* contactWindow,bool isCheck=false);
     virtual ~ContactList();
-
+    ContactWindow* contactWindow;
+    bool isCheck=true;
 protected:
     Gtk::SearchEntry searchEntry;
+    Gtk::HBox btBox;
+    Gtk::Button addNewUser,addNewGroup;
 
     class Contact:public Gtk::TreeModel::ColumnRecord{
     public:
@@ -22,6 +26,7 @@ protected:
         Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > avatar;
         Gtk::TreeModelColumn<Glib::ustring> others;
         Gtk::TreeModelColumn<bool> isPacket;
+        Gtk::TreeModelColumn<bool> checked;
         Gtk::TreeModelColumn<int> sortPriority;
         Contact(){
             add(nickName);
@@ -29,20 +34,18 @@ protected:
             add(others);
             add(isPacket);
             add(sortPriority);
+            add(checked);
         }
     }contact;
 
     Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView contacts;
+    Gtk::CellRendererToggle ck_render;
+    Gtk::TreeView::Column ck;
     Glib::RefPtr<Gtk::TreeStore> refTreeStore;
     Glib::RefPtr<Gtk::TreeModelFilter> filter;
     Glib::RefPtr<Gtk::TreeModelSort> sort;
-
     Glib::RefPtr<Gtk::TreeSelection> select;
-
-    void on_select_change();
-    bool on_search_equal(const Glib::RefPtr<Gtk::TreeModel>& model, int column, const Glib::ustring& key, const Gtk::TreeModel::iterator& iter);
-
 };
 
 

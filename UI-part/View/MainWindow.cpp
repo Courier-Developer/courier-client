@@ -2,12 +2,11 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "MainWindow.h"
 #include <iostream>
 #include <gtkmm/messagedialog.h>
-#include "ContactWindow/ContactInfo.h"
+#include "implement.h"
 
-MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) {
+MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):chatWindow(this),contactWindow(this),otherWindow(this) {
 
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
@@ -23,6 +22,7 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app) {
     auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     ava = ava->scale_simple(64,64,Gdk::INTERP_BILINEAR);
     avatar.set(ava);
+    avatar.get_style_context()->add_class("avatar");
     bt_box.pack_start(avatar);
 
     chats_bt.set_label("CHAT");
@@ -78,7 +78,6 @@ void MainWindow::on_bt(const int &bt_id) {
         }
         case CONTACTS: {
             std::cout << CONTACTS << " Contacts Button Clicked" << std::endl;
-
             windowFrame.remove();
             windowFrame.add(contactWindow);
             windowFrame.show_all_children();

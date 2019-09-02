@@ -2,9 +2,9 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "ChatWindow.h"
-#include "../../../Logic_Part/class/GlobalVar.h"
-ChatWindow::ChatWindow() {
+#include "../implement.h"
+
+ChatWindow::ChatWindow(MainWindow *mainWindow):mainWindow(mainWindow),chatList(this),chatting(this) {
 
 
     pack_start(chatList, Gtk::PACK_SHRINK);

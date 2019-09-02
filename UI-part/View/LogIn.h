@@ -7,7 +7,7 @@
 
 
 #include <gtkmm.h>
-#include "MainWindow.h"
+#include "OtherWindow/OtherWindow.h"
 
 class LogIn : public Gtk::Window {
 public:

@@ -3,7 +3,7 @@ project(courier-client)
 
 set(CMAKE_CXX_STANDARD 14)
 
-#add_subdirectory(UI-part)
+add_subdirectory(UI-part)
 
-add_subdirectory(Logic_Part)
+#add_subdirectory(Logic_Part)
 

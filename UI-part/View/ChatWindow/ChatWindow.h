@@ -7,17 +7,18 @@
 
 
 #include <gtkmm.h>
-#include "ChatList.h"
 #include "Chatting.h"
 
 class ChatWindow : public Gtk::HBox{
 public:
-    ChatWindow();
+    ChatWindow(MainWindow* mainWindow);
     virtual ~ChatWindow();
-
+    MainWindow *mainWindow;
+    bool showingDetail=0;
 protected:
     ChatList chatList;
     Chatting chatting;
+
 };
 
 

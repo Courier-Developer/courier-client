@@ -7,13 +7,13 @@
 
 #include <gtkmm.h>
 #include "ContactList.h"
-#include "ContactInfo.h"
 
 class ContactWindow : public Gtk::HBox{
 
 public:
-    ContactWindow();
+    ContactWindow(MainWindow* mainWindow);
     virtual ~ContactWindow();
+    MainWindow* mainWindow;
 
 protected:
     ContactList contactList;

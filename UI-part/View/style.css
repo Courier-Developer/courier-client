@@ -1,6 +1,23 @@
-* {
-    background-color: red;
-    color: white;
-    font-size: 42px;
-    text-shadow: 2px 2px 2px black;
+window{
+    background-color: burlywood;
+}
+box{
+}
+button{
+    margin: 10px;
+    color: black;
+    background-color: green;
+    transition-duration: 1s;
+}
+button:hover{
+    transition-duration: 1s;
+    color: green;
+}
+.avatar{
+    border-width: 10px;
+    border-color: yellow;
+}
+cellview{
+    color: green;
+    background-color: yellow;
 }

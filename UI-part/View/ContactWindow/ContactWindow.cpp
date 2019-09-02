@@ -2,9 +2,9 @@
 // Created by ervinxie on 8/29/19.
 //
 
-#include "ContactWindow.h"
+#include "../implement.h"
 
-ContactWindow::ContactWindow() {
+ContactWindow::ContactWindow(MainWindow* mainWindow):mainWindow(mainWindow),contactList(this) {
     set_border_width(0);
 
     set_vexpand(true);

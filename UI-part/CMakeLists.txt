@@ -29,12 +29,19 @@ add_executable(main main.cpp
         View/ContactWindow/ContactWindow.h
         View/OtherWindow/OtherWindow.cpp
         View/OtherWindow/OtherWindow.h
-        View/ContactWindow/ContactList.cpp View/ContactWindow/ContactList.h
+        View/ContactWindow/ContactList.cpp
+        View/ContactWindow/ContactList.h
 
-        View/SignUp.cpp View/SignUp.h)
+        View/SignUp.cpp
+        View/SignUp.h
+        View/ContactWindow/GroupContactInfo.cpp
+        View/ContactWindow/GroupContactInfo.h
+        View/predeclare.h
+        View/implement.h
+
+        )
 
 
-add_executable(test test.cpp)
 
 TARGET_LINK_LIBRARIES(main ${GTKmm_LIBRARIES})
 

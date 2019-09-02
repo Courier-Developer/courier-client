@@ -2,11 +2,8 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "LogIn.h"
-#include "MainWindow.h"
-#include "SignUp.h"
 #include <iostream>
-
+#include "implement.h"
 LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     this->app = app;
 
