@@ -47,10 +47,10 @@ GroupInfo::GroupInfo() {
 };
 
 GroupInfo::~GroupInfo() {
-    if (chat)
-        delete chat;
-    if (Members)
-        delete Members;
+//    if (chat)
+//        delete chat;
+//    if (Members)
+//        delete Members;
 }
 
 const std::vector<unsigned int> &GroupInfo::getMemberId() const {

@@ -78,10 +78,10 @@ void UserInfo::setStatus(int status) {
 UserInfo::UserInfo() {}
 
 UserInfo::~UserInfo() {
-    if (InChat)
-        delete InChat;
-    if (InGroups)
-        delete InGroups;
+//    if (InChat)
+//        delete InChat;
+//    if (InGroups)
+//        delete InGroups;
 }
 
 UserInfo::UserInfo(unsigned int userId, const std::string &userName, const std::string &nickName,

@@ -32,11 +32,11 @@ private:
 
     void get_information_and_update();
 
-    void get_user_list_form_local();
+//    void get_user_list_form_local();
 
     std::vector<MessageInfo> get_messages_from_local();
 
-    void get_packet_list();
+//    void get_packet_list();
 
     MessageInfo *cope_new_message(const MessageInfo &msg);
 
@@ -46,19 +46,19 @@ private:
 
     std::vector<MessageInfo> get_message_from_server();
 
-    void get_user_list();
+//    void get_user_list();
 
-    void get_group_list();
+//    void get_group_list();
 
-    void get_message();
+//    void get_message();
 
     GroupInfo* add_group(GroupInfo newgroup);
 
     std::vector<UserInfo> get_users_from_server();
 
-    void update_local_user();
+//    void update_local_user();
 
-    void log_in(std::string username, std::string password, std::function<void()> success, std::function<void()> fail);
+//    void log_in(std::string username, std::string password, std::function<void()> success, std::function<void()> fail);
 
     UserInfo *add_user(const unsigned int &tmpmember);
 
@@ -113,6 +113,18 @@ private:
     void local_delete_packet(const PacketInfo &packet);
 
     void server_delete_packet(const PacketInfo &packet);
+
+    /******************************************Test**************************************/
+    UserInfo test_create_myprofile();
+
+    std::vector<PacketInfo> test_create_packet();
+
+    std::vector<UserInfo> test_create_users();
+
+    std::vector<GroupInfo> test_create_group();
+
+    std::vector<MessageInfo> test_create_message();
+    /************************************************************************************/
 public:
     std::map<unsigned int, UserInfo *> UserMap;
     std::vector<PacketInfo *> PacketList;
@@ -126,8 +138,7 @@ public:
 
     UserInfo MyProfile;
 
-    //function for server to call
-    void update_message();
+
 
     // UI
     void UI_get_packet_list();
@@ -177,6 +188,10 @@ public:
     void UI_delete_packet(PacketInfo *packet);
 
     void server_ask_to_add_friend(const UserInfo user);
+
+    void test();
+
+    void showtestresult();
 };
 
 #endif //COURIER_CLIENT_DEALER_H

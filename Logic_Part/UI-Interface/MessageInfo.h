@@ -18,8 +18,8 @@ private:
     int type;      //1 个人 2 群聊
     int ContentKind;   //消息类型 1 文本消息 2 文件
     DateTime CreatedTime;
-    UserInfo *Sender;
-    ChatInfo *InChat;
+    UserInfo *Sender = nullptr;
+    ChatInfo *InChat = nullptr;
 
 public:
     int getMessageId() const;

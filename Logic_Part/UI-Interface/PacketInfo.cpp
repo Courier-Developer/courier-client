@@ -36,12 +36,12 @@ std::vector<UserInfo *> *PacketInfo::getMembers() const {
 }
 
 PacketInfo::~PacketInfo() {
-    if(Members)
-        delete Members;
+//    if (Members != nullptr)
+//        delete Members;
 }
 
 void PacketInfo::AddUser(UserInfo *user) {
-    if (Members)
+    if (Members!= nullptr)
     {
         Members->push_back(user);
     }

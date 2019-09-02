@@ -40,6 +40,8 @@ void Dealer::get_information_and_update() {
         inpacket->AddUser(tmpuser);
         tmpuser->setInPacket(inpacket);
     }
+    if (UserMap.count(myprofile.getUserId())==0)
+        UserMap[myprofile.getUserId()]=add_user(myprofile);
 
     //GroupInfo
     std::vector<GroupInfo> groups = get_group_from_server();
@@ -583,6 +585,138 @@ void Dealer::server_ask_to_add_friend(const UserInfo user) {
         //todo: call for UI to choose whether to accept
     }
 }
+/******************************TesT************************************/
+UserInfo Dealer::test_create_myprofile() {
+    return UserInfo(10001,"ervinxienb","我，谢神，打钱","计算几何马斯特就是我！","",1,0);
+}
+
+std::vector<PacketInfo> Dealer::test_create_packet() {
+    std::vector<PacketInfo> test;
+//    std::cout<<"ok!"<<std::endl;
+    test.push_back(PacketInfo("黑名单",-1));
+//    std::cout<<"ok!"<<std::endl;
+    test.push_back(PacketInfo("陌生人",0));
+    test.push_back(PacketInfo("默认分组",1));
+    test.push_back(PacketInfo("附近的人",2));
+    return test;
+}
+
+std::vector<UserInfo> Dealer::test_create_users() {
+    std::vector<UserInfo> test;
+    test.push_back(UserInfo(10002,"ironhead","大大大铁头","我的头真铁","",0,1));
+    test.push_back(UserInfo(10003,"fountain","fountain","no response","",1,2));
+    test.push_back(UserInfo(10004,"asdfs","fousf","no response","",1,1));
+    test.push_back(UserInfo(10005,"fky","fky","no response","",0,1));
+    test.push_back(UserInfo(10006,"yfh","yfh","no response","",1,2));
+    test.push_back(UserInfo(10007,"fosdf","AC自动机fail树上dfs序建可持久化线段树","CSLnb！","",0,-1));
+    return test;
+}
+
+std::vector<GroupInfo> Dealer::test_create_group() {
+    std::vector<GroupInfo> test;
+    std::vector<unsigned int> members;
+    members.push_back(10001),members.push_back(10002),members.push_back(10004);
+    test.push_back(GroupInfo(10001,"雀魂交友群","","杠上开花",members));
+    members.clear();
+    members.push_back(10001),members.push_back(10003),members.push_back(10007);
+    test.push_back(GroupInfo(10002,"fky粉丝群","","膜就完事了",members));
+    return test;
+}
+
+std::vector<MessageInfo> Dealer::test_create_message() {
+    std::vector<MessageInfo> test;
+    test.push_back(MessageInfo(10001,10002,10001,"测试专用场地",1,1,1,DateTime("2019-8-31 12:31:55")));
+    test.push_back(MessageInfo(10001,10001,"test",1,2,1,DateTime("2019-8-31 12:31:55")));
+    test.push_back(MessageInfo(10002,10001,"accepted",1,2,1,DateTime("2019-8-31 12:32:05")));
+    test.push_back(MessageInfo(10002,10001,"蛤？",1,1,1,DateTime("2019-8-31 11:32:05")));
+    return test;
+}
+
+void Dealer::test() {
+    //MyProfile
+    using std::cout,std::endl;
+    UserInfo myprofile = test_create_myprofile();
+    MyProfile = myprofile;
+    //PacketInfo
+//    std::cout<<"ok!"<<std::endl;
+    std::vector<PacketInfo> packets = test_create_packet();
+//    std::cout<<"ok!"<<std::endl;
+    update_local_packet(packets);
+    for (auto &tmp:packets) {
+        if (PacketMap.count(tmp.getPacketId())) continue;
+        PacketInfo *tmppacket = new PacketInfo(tmp);
+        PacketMap[tmppacket->getPacketId()] = tmppacket;
+        PacketList.push_back(tmppacket);
+    }
+//    std::cout<<"ok!"<<std::endl;
+    // UserInfo
+    std::vector<UserInfo> users = test_create_users();
+//    std::cout<<"ok!"<<std::endl;
+    update_local_users(users);
+//    std::cout<<"ok!"<<std::endl;
+    for (auto &tmp:users) {
+        if (UserMap.count(tmp.getUserId())) continue;
+//        std::cout<<"ok!"<<std::endl;
+        UserInfo *tmpuser = new UserInfo(tmp);
+//        std::cout<<"ok!"<<std::endl;
+        UserMap[tmpuser->getUserId()] = tmpuser;
+//        std::cout<<"ok!"<<std::endl;
+        UserList.push_back(tmpuser);
+//        std::cout<<"ok!"<<std::endl;
+        PacketInfo *inpacket = PacketMap[tmpuser->getPacket()];
+        //        cout<<tmpuser->getPacket()<<endl;
+//        std::cout<<"ok!"<<std::endl;
+        inpacket->AddUser(tmpuser);
+//        std::cout<<"ok!"<<std::endl;
+        tmpuser->setInPacket(inpacket);
+    }
+    if (!UserMap.count(myprofile.getUserId()))
+        UserMap[myprofile.getUserId()]=add_user(myprofile);
+
+//    std::cout<<"ok!"<<std::endl;
+    //GroupInfo
+    std::vector<GroupInfo> groups = test_create_group();
+
+//    std::cout<<"ok!"<<std::endl;
+    update_local_group(groups);
+//    std::cout<<"ok!"<<std::endl;
+    for (auto &tmp:groups) {
+        if (GroupMap.count(tmp.getGroupId())) continue;
+
+//        std::cout<<"ok!"<<std::endl;
+        GroupInfo *tmpgroup = new GroupInfo(tmp);
+        GroupList.push_back(tmpgroup);
+        GroupMap[tmpgroup->getGroupId()] = tmpgroup;
+//        std::cout<<"ok!"<<std::endl;
+        for (auto &tmpmember:tmpgroup->getMemberId()) {
+//            cout<<tmpmember<<endl;
+            UserInfo *memberp = UserMap[tmpmember];
+//            cout<<memberp->getUserId()<<endl;
+            memberp->setInGroup(tmpgroup);
+            tmpgroup->AddUser(memberp);
+        }
+    }
+//    std::cout<<"ok!"<<std::endl;
+
+    //MessageInfo
+    std::vector<MessageInfo> messages = test_create_message();
+    update_local_messages(messages);
+    messages = get_messages_from_local();
+    for (auto &tmp:messages) {
+        MessageInfo *tmpmsg = cope_new_message(tmp);
+    }
+}
+
+void Dealer::showtestresult() {
+    using std::cout,std::endl;
+    for (auto &tmp:UserList)
+
+}
+
+
+
+
+
 
 /******************************Attention******************************/
 //UI的会话消息需要调用我的函数，不能直接使用数据否则会话列表可能发生错误

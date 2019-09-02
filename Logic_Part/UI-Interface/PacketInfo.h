@@ -14,7 +14,7 @@ private:
 //    std::vector<unsigned int> MemberId; //成员ID
     std::string PacketName;
     int PacketId;   //分组id
-    std::vector<UserInfo *> *Members;
+    std::vector<UserInfo *> *Members= nullptr;
 public:
 
     const std::string &getPacketName() const;

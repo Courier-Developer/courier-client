@@ -30,8 +30,8 @@ GroupInfo *ChatInfo::getGroup() {
 }
 
 ChatInfo::~ChatInfo() {
-    if (MessageList)
-        delete MessageList;
+//    if (MessageList)
+//        delete MessageList;
 }
 
 void ChatInfo::AddMessage(MessageInfo *msg) {
