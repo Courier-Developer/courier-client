@@ -19,6 +19,7 @@ protected:
     void ChangeGroup(GroupInfo* group);
 
     Glib::RefPtr<Gdk::Pixbuf> refAvatar;
+    Gtk::Image avatarImage;
     Gtk::Label groupName;
     Gtk::HBox avatarNameBox;
     Gtk::Label groupNotice;
@@ -43,7 +44,7 @@ protected:
             add(sortPriority);
         }
     }groupContact;
-
+    void addUserAsMember(UserInfo* newUser);
 };
 
 

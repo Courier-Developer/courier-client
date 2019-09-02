@@ -10,10 +10,11 @@
 
 class Chatting : public Gtk::VBox {
 public:
-    Chatting(ChatWindow* chatWindow);
+    Chatting(ChatWindow* chatWindow,ChatInfo* c);
     virtual ~Chatting();
     ChatWindow *chatWindow;
     void addMessage(Glib::ustring content);
+    ChatInfo* c;
 protected:
     Gtk::Label chatName;
     Gtk::ScrolledWindow scrolledWindow;

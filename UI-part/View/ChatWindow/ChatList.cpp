@@ -4,8 +4,13 @@
 
 #include <iostream>
 #include "../implement.h"
+#include "ChatList.h"
 
-ChatList::ChatList(ChatWindow *chatWindow) : chatWindow(chatWindow) {
+
+ChatList::ChatList(ChatWindow *chatWindow,
+                   std::vector<ChatInfo *> &clist) :
+        chatWindow(chatWindow),
+        clist(clist) {
 
     set_margin_top(5);
     set_spacing(5);
@@ -92,3 +97,10 @@ void ChatList::on_select_change() {
         //Do something with the row.
     }
 }
+
+void ChatList::addChat(ChatInfo *newChat) {
+    auto iter = refChatPeep->append();
+
+
+}
+

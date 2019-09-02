@@ -5,6 +5,9 @@
 #ifndef COURIER_CLIENT_PREDECLARE_H
 #define COURIER_CLIENT_PREDECLARE_H
 #include <gtkmm.h>
+#include <iostream>
+#include <map>
+#include <vector>
 #include "../../Logic_Part/Dealer.h"
 class Receiver;
 extern Dealer dealer;

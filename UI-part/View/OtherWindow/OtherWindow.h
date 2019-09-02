@@ -17,6 +17,7 @@ public:
     OtherWindow(MainWindow* mainWindow);
     virtual ~OtherWindow();
     MainWindow* mainWindow;
+    UserInfo* me;
 
 protected:
     ContactInfo myInfo;

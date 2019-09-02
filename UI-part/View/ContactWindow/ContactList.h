@@ -9,34 +9,54 @@
 #include <gtkmm.h>
 #include "ContactInfo.h"
 
-class ContactList :public Gtk::VBox{
+class ContactList : public Gtk::VBox {
 public:
-    ContactList(ContactWindow* contactWindow,bool isCheck=false);
+    ContactList(ContactWindow *contactWindow,
+                std::vector<PacketInfo *> &plist,
+                std::vector<GroupInfo *> &glist,
+                bool isCheck = false);
+
     virtual ~ContactList();
-    ContactWindow* contactWindow;
-    bool isCheck=true;
+
+    ContactWindow *contactWindow;
+    bool isCheck = true;
+    std::map<PacketInfo *, Gtk::TreeModel::iterator> p_iter;
+    Gtk::TreeModel::iterator gp_iter;
+    std::vector<PacketInfo *> &plist;
+    std::vector<GroupInfo *> &glist;
+
+    const int PACKET=0,USER=1,GROUP=2;
 protected:
+
     Gtk::SearchEntry searchEntry;
     Gtk::HBox btBox;
-    Gtk::Button addNewUser,addNewGroup;
+    Gtk::Button addNewFriendBt, addNewGroupBt;
 
-    class Contact:public Gtk::TreeModel::ColumnRecord{
+    class Contact : public Gtk::TreeModel::ColumnRecord {
     public:
         Gtk::TreeModelColumn<Glib::ustring> nickName;
         Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > avatar;
         Gtk::TreeModelColumn<Glib::ustring> others;
-        Gtk::TreeModelColumn<bool> isPacket;
+        Gtk::TreeModelColumn<int> type;
         Gtk::TreeModelColumn<bool> checked;
         Gtk::TreeModelColumn<int> sortPriority;
-        Contact(){
+        Gtk::TreeModelColumn<PacketInfo *> p;
+        Gtk::TreeModelColumn<UserInfo *> u;
+        Gtk::TreeModelColumn<GroupInfo *> g;
+
+        Contact() {
             add(nickName);
             add(avatar);
             add(others);
-            add(isPacket);
+            add(type);
+
             add(sortPriority);
             add(checked);
+            add(p);
+            add(u);
+            add(g);
         }
-    }contact;
+    } contact;
 
     Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView contacts;
@@ -46,6 +66,12 @@ protected:
     Glib::RefPtr<Gtk::TreeModelFilter> filter;
     Glib::RefPtr<Gtk::TreeModelSort> sort;
     Glib::RefPtr<Gtk::TreeSelection> select;
+
+    void addNewPacket(PacketInfo *newPacketInfo);
+
+    void addNewFriend(UserInfo *newUser);
+
+    void addNewGroup(GroupInfo *newGroup);
 };
 
 

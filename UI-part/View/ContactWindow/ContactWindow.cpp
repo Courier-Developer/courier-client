@@ -4,7 +4,13 @@
 
 #include "../implement.h"
 
-ContactWindow::ContactWindow(MainWindow* mainWindow):mainWindow(mainWindow),contactList(this) {
+ContactWindow::ContactWindow(MainWindow *mainWindow,
+                             std::vector<PacketInfo *> &plist,
+                             std::vector<GroupInfo *> &glist) :
+        mainWindow(mainWindow),
+        contactList(this,plist,glist),
+        plist(plist),
+        glist(glist) {
     set_border_width(0);
 
     set_vexpand(true);
@@ -12,12 +18,15 @@ ContactWindow::ContactWindow(MainWindow* mainWindow):mainWindow(mainWindow),cont
     set_valign(Gtk::ALIGN_FILL);
     set_halign(Gtk::ALIGN_FILL);
 
-    pack_start(contactList);
+    pack_start(contactList,Gtk::PACK_SHRINK);
 
-    contactInfo = new ContactInfo;
-    pack_start(*contactInfo);
+    frame.add(*Gtk::manage(new ContactInfo));
+    frame.set_shadow_type(Gtk::SHADOW_NONE);
+    pack_start(frame);
+    frame.set_hexpand(true);
 
     show_all_children();
+
 }
 
 ContactWindow::~ContactWindow() {
