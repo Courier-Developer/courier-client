@@ -7,7 +7,7 @@
 
 
 #include <gtkmm.h>
-#include "SignUp.h"
+#include "LogIn.h"
 
 const int CHATS = 1;
 const int CONTACTS = 2;

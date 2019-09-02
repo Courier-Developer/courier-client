@@ -6,6 +6,7 @@
 #define COURIER_CLIENT_GROUPCONTACTINFO_H
 
 #include <gtkmm.h>
+#include "ContactWindow.h"
 #include "../../../Logic_Part/UI-Interface/GroupInfo.h"
 class GroupContactInfo : public Gtk::VBox{
 public:

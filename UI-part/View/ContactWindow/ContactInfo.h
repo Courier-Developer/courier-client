@@ -7,6 +7,7 @@
 
 
 #include <gtkmm.h>
+#include "../ChatWindow/ChatWindow.h"
 #include "../../../Logic_Part/UI-Interface/UserInfo.h"
 
 class ContactInfo : public Gtk::Grid{

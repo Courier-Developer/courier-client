@@ -7,6 +7,7 @@
 
 
 #include <gtkmm.h>
+#include "ContactInfo.h"
 
 class ContactList :public Gtk::VBox{
 public:

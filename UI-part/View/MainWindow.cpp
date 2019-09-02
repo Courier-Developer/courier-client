@@ -2,10 +2,9 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "LogIn.h"
 #include <iostream>
 #include <gtkmm/messagedialog.h>
-
+#include "implement.h"
 
 MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):otherWindow(this) {
 
