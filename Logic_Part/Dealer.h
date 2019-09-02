@@ -185,7 +185,7 @@ public:
 
     void UI_delete_packet(PacketInfo *packet);
 
-    void login(const std::string &username,const std::string password,std::function<void(std::vector<PacketInfo *> &,std::vector<GroupInfo *> &,std::vector<ChatInfo *> &)> success,std::function<void(std::string)> fail);
+    void login(const std::string &username,const std::string &password,std::function<void(std::vector<PacketInfo *> &,std::vector<GroupInfo *> &,std::vector<ChatInfo *> &)> success,std::function<void(std::string)> fail);
 
     void UI_accept_add_friend(unsigned int userid,PacketInfo *packet);
 

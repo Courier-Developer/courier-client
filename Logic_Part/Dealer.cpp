@@ -807,16 +807,20 @@ void Dealer::ShowTestChatInfo() {
     }
 }
 
+/******************************Attention******************************/
+//UI的会话消息需要调用我的函数，不能直接使用数据否则会话列表可能发生错误
+
+
+/*********************************UI**************************************/
 //todo: need to complete
-void Dealer::login(const std::string &username, const std::string password,
+void Dealer::login(const std::string &username, const std::string &password,
                    std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                       std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
+//    get_information_and_update();
+    test();
+    success(PacketList,GroupList,ChatList);
 }
 
 
-
-
-/******************************Attention******************************/
-//UI的会话消息需要调用我的函数，不能直接使用数据否则会话列表可能发生错误
 
