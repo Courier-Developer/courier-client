@@ -10,18 +10,14 @@
 
 class Chatting : public Gtk::VBox {
 public:
-    Chatting();
-
+    Chatting(ChatWindow* chatWindow);
     virtual ~Chatting();
-
     ChatWindow *chatWindow;
-
+    void addMessage(Glib::ustring content);
 protected:
     Gtk::Label chatName;
     Gtk::ScrolledWindow scrolledWindow;
-
     Gtk::TreeView msgList;
-
     class Message : public Gtk::TreeModel::ColumnRecord {
     public:
         Gtk::TreeModelColumn<Glib::ustring> content;
@@ -40,15 +36,17 @@ protected:
     Glib::RefPtr<Gtk::ListStore> messages;
     Glib::RefPtr<Gtk::TreeModelFilter> filter;
 
-
     Gtk::HBox tools;
     Gtk::Button expressionBt;
     Gtk::Button fileBt;
     Gtk::Button chatDetailBt;
 
-
     Gtk::TextView msgEdit;
     Glib::RefPtr<Gtk::TextBuffer> refMsgText;
+
+    ContactInfo* contactInfo;
+    GroupContactInfo* groupContactInfo;
+    bool isGroup=0;
 };
 
 

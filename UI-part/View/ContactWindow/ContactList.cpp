@@ -6,11 +6,39 @@
 #include <string>
 #include <iostream>
 
-ContactList::ContactList() {
+ContactList::ContactList(ContactWindow* contactWindow):contactWindow(contactWindow) {
     set_margin_top(5);
     set_spacing(5);
 
     pack_start(searchEntry, Gtk::PACK_SHRINK);
+
+    btBox.pack_start(addNewUser);
+    addNewUser.set_label("Add New User");
+    addNewUser.signal_clicked().connect([this]{
+        Gtk::Dialog dialog;
+        Gtk::SearchEntry newUserEntry;
+        ContactInfo newUser;
+        newUserEntry.set_placeholder_text("Enter the target UserName");
+        newUserEntry.signal_changed().connect([&]{
+                newUserEntry.get_text();
+        });
+
+        dialog.get_content_area()->pack_start(newUserEntry);
+        dialog.get_content_area()->pack_start(newUser);
+
+        dialog.add_button("Back", 0);
+        dialog.show_all_children();
+        dialog.run();
+    });
+
+    btBox.pack_start(addNewGroup);
+    addNewGroup.set_label("Add New Group");
+    addNewGroup.signal_clicked().connect([this]{
+
+    });
+    pack_start(btBox,Gtk::PACK_SHRINK);
+
+
     searchEntry.signal_search_changed().connect([this]() {
         if (searchEntry.get_text() == "") {
             contacts.collapse_all();

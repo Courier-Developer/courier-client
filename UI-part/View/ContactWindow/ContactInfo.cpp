@@ -5,6 +5,7 @@
 #include "../implement.h"
 
 ContactInfo::ContactInfo(int avatarSize){
+
     this->avatarSize = avatarSize;
     set_valign(Gtk::ALIGN_FILL);
     set_halign(Gtk::ALIGN_FILL);
@@ -13,7 +14,6 @@ ContactInfo::ContactInfo(int avatarSize){
     set_column_spacing(10);
 
     avatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-
     avatar = avatar->scale_simple(avatarSize,avatarSize,Gdk::INTERP_BILINEAR);
     Gtk::Image *avatarImg = Gtk::manage(new Gtk::Image(avatar));
 
@@ -43,7 +43,6 @@ void ContactInfo::ChangeUser(UserInfo *newUser) {
     avatar = Gdk::Pixbuf::create_from_file(newUser->getAvatarPath());
     avatar = avatar->scale_simple(avatarSize,avatarSize,Gdk::INTERP_BILINEAR);
     nickName.set_text(newUser->getNickName());
-
 
 }
 

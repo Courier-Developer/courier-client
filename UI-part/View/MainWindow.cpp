@@ -6,7 +6,7 @@
 #include <gtkmm/messagedialog.h>
 #include "implement.h"
 
-MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):otherWindow(this) {
+MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):chatWindow(this),contactWindow(this),otherWindow(this) {
 
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
@@ -22,6 +22,7 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app):otherWindow(this) {
     auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     ava = ava->scale_simple(64,64,Gdk::INTERP_BILINEAR);
     avatar.set(ava);
+    avatar.get_style_context()->add_class("avatar");
     bt_box.pack_start(avatar);
 
     chats_bt.set_label("CHAT");

@@ -1,0 +1,25 @@
+window{
+    background-color: burlywood;
+}
+box{
+}
+button{
+    background-image: -gtk-gradient (linear, left top, right bottom, from(yellow), to(blue));
+    margin: 10px;
+    border: 5px;
+    color: black;
+    background-color: green;
+    transition-duration: 1s;
+}
+button:hover{
+    transition-duration: 1s;
+    color: green;
+}
+.avatar{
+    border-width: 10px;
+    border-color: yellow;
+}
+cellview{
+    color: green;
+    background-color: yellow;
+}

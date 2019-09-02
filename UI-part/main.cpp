@@ -8,11 +8,7 @@ int main(int argc, char *argv[])
     LogIn logIn(app);
 
     Glib::RefPtr<Gtk::CssProvider> cssProvider = Gtk::CssProvider::create();
-    cssProvider->load_from_data(
-                                "window {\n"
-                                "    color: #C71EFF;\n"
-                                "    background-color: aqua;\n"
-                                "}");
+    cssProvider->load_from_path("/home/ervinxie/Desktop/courier-client/UI-part/View/style.css");
     std::cout<<cssProvider->to_string()<<std::endl;
 
     Glib::RefPtr<Gtk::StyleContext> styleContext = Gtk::StyleContext::create();

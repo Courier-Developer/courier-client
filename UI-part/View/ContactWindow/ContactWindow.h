@@ -11,8 +11,9 @@
 class ContactWindow : public Gtk::HBox{
 
 public:
-    ContactWindow();
+    ContactWindow(MainWindow* mainWindow);
     virtual ~ContactWindow();
+    MainWindow* mainWindow;
 
 protected:
     ContactList contactList;
