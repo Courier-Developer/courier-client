@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Dealer.h"
-
+/**********************************登录初始化*****************************/
 //从服务器拉取好友分组信息
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server
@@ -395,10 +395,50 @@ void Dealer::local_delete_friend(const UserInfo &oldfriend) {
 
 /*******************************发送消息*********************************/
 void Dealer::UI_send_message(const std::string &content, ChatInfo *chat) {
-
+    MessageInfo *newmsg=send_message(content,chat);
 }
 
 
+bool Dealer::send_message_to_server(const MessageInfo &newmsg) {
+    //todo: call for server
+    return true;
+}
+
+void Dealer::add_local_message(const MessageInfo &newmsg) {
+    //todo: update_local_message
+}
+
+MessageInfo *Dealer::send_message(const std::string &content, ChatInfo *chat) {
+    tm *local;
+    time_t t;
+    t=time(NULL);
+    local=localtime(&t);
+    MessageInfo *tmp;
+    DateTime sendtime(local->tm_year,local->tm_mon,local->tm_mday,local->tm_hour,local->tm_min,local->tm_sec);
+    if (chat->getChatWith()==1){
+        MessageInfo newmsg = MessageInfo(MyProfile.getUserId(),chat->getToUser()->getUserId(),content,1,1,1,sendtime);
+        // maybe some bug here
+        bool success=send_message_to_server(newmsg);
+        if (success)
+            newmsg.setStatus(0);
+        add_local_message(newmsg);
+        tmp=cope_new_message(newmsg);
+    }else{
+        if (chat->getChatWith()==2) {
+            MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToGroup()->getGroupId(), content, 1, 2, 1,
+                                             sendtime);
+            bool success = send_message_to_server(newmsg);
+            if (success)
+                newmsg.setStatus(0);
+            add_local_message(newmsg);
+            tmp = cope_new_message(newmsg);
+        }
+        else{
+            std::cerr<<"Wrong chatType"<<std::endl;
+        }
+    }
+    return tmp;
+}
 
 /*********************************接收信息*******************************/
 

@@ -84,6 +84,12 @@ private:
 
     void update_local_user(UserInfo userinfo);
 
+    bool send_message_to_server(const MessageInfo &newmsg);
+
+    void add_local_message(const MessageInfo &newmsg);
+
+    MessageInfo* send_message(const std::string &content,ChatInfo *chat);
+
 public:
     std::map<unsigned int, UserInfo *> UserMap;
     std::vector<PacketInfo *> PacketList;
