@@ -47,10 +47,10 @@ GroupInfo::GroupInfo() {
 };
 
 GroupInfo::~GroupInfo() {
-    if (chat)
-        delete chat;
-    if (Members)
-        delete Members;
+//    if (chat)
+//        delete chat;
+//    if (Members)
+//        delete Members;
 }
 
 const std::vector<unsigned int> &GroupInfo::getMemberId() const {
@@ -75,4 +75,38 @@ GroupInfo::GroupInfo(unsigned int groupId, const std::string &nickName, const st
 
 bool GroupInfo::HasChat() const {
     return chat != nullptr;
+}
+
+//删除成员，此处使用了auto
+void GroupInfo::delete_member(UserInfo *member) {
+    auto mark=getUsers()->end();
+    for (auto it=getUsers()->begin();it!=getUsers()->end();it++){
+        if ((*it)==member)
+        {
+            mark=it;
+            break;
+        }
+    }
+    if (mark!=getUsers()->end())
+        getUsers()->erase(mark);
+
+    auto userid=getMemberId().end();
+    userid=MemberId.end();
+    int hasid=member->getUserId();
+    for (auto id=MemberId.begin();id!=MemberId.end();id++){
+        if(*id==hasid) {
+            userid = id;
+            break;
+        }
+    }
+    if (userid!=MemberId.end())
+        MemberId.erase(userid);
+}
+
+void GroupInfo::setNickName(const std::string &nickName) {
+    NickName = nickName;
+}
+
+void GroupInfo::setAvatorPath(const std::string &avatorPath) {
+    AvatorPath = avatorPath;
 }

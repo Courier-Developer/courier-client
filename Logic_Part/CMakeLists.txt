@@ -3,6 +3,7 @@ project(Logic_Part)
 
 set(CMAKE_CXX_STANDARD 14)
 
+INCLUDE_DIRECTORIES(/msgpack-c/include)
 INCLUDE_DIRECTORIES(../UI-part/Interface)
 
 #AUX_SOURCE_DIRECTORY(Interface DIR_INT)

@@ -6,7 +6,7 @@
 #define COURIER_CLIENT_PACKETINFO_H
 
 #include "predeclare.h"
-
+#include "UserInfo.h"
 //分组类
 class PacketInfo {
 
@@ -14,7 +14,7 @@ private:
 //    std::vector<unsigned int> MemberId; //成员ID
     std::string PacketName;
     int PacketId;   //分组id
-    std::vector<UserInfo *> *Members;
+    std::vector<UserInfo *> *Members= nullptr;
 public:
 
     const std::string &getPacketName() const;
@@ -34,6 +34,10 @@ public:
     int getPriority();
 
     void AddUser(UserInfo *user);
+
+    void DeleteMember(UserInfo *oldmember);
+
+    void setPacketName(const std::string &packetName);
 };
 
 

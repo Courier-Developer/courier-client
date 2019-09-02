@@ -27,6 +27,10 @@ public:
         t[5]=s;
     }
 
+    DateTime(std::string timestr,std::string format="%d-%d-%d %d:%d:%d"){
+        sscanf(timestr.c_str(), format.c_str(), &y, &M, &d, &h, &m, &s);
+    }
+
     bool operator<(const DateTime &b) const{
         for (int i = 0; i < 6; i++) {
             if (t[i] < b.t[i]) {
@@ -38,7 +42,7 @@ public:
         return false;
     }
 
-    void setDateTime(std::string datetime, std::string format) {
+    void setDateTime(std::string datetime, std::string format="%d-%d-%d %d:%d:%d") {
         sscanf(datetime.c_str(), format.c_str(), &y, &M, &d, &h, &m, &s);
     }
 

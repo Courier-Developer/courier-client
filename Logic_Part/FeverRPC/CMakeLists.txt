@@ -16,7 +16,7 @@ add_executable(feverrpc main.cpp)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 
-target_link_libraries(feverrpc ${GTEST_BOTH_LIBRARIES})
+#target_link_libraries(feverrpc ${GTEST_BOTH_LIBRARIES})
 target_link_libraries(feverrpc ${CMAKE_THREAD_LIBS_INIT})
 
 # include(CPack)

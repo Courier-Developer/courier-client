@@ -4,11 +4,10 @@
 
 #ifndef COURIER_CLIENT_PREDECLARE_H
 #define COURIER_CLIENT_PREDECLARE_H
-
-#endif //COURIER_CLIENT_PREDECLARE_H
-
 #include <gtkmm.h>
+#include "../../Logic_Part/Dealer.h"
 class Receiver;
+extern Dealer dealer;
 
 class MainWindow;
 class SignUp;
@@ -24,4 +23,4 @@ class ContactWindow;
 class GroupContactInfo;
 
 class OtherWindow;
-
+#endif //COURIER_CLIENT_PREDECLARE_H

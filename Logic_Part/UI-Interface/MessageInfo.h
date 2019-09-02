@@ -13,25 +13,24 @@ private:
     unsigned int SenderId;
     unsigned int ReceiverId;
     int MessageId;
-public:
-    int getMessageId() const;
-
-    void setMessageId(int messageId);
-
-public:
-    MessageInfo(unsigned int senderId, unsigned int receiverId, int messageId, const std::string &content, int status,
-                int type, int contentKind, const DateTime &createdTime);
-
-private:
     std::string Content;
     int Status; //是否发送成功
     int type;      //1 个人 2 群聊
     int ContentKind;   //消息类型 1 文本消息 2 文件
     DateTime CreatedTime;
-    UserInfo *Sender;
-    ChatInfo *InChat;
+    UserInfo *Sender = nullptr;
+    ChatInfo *InChat = nullptr;
+public:
+    void setSender(UserInfo *sender);
 
 public:
+    int getMessageId() const;
+
+    void setMessageId(int messageId);
+
+    MessageInfo(unsigned int senderId, unsigned int receiverId, int messageId, const std::string &content, int status,
+                int type, int contentKind, const DateTime &createdTime);
+
     MessageInfo(unsigned int senderId, unsigned int receiverId, const std::string &content, int status, int type,
                 int contentKind, const DateTime &createdTime);
 
@@ -48,6 +47,8 @@ public:
     unsigned int getReceiverId() const;
 
     int getContentKind() const;
+
+    void setInChat(ChatInfo *inChat);
 
     const DateTime &getCreatedTime() const;
 

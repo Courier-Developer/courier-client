@@ -6,7 +6,7 @@
 #define COURIER_CLIENT_GROUPINFO_H
 
 #include "predeclare.h"
-
+#include "UserInfo.h"
 
 class GroupInfo  {
 private:
@@ -42,6 +42,12 @@ public:
     void AddUser(UserInfo * user);
 
     bool HasChat() const;
+
+    void setNickName(const std::string &nickName);
+
+    void delete_member(UserInfo *member);
+
+    void setAvatorPath(const std::string &avatorPath);
 };
 
 

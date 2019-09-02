@@ -4,6 +4,7 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+Dealer dealer;
 int main(int argc, char *argv[])
 {
     std::thread t([]{
