@@ -187,6 +187,7 @@ ChatInfo *Dealer::get_chat(GroupInfo *group) {
 }
 
 /************************************好友分组操作******************************/
+
 //通过id获取相应好友分组列表
 PacketInfo *Dealer::get_packet_from_id(int packetid) {
     if (PacketMap.count(packetid)) {
@@ -417,7 +418,21 @@ void Dealer::UI_search_user(const unsigned int &id) {
     UserInfo *tmp = add_user(id);
 }
 
+bool Dealer::server_ask_to_add_friend(const UserInfo user) {
+    if (UserMap.count(user.getUserId())) {
+        if (user.getPacket() > 0) {
+            std::cerr << "does exist this friend" << std::endl;
+        }
+    } else {
+        UserInfo *newuser = add_user(user);
+        //todo: call for UI to choose whether to accept
+    }
+}
 
+
+void Dealer::UI_accept_add_friend(unsigned int userid,PacketInfo *packet) {
+
+}
 
 /*************************************删除好友**********************************/
 
@@ -455,7 +470,7 @@ void Dealer::UI_delete_friend(UserInfo *oldfriend) {
     delete_friend(oldfriend);
 }
 
-void Dealer::server_delete_friend(const UserInfo &oldfriend) {
+bool Dealer::server_delete_friend(const UserInfo &oldfriend) {
     local_delete_friend(oldfriend);
     delete_friend(oldfriend);
     //todo: call for UI
@@ -464,6 +479,10 @@ void Dealer::server_delete_friend(const UserInfo &oldfriend) {
 void Dealer::local_delete_friend(const UserInfo &oldfriend) {
     //todo: call for local database
     return;
+}
+
+bool Dealer::tell_server_accept_friend(UserInfo newfriend) {
+    //todo: call for server
 }
 
 /*********************************发送消息***********************************/
@@ -520,7 +539,7 @@ MessageInfo *Dealer::send_message(const std::string &content, ChatInfo *chat) {
 
 /**************************************接收信息************************************/
 
-void Dealer::receive_new_message(const MessageInfo &msg) {
+bool Dealer::receive_new_message(const MessageInfo &msg) {
     add_local_message(msg);
     MessageInfo *newmsg = cope_new_message(msg); //may exist bug here
     //todo: call for UI
@@ -581,16 +600,6 @@ std::vector<MessageInfo> Dealer::sync_local_message(GroupInfo *group) {
     return std::vector<MessageInfo>();
 }
 
-void Dealer::server_ask_to_add_friend(const UserInfo user) {
-    if (UserMap.count(user.getUserId())) {
-        if (user.getPacket() > 0) {
-            std::cerr << "does exist this friend" << std::endl;
-        }
-    } else {
-        UserInfo *newuser = add_user(user);
-        //todo: call for UI to choose whether to accept
-    }
-}
 
 /******************************TesT************************************/
 UserInfo Dealer::test_create_myprofile() {
@@ -758,12 +767,12 @@ void Dealer::ShowTestPacketInfo() {
     using std::cout, std::endl;
     cout << endl << endl;
     cout << "***********************PacketInfo********************" << endl;
-    for (auto &tmp:PacketList){
-        cout<<" ID: "<<tmp->getPacketId()<<"  Name: "<<tmp->getPacketName()<<endl;
-        cout<<" Members:";
+    for (auto &tmp:PacketList) {
+        cout << " ID: " << tmp->getPacketId() << "  Name: " << tmp->getPacketName() << endl;
+        cout << " Members:";
         for (auto &tmpmember:(*tmp->getUsers()))
-            cout<<" "<<tmpmember->getNickName();
-        cout<<endl;
+            cout << " " << tmpmember->getNickName();
+        cout << endl;
         cout << "----------------------------------------------------" << endl;
 
     }
@@ -789,16 +798,21 @@ void Dealer::ShowTestChatInfo() {
                 cout << "Error" << endl;
             }
         }
-        cout<<"Number of Message: "<<(*tmp->getMsgList()).size()<<endl;
-        cout<<"Content: "<<endl;
-        for (auto *msgs:(*tmp->getMsgList())){
-            cout<<"  "<<msgs->getSender()->getNickName()<<": "<<msgs->getContent()<<endl;
+        cout << "Number of Message: " << (*tmp->getMsgList()).size() << endl;
+        cout << "Content: " << endl;
+        for (auto *msgs:(*tmp->getMsgList())) {
+            cout << "  " << msgs->getSender()->getNickName() << ": " << msgs->getContent() << endl;
         }
         cout << "--------------------------------------------------" << endl;
     }
 }
 
+//todo: need to complete
+void Dealer::login(const std::string &username, const std::string password,
+                   std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+                                      std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
+}
 
 
 
