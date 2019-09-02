@@ -2,9 +2,16 @@
 
 #include "View/implement.h"
 #include <iostream>
+#include <thread>
+#include <mutex>
 Dealer dealer;
 int main(int argc, char *argv[])
 {
+    std::thread t([]{
+        sleep(2);
+        std::cout<<"FK"<<std::endl;
+    });
+
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,"com.courier");
     LogIn logIn(app);
 

@@ -6,7 +6,9 @@
 #define COURIER_CLIENT_PREDECLARE_H
 #include <gtkmm.h>
 #include "../../Logic_Part/Dealer.h"
+class Receiver;
 extern Dealer dealer;
+
 class MainWindow;
 class SignUp;
 class LogIn;

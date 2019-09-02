@@ -54,11 +54,6 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
-
-
-
-
-
         MainWindow *mainWindow = new MainWindow(this->app);
         this->app->add_window(*mainWindow);
         mainWindow->show();
