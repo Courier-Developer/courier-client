@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "Dealer.h"
+
+
 /*************************************登录初始化*********************************/
 //从服务器拉取好友分组信息
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
@@ -812,15 +814,25 @@ void Dealer::ShowTestChatInfo() {
 
 
 /*********************************UI**************************************/
-//todo: need to complete
+
+//
 void Dealer::login(const std::string &username, const std::string &password,
                    std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                       std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
-//    get_information_and_update();
+
     test();
     success(PacketList,GroupList,ChatList);
 }
 
+
+
+void Dealer::UI_get_myprofile(std::function<void(const UserInfo &)> getprofile,std::function<void(std::string)> error) {
+    if (MyProfile.getUserId()!=0)
+        getprofile(MyProfile);
+    else{
+        error("还未获得个人信息");
+    }
+}
 
 
