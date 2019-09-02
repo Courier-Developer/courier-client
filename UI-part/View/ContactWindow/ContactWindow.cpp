@@ -2,7 +2,7 @@
 // Created by ervinxie on 8/29/19.
 //
 
-#include "ContactWindow.h"
+#include "../implement.h"
 
 ContactWindow::ContactWindow() {
     set_border_width(0);

@@ -6,6 +6,8 @@
 #define COURIER_CLIENT_SIGNUP_H
 
 #include <gtkmm.h>
+#include "MainWindow.h"
+
 class SignUp :public Gtk::Window{
 public:
     SignUp(Glib::RefPtr<Gtk::Application> app);

@@ -7,7 +7,6 @@
 
 
 #include <gtkmm.h>
-#include "ChatList.h"
 #include "Chatting.h"
 
 class ChatWindow : public Gtk::HBox{

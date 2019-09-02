@@ -2,8 +2,8 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "ChatWindow.h"
-#include "../../../Logic_Part/class/GlobalVar.h"
+#include "../implement.h"
+
 ChatWindow::ChatWindow() {
 
 

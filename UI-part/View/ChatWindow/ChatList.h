@@ -7,7 +7,7 @@
 
 
 #include <gtkmm.h>
-
+#include "../predeclare.h"
 class ChatList : public Gtk::VBox {
 public:
     ChatList();
@@ -23,8 +23,6 @@ protected:
         Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > avatar;
         Gtk::TreeModelColumn<int> msg_toread;
 
-        Gtk::TreeModelColumn<Glib::RefPtr<Gtk::Button> >Bt;
-
         Gtk::TreeModelColumn<Glib::ustring> lastMsgTime;
 
         Gtk::TreeModelColumn<int> sortPriority;
@@ -33,7 +31,6 @@ protected:
             add(chatName);
             add(avatar);
             add(msg_toread);
-            add(Bt);
             add(lastMsgTime);
             add(sortPriority);
         }
@@ -41,6 +38,7 @@ protected:
 
     Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView chatListView;
+
     Glib::RefPtr<Gtk::ListStore> refChatPeep;
     Glib::RefPtr<Gtk::TreeModelFilter> filter;
     Glib::RefPtr<Gtk::TreeModelSort> sort;
