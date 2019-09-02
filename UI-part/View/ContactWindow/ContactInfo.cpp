@@ -2,7 +2,7 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "ContactInfo.h"
+#include "../implement.h"
 
 ContactInfo::ContactInfo(int avatarSize){
     this->avatarSize = avatarSize;

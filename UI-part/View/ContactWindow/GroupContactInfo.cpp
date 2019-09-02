@@ -2,7 +2,7 @@
 // Created by ervinxie on 9/1/19.
 //
 
-#include "GroupContactInfo.h"
+#include "../implement.h"
 
 GroupContactInfo::GroupContactInfo() {
 

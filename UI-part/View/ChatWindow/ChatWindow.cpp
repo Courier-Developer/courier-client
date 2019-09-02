@@ -2,7 +2,7 @@
 // Created by ervinxie on 8/28/19.
 //
 
-#include "ChatWindow.h"
+#include "../implement.h"
 
 ChatWindow::ChatWindow() {
 

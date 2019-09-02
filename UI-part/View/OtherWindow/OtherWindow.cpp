@@ -2,7 +2,7 @@
 // Created by ervinxie on 8/29/19.
 //
 
-#include "../LogIn.h"
+#include "../implement.h"
 
 OtherWindow::OtherWindow(MainWindow* mainWindow) :myInfo(128){
     this->mainWindow = mainWindow;
