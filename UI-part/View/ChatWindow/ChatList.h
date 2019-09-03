@@ -17,6 +17,7 @@ public:
 
     ChatWindow *chatWindow;
     std::vector<ChatInfo *> &clist;
+    std::map<ChatInfo*,Gtk::TreeModel::iterator> c_iter;
     const int USER = 1;
     const int GROUP = 2;
 protected:
@@ -30,8 +31,7 @@ protected:
         Gtk::TreeModelColumn<Glib::ustring> lastMsgTime;
         Gtk::TreeModelColumn<int> sortPriority;
         Gtk::TreeModelColumn<int> type;
-        Gtk::TreeModelColumn<UserInfo *> u;
-        Gtk::TreeModelColumn<GroupInfo *> g;
+        Gtk::TreeModelColumn<ChatInfo *> c;
 
         ChatPeep() {
             add(chatName);
@@ -40,8 +40,7 @@ protected:
             add(lastMsgTime);
             add(sortPriority);
             add(type);
-            add(u);
-            add(g);
+            add(c);
         }
     } chatPeep;
 
@@ -56,7 +55,6 @@ protected:
 
     void addChat(ChatInfo *newChat);
 
-    void on_select_change();
 };
 
 

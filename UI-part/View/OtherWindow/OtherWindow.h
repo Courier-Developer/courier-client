@@ -13,12 +13,9 @@ class MainWindow;
 class LogIn;
 class OtherWindow :public Gtk::VBox{
 public:
-
     OtherWindow(MainWindow* mainWindow);
     virtual ~OtherWindow();
     MainWindow* mainWindow;
-    UserInfo* me;
-
 protected:
     ContactInfo myInfo;
     Gtk::HBox bt_box;

@@ -27,7 +27,16 @@ treeview.view:selected{
 .LogIn {
     background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/welcome.gif");
 }
+label{
+    background-color: red;
+    color: yellow;
+}
 
 .avatar {
 
+
+}
+.ChatMessage{
+    color: blue;
+    background-color: blue;
 }

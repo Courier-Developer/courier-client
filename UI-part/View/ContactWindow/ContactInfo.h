@@ -6,7 +6,7 @@
 #define GTKMM_CONTACTINFO_H
 
 
-#include "../ChatWindow/ChatWindow.h"
+#include "../ChatWindow/ShowMessage.h"
 
 class ContactInfo : public Gtk::Grid{
 public:

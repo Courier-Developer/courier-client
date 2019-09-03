@@ -12,12 +12,13 @@ public:
     Receiver(std::vector<PacketInfo *> &plist,
              std::vector<GroupInfo *> &glist,
              std::vector<ChatInfo *> &clist,
-             UserInfo *me);
+             UserInfo &me);
 
     std::vector<PacketInfo *> &plist;
     std::vector<GroupInfo *> &glist;
     std::vector<ChatInfo *> &clist;
-    UserInfo *me;
+    UserInfo &me;
+    void debug();
 };
 
 
