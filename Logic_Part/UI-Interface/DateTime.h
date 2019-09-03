@@ -18,7 +18,11 @@ public:
     int &s = t[5];
 
     DateTime() {}
-
+    DateTime(const DateTime& b){
+        for(int i=0;i<6;i++){
+            t[i]=b.t[i];
+        }
+    }
     DateTime(int y, int M, int d, int h, int m, int s) {
         t[0] = y;
         t[1] = M;

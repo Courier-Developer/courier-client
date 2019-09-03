@@ -5,6 +5,23 @@
 #include <iostream>
 #include "Dealer.h"
 
+/*************************************获取ip**************************************/
+
+std::string Dealer::getip() {
+    int sockfd;
+    struct sockaddr_in sin;
+    struct ifreq ifr;
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sockfd == -1) {
+        perror("socket error");
+        exit(1);
+    }
+    strncpy(ifr.ifr_name, ETH_NAME, IFNAMSIZ);   //Interface name
+    if (ioctl(sockfd, SIOCGIFADDR, &ifr) == 0) {  //SIOCGIFADDR 获取interface address
+        memcpy(&sin, &ifr.ifr_addr, sizeof(ifr.ifr_addr));
+        return inet_ntoa(sin.sin_addr);
+    }
+}
 
 /*************************************登录初始化*********************************/
 //从服务器拉取好友分组信息
@@ -18,7 +35,7 @@ std::vector<PacketInfo> Dealer::get_packet_from_server() {
 void Dealer::get_information_and_update() {
     //MyProfile
     UserInfo myprofile = get_my_profile_from_server();
-    MyProfile = myprofile;
+    MyProfileCopy = MyProfile = myprofile;
 
     //PacketInfo
     std::vector<PacketInfo> packets = get_packet_from_server();
@@ -218,12 +235,13 @@ int Dealer::ask_server_to_add_packet(const std::string &packetname) {
 }
 
 
-void Dealer::UI_add_packet(const std::string &packetname) {
+PacketInfo *Dealer::UI_add_packet(const std::string &packetname) {
     int packetid = ask_server_to_add_packet(packetname);
     if (packetid) {
-        PacketInfo *newpacket = add_packet(packetid, packetname);
+        return add_packet(packetid, packetname);
     } else {
         std::cerr << "create packet Error" << std::endl;
+        return nullptr;
     }
 }
 
@@ -235,25 +253,30 @@ void Dealer::server_update_packet(const PacketInfo &packet) {
     //todo: call for server 有则修改，无则添加
 }
 
-void Dealer::UI_change_packetname(PacketInfo *packet, const std::string &name) {
+bool Dealer::UI_change_packetname(PacketInfo *packet, const std::string &name) {
     if (packet->getPacketId() > 0) {
         packet->setPacketName(name);
         local_update_packet(*packet);
         server_update_packet(*packet);
+        return 0;
     } else {
         std::cerr << "try to rename <0 packet" << std::endl;
+        return 1;
     }
 }
 
-void Dealer::UI_delete_packet(PacketInfo *packet) {
+bool Dealer::UI_delete_packet(PacketInfo *packet) {
     if (packet->getUsers()->size()) {
         std::cerr << "try to delete a packet with friend" << std::endl;
+        return 1;
     } else {
         if (packet->getPacketId() < 2) {
             std::cerr << "try to delete necessary packet" << std::endl;
+            return 1;
         } else {
             local_delete_packet(*packet);
             server_delete_packet(*packet);
+            return 0;
         }
     }
 }
@@ -298,7 +321,7 @@ void Dealer::UI_create_group(const std::string &groupname, const std::vector<int
 }
 
 //建群
-void Dealer::UI_create_gorup(const std::string &groupname, const std::vector<UserInfo *> &members) {
+void Dealer::UI_create_group(const std::string &groupname, const std::vector<UserInfo *> &members) {
     std::vector<int> memberids;
     for (auto &tmp:members) {
         memberids.push_back(tmp->getUserId());
@@ -506,6 +529,16 @@ void Dealer::update_server_user(const UserInfo &user) {
     //todo: call for server to update user
 }
 
+void Dealer::update_friend(const UserInfo &user) {   //server_call
+    if (UserMap.count(user.getUserId())) {
+        UI_move_friend(UserMap[user.getUserId()], PacketMap[user.getPacket()]);
+        update_local_user(user);
+    } else {
+        add_user(user);
+    }
+    //todo:
+//    friendUpdate(UserMap[user.getUserId()]);
+}
 
 void Dealer::UI_move_friend(UserInfo *user, PacketInfo *packet) {
     if (user->getInPacket() == packet) {
@@ -614,11 +647,11 @@ void Dealer::local_delete_friend(const UserInfo &oldfriend) {
 
 
 /*********************************发送消息***********************************/
-void Dealer::UI_send_message(const std::string &content, ChatInfo *chat) {
-    MessageInfo *newmsg = send_message(content, chat);
+void Dealer::UI_send_message(int type, const std::string &content, ChatInfo *chat) {
+    MessageInfo *newmsg = send_message(type, content, chat);
 }
 
-//获得messageid
+//获得messageid add
 int Dealer::send_message_to_server(const MessageInfo &newmsg) {
     //todo: call for server
     return 0;
@@ -628,15 +661,16 @@ void Dealer::add_local_message(const MessageInfo &newmsg) {
     //todo: update_local_message
 }
 
-MessageInfo *Dealer::send_message(const std::string &content, ChatInfo *chat) {
+MessageInfo *Dealer::send_message(int type, const std::string &content, ChatInfo *chat) {
     tm *local;
     time_t t;
     t = time(NULL);
     local = localtime(&t);
     MessageInfo *tmp;
-    DateTime sendtime(local->tm_year, local->tm_mon, local->tm_mday, local->tm_hour, local->tm_min, local->tm_sec);
+    DateTime sendtime(local->tm_year + 1900, local->tm_mon+1, local->tm_mday, local->tm_hour, local->tm_min,
+                      local->tm_sec);
     if (chat->getChatWith() == 1) {
-        MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToUser()->getUserId(), content, 1, 1, 1,
+        MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToUser()->getUserId(), content, 1, 1, type,
                                          sendtime);
         // maybe some bug here
         int success = send_message_to_server(newmsg);
@@ -648,7 +682,8 @@ MessageInfo *Dealer::send_message(const std::string &content, ChatInfo *chat) {
         tmp = cope_new_message(newmsg);
     } else {
         if (chat->getChatWith() == 2) {
-            MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToGroup()->getGroupId(), content, 1, 2, 1,
+            MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToGroup()->getGroupId(), content, 1, 2,
+                                             type,
                                              sendtime);
             bool success = send_message_to_server(newmsg);
             if (success) {
@@ -666,7 +701,7 @@ MessageInfo *Dealer::send_message(const std::string &content, ChatInfo *chat) {
 }
 
 /**************************************接收信息************************************/
-
+//todo: add file and pic
 void Dealer::receive_new_message(const MessageInfo &msg) {
     add_local_message(msg);
     MessageInfo *newmsg = cope_new_message(msg); //may exist bug here
@@ -769,10 +804,12 @@ std::vector<GroupInfo> Dealer::test_create_group() {
 
 std::vector<MessageInfo> Dealer::test_create_message() {
     std::vector<MessageInfo> test;
-    test.push_back(MessageInfo(10001, 10002, "测试专用场地", 1, 1, 1, DateTime("2019-8-31 12:31:55")));
-    test.push_back(MessageInfo(10001, 10001, "test", 1, 2, 1, DateTime("2019-8-31 12:31:55")));
-    test.push_back(MessageInfo(10002, 10001, "accepted", 1, 2, 1, DateTime("2019-8-31 12:32:05")));
-    test.push_back(MessageInfo(10002, 10001, "蛤？", 1, 1, 1, DateTime("2019-8-31 11:32:05")));
+    test.push_back(*(new MessageInfo(10001, 10002, "测试专用场地", 1, 1, 1,  DateTime("2019-08-31 12:31:55"))));
+    test.push_back(MessageInfo(10001, 10001, "test", 1, 2, 1, DateTime("2019-08-31 12:31:55")));
+    test.push_back(MessageInfo(10002, 10001, "accepted", 1, 2, 1, DateTime("2019-08-31 12:32:05")));
+    test.push_back(MessageInfo(10002, 10001, "蛤？", 1, 1, 1, DateTime("2019-08-31 11:32:05")));
+    for (auto &tmp:test)
+        std::cout<<tmp.getCreateTime().getString()<<std::endl;
     return test;
 }
 
@@ -848,10 +885,14 @@ void Dealer::test() {
 
     //MessageInfo
     std::vector<MessageInfo> messages = test_create_message();
-    update_local_messages(messages);
+    cout<<messages.size()<<endl;
+    for (auto &tmp:messages)
+        cout<<tmp.getCreateTime().getString()<<endl;
+//    update_local_messages(messages);
 //    messages = get_messages_from_local();
     for (auto &tmp:messages) {
         MessageInfo *tmpmsg = cope_new_message(tmp);
+        cout<<tmp.getCreateTime().getString()<<endl;
     }
 }
 
@@ -929,7 +970,7 @@ void Dealer::ShowTestChatInfo() {
         cout << "Number of Message: " << (*tmp->getMsgList()).size() << endl;
         cout << "Content: " << endl;
         for (auto *msgs:(*tmp->getMsgList())) {
-            cout << "  " << msgs->getSender()->getNickName() << ": " << msgs->getContent() << endl;
+            cout << "  " << msgs->getSender()->getNickName() << ": " << msgs->getContent() <<"  "<<msgs->getCreateTime().getString() <<endl;
         }
         cout << "--------------------------------------------------" << endl;
     }
@@ -939,7 +980,7 @@ void Dealer::ShowTestChatInfo() {
 //UI的会话消息需要调用我的函数，不能直接使用数据否则会话列表可能发生错误
 
 
-/*********************************UI**************************************/
+/***********************************UI-Interface**************************************/
 
 //登录
 void Dealer::login(const std::string &username, const std::string &password,
@@ -947,19 +988,114 @@ void Dealer::login(const std::string &username, const std::string &password,
                                       std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
 
-    test();
-    success(PacketList, GroupList, ChatList);
+    ip = getip();
+    //todo:
+    if (/*****/1) {
+//        get_information_and_update();
+        test();
+        success(PacketList, GroupList, ChatList);
+    } else {
+        fail("不知道出了什么问题，反正就是登录失败了！");
+    }
 }
 
 
 void
-Dealer::UI_get_myprofile(std::function<void(const UserInfo &)> getprofile, std::function<void(std::string)> error) {
+Dealer::getMyprofile(std::function<void(const UserInfo &)> getprofile, std::function<void(std::string)> error) {
     if (MyProfile.getUserId() != 0)
         getprofile(MyProfile);
     else {
         error("还未获得个人信息");
     }
 }
+
+void Dealer::queryUser(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+    UserInfo *user = add_user(id);
+    if (user)
+        success(user);
+    else
+        fail("查无此人");
+}
+
+void Dealer::addFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
+    //todo:
+    if (/*******/1 && (!UserMap.count(id) || UserMap[id]->getPacket() != 0)) {
+        success("我觉得可以");
+    } else {
+        fail("我觉得不行");
+    }
+}
+
+void Dealer::agreefriend(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+    //todo:
+    if (/*********/1 && (!UserMap.count(id) || UserMap[id]->getPacket() != 0)) {
+        UI_move_friend(add_user(id), 1);
+        success(UserMap[id]);
+    } else {
+        fail("我觉得不行");
+    }
+}
+
+void Dealer::deleteFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
+    //todo:
+    if (/********/ 1) {
+        UI_delete_friend(UserMap[id]);
+        success("我觉得可以");
+    } else {
+        fail("我觉得不行");
+    }
+}
+
+void Dealer::chatWith(UserInfo * user, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail) {
+    success(get_chat(user));
+}
+
+void
+Dealer::chatWith(GroupInfo *group, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail) {
+    success(get_chat(group));
+}
+
+void Dealer::moveToPacket(UserInfo *user, PacketInfo *packet, std::function<void(std::string)> success,
+                          std::function<void(std::string)> fail) {
+    if (user->getInPacket()!=packet){
+        UI_move_friend(user,packet);
+        success("可能可以");
+    }else{
+        fail("这样不行");
+    }
+}
+
+void
+Dealer::addPacket(std::string name, std::function<void(PacketInfo *)> success, std::function<void(std::string)> fail) {
+    PacketInfo *packet=UI_add_packet(name);
+    if (packet)
+        success(packet);
+    else
+        fail("我觉得不行");
+}
+
+void Dealer::renamePacket(std::string name, PacketInfo *packet, std::function<void(std::string)> success,
+                          std::function<void(std::string)> fail) {
+    if (UI_change_packetname(packet,name))
+        fail("这样不行");
+    else
+        success("好像可以");
+}
+
+void
+Dealer::deletePacket(PacketInfo *packet, std::function<void(std::string)> ok, std::function<void(std::string)> fail) {
+    if (UI_delete_packet(packet))
+        fail("这样不行");
+    else
+        ok("好像可以");
+}
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,7 @@
 #include "Dealer.h"
 #include <thread>
+#include <iostream>
+
 Dealer dealer;
 int main()
 {

@@ -11,17 +11,18 @@ find_package(Threads REQUIRED)
 #include_directories(${GTEST_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(../msgpack-c/include)
-add_executable(feverrpc main.cpp)
-
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-
-#target_link_libraries(feverrpc ${GTEST_BOTH_LIBRARIES})
-target_link_libraries(feverrpc ${CMAKE_THREAD_LIBS_INIT})
+#
+##add_executable(feverrpc main.cpp)
+#
+#set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+#set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+#
+##target_link_libraries(feverrpc ${GTEST_BOTH_LIBRARIES})
+#target_link_libraries(feverrpc ${CMAKE_THREAD_LIBS_INIT})
 
 # include(CPack)
 
-include_directories("msgpack/include/")
-
-add_test(Test feverrpc)
-enable_testing()
+#include_directories("msgpack/include/")
+#
+#add_test(Test feverrpc)
+#enable_testing()
