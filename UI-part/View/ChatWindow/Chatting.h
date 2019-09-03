@@ -17,6 +17,7 @@ public:
     ChatInfo* c;
 protected:
     Gtk::Label chatName;
+
     Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView msgList;
     class Message : public Gtk::TreeModel::ColumnRecord {
@@ -33,13 +34,13 @@ protected:
             add(msgTime);
         }
     } message;
-
     Glib::RefPtr<Gtk::ListStore> messages;
     Glib::RefPtr<Gtk::TreeModelFilter> filter;
 
     Gtk::HBox tools;
     Gtk::Button expressionBt;
     Gtk::Button fileBt;
+    Gtk::Button historyBt;
     Gtk::Button chatDetailBt;
 
     Gtk::TextView msgEdit;

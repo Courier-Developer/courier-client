@@ -21,10 +21,13 @@ Chatting::Chatting(ChatWindow *chatWindow,
     chatDetailBt.set_halign(Gtk::ALIGN_END);
     chatDetailBt.set_image_from_icon_name("format-justify-fill");
     chatDetailBt.signal_clicked().connect([this] {
-        contactInfo = Gtk::manage(new ContactInfo);
-
         Gtk::Dialog dialog;
-        dialog.get_content_area()->pack_start(*contactInfo, Gtk::PACK_SHRINK);
+        if(this->c->getTotype()==1){
+            dialog.get_content_area()->pack_start(*Gtk::manage(new ContactInfo(this->c->getToUser())), Gtk::PACK_SHRINK);
+        }else if(this->c->getTotype()==2){
+            dialog.get_content_area()->pack_start(*Gtk::manage(new GroupContactInfo(this->c->getToGroup())), Gtk::PACK_SHRINK);
+        }
+
         dialog.add_button("OK", 0);
         dialog.show_all_children();
         dialog.run();
@@ -84,9 +87,19 @@ Chatting::Chatting(ChatWindow *chatWindow,
         fileChooserDialog.add_button("Cancel", 1);
         fileChooserDialog.run();
     });
+    historyBt.set_label("History");
+    historyBt.signal_clicked().connect([this]{
+        Gtk::Dialog dialog;
+        dialog.set_title("History");
+        dialog.get_content_area()->pack_start(*Gtk::manage(new HistroyMessage(this->c)));
+        dialog.show_all_children();
+        dialog.add_button("OK",0);
+        dialog.run();
+    });
 
     tools.pack_start(expressionBt, Gtk::PACK_SHRINK);
     tools.pack_start(fileBt, Gtk::PACK_SHRINK);
+    tools.pack_start(historyBt,Gtk::PACK_SHRINK);
 
 
     Gtk::Frame *msgEditFrame = Gtk::manage(new Gtk::Frame);
@@ -116,6 +129,7 @@ Chatting::Chatting(ChatWindow *chatWindow,
 Chatting::~Chatting() {
 
 }
+
 
 void Chatting::addMessage(Glib::ustring content) {
     auto iter = messages->append();

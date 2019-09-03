@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 #include "../../Logic_Part/Dealer.h"
+#include "res/PixMan.h"
 class Receiver;
 extern Dealer dealer;
 extern Receiver* receiver;
@@ -26,4 +27,5 @@ class ContactWindow;
 class GroupContactInfo;
 
 class OtherWindow;
+
 #endif //COURIER_CLIENT_PREDECLARE_H

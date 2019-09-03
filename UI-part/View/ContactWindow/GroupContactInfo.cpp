@@ -10,6 +10,7 @@ GroupContactInfo::GroupContactInfo() {
     set_valign(Gtk::ALIGN_FILL);
     set_halign(Gtk::ALIGN_FILL);
     set_border_width(10);
+    set_size_request(100,300);
     set_spacing(10);
     refAvatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     refAvatar = refAvatar->scale_simple(64, 64, Gdk::INTERP_BILINEAR);

@@ -9,17 +9,19 @@
 #include <gtkmm.h>
 #include "Chatting.h"
 
-class ChatWindow : public Gtk::HBox{
+class ChatWindow : public Gtk::HBox {
 public:
-    ChatWindow(MainWindow* mainWindow,std::vector<ChatInfo *>& clist);
+    ChatWindow(MainWindow *mainWindow, std::vector<ChatInfo *> &clist);
+
     virtual ~ChatWindow();
+
     MainWindow *mainWindow;
-    std::vector<ChatInfo *>& clist;
-    bool showingDetail=0;
+    std::vector<ChatInfo *> &clist;
+    std::map<ChatInfo *, Chatting *> c_ui;
+    void changeTo(ChatInfo* c);
 protected:
     ChatList chatList;
-    Chatting chatting;
-
+    Gtk::Frame frame;
 };
 
 

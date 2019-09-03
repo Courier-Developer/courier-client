@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "implement.h"
+Receiver* receiver;
 LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     get_style_context()->add_class("LogIn");
 
@@ -59,35 +60,19 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
         dealer.login("", "", [this](std::vector<PacketInfo *>& plist, std::vector<GroupInfo *>& glist,
                                     std::vector<ChatInfo *>& clist) {
-            for (auto p : plist) {
-                std::cout << p->getName() << std::endl;
-                for (auto u : *(p->getUsers())) {
-                    std::cout << u->getNickName() << std::endl;
-                }
-            }
-            for (auto g : glist) {
-                std::cout << g->getNickName() << std::endl;
-                for (auto u : *(g->getUsers())) {
-                    std::cout << u->getNickName() << std::endl;
-                }
-            }
-            for (auto c : clist) {
-                std::cout << c->getTotype() << std::endl;
-                if (c->getTotype() == 1) {
-                    std::cout << c->getToUser()->getNickName() << std::endl;
-                } else {
-                    std::cout << c->getToGroup()->getNickName() << std::endl;
-                }
-                for (auto m : *(c->getMsgList())) {
-                    std::cout << m->getContent() << " " << m->getCreateTime().getString() << std::endl;
-                }
-            }
-            MainWindow *mainWindow = new MainWindow(this->app,plist,glist,clist);
-            receiver = new Receiver(plist,glist,clist,);
-            this->app->add_window(*mainWindow);
-            mainWindow->show();
-            this->hide();
-            this->app->remove_window(*this);
+            dealer.UI_get_myprofile([&](UserInfo me){
+                receiver = new Receiver(plist,glist,clist,me);
+                receiver->debug();
+                MainWindow *mainWindow = new MainWindow(this->app,plist,glist,clist);
+
+                this->app->add_window(*mainWindow);
+                mainWindow->show();
+                this->hide();
+                this->app->remove_window(*this);
+                },[this](std::string error){
+                std::cout << error << std::endl;
+            });
+
         }, [this](std::string error) {
             std::cout << error << std::endl;
         });

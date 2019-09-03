@@ -7,7 +7,13 @@
 Dealer dealer;
 int main(int argc, char *argv[])
 {
-
+    tm *local;
+    time_t t;
+    t = time(NULL);
+    local = localtime(&t);
+    MessageInfo *tmp;
+    DateTime sendtime("2019-8-31 21:23:54");
+    std::cout<<sendtime.getString()<<std::endl;
 
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,"com.courier");
     LogIn logIn(app);
