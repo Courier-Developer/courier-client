@@ -34,8 +34,8 @@ std::vector<PacketInfo> Dealer::get_packet_from_server() {
 //登录时拉取初始化信息
 void Dealer::get_information_and_update() {
     //MyProfile
-    UserInfo myprofile = get_my_profile_from_server();
-    MyProfileCopy = MyProfile = myprofile;
+    MyProfile = get_my_profile_from_server();
+    MyProfileCopy = new UserInfo(MyProfile);
 
     //PacketInfo
     std::vector<PacketInfo> packets = get_packet_from_server();
@@ -59,9 +59,9 @@ void Dealer::get_information_and_update() {
         inpacket->AddUser(tmpuser);
         tmpuser->setInPacket(inpacket);
     }
-    if (UserMap.count(myprofile.getUserId()) == 0) {
-        UserInfo *me = add_user(myprofile);
-        UserMap[myprofile.getUserId()] = me;
+    if (UserMap.count(MyProfile.getUserId()) == 0) {
+        UserInfo *me = add_user(MyProfile);
+        UserMap[MyProfile.getUserId()] = me;
         UserList.push_back(me);
     }
 
@@ -816,8 +816,8 @@ std::vector<MessageInfo> Dealer::test_create_message() {
 void Dealer::test() {
     //MyProfile
     using std::cout, std::endl;
-    UserInfo myprofile = test_create_myprofile();
-    MyProfile = myprofile;
+    MyProfile = test_create_myprofile();
+    MyProfileCopy = new UserInfo(MyProfile);
     //PacketInfo
 //    std::cout<<"ok!"<<std::endl;
     std::vector<PacketInfo> packets = test_create_packet();
@@ -852,9 +852,9 @@ void Dealer::test() {
         tmpuser->setInPacket(inpacket);
     }
 
-    if (UserMap.count(myprofile.getUserId()) == 0) {
-        UserInfo *me = add_user(myprofile);
-        UserMap[myprofile.getUserId()] = me;
+    if (UserMap.count(MyProfile.getUserId()) == 0) {
+        UserInfo *me = add_user(MyProfile);
+        UserMap[MyProfile.getUserId()] = me;
         UserList.push_back(me);
     }
 
@@ -988,7 +988,7 @@ void Dealer::login(const std::string &username, const std::string &password,
                                       std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
 
-    ip = getip();
+
     //todo:
     if (/*****/1) {
 //        get_information_and_update();
@@ -1001,9 +1001,9 @@ void Dealer::login(const std::string &username, const std::string &password,
 
 
 void
-Dealer::getMyprofile(std::function<void(UserInfo &)> getprofile, std::function<void(std::string)> error) {
+Dealer::getMyprofile(std::function<void(UserInfo *)> getprofile, std::function<void(std::string)> error) {
     if (MyProfile.getUserId() != 0)
-        getprofile(MyProfile);
+        getprofile(MyProfileCopy);
     else {
         error("还未获得个人信息");
     }

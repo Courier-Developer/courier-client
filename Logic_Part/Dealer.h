@@ -16,7 +16,7 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
-//#include "feverrpc/feverrpc.hpp"
+#include "feverrpc/feverrpc.hpp"
 
 #define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
@@ -191,17 +191,16 @@ public:
     std::vector<UserInfo *> UserList;
     std::vector<ChatInfo *> ChatList;
     UserInfo MyProfile;
-    UserInfo MyProfileCopy;
+    UserInfo *MyProfileCopy;
 
     /************************************** UI ***************************************/
-
 
     void login(const std::string &username, const std::string &password,
                std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                   std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
 
 
-    void getMyprofile(std::function<void(UserInfo &)> getprofile, std::function<void(std::string)> error);
+    void getMyprofile(std::function<void(UserInfo *)> getprofile, std::function<void(std::string)> error);
 
     void queryUser(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
 
@@ -223,6 +222,8 @@ public:
     void renamePacket(std::string name,PacketInfo* packet,std::function<void(std::string)>success,std::function<void(std::string)> fail);
 
     void deletePacket(PacketInfo* packet,std::function<void(std::string)> ok,std::function<void(std::string)> fail);
+
+    void addGroup(std::string name,std::vector<int> userList,std::function<void(GroupInfo*)> success,std::function<void()>);
     /**************************************Server*************************************/
 
     void server_ask_to_add_friend(const UserInfo &user);

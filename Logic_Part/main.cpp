@@ -10,6 +10,7 @@ int receivemessage()
 int main()
 {
     dealer.test();
+//    cout<<dealer.ip<<endl;
     dealer.ShowTestUserInfo();
     dealer.ShowTestPacketInfo();
     dealer.ShowTestGroupInfo();
