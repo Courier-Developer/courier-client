@@ -11,7 +11,7 @@
 #include "../../Logic_Part/Dealer.h"
 class Receiver;
 extern Dealer dealer;
-
+extern Receiver* receiver;
 class MainWindow;
 class SignUp;
 class LogIn;

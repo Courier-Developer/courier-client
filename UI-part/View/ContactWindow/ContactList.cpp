@@ -56,6 +56,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
             Gtk::Dialog dialog;
             dialog.set_size_request(300, 400);
             dialog.get_content_area()->pack_start(*Gtk::manage(new Gtk::Label("Select Friends")));
+            dialog.set_border_width(10);
 
             ContactList *gselect = Gtk::manage(new ContactList(nullptr, this->plist, this->glist, true));
             gselect->set_size_request(-1, 400);

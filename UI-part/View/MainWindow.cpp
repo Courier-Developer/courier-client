@@ -12,13 +12,13 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
                        std::vector<PacketInfo *> &plist,
                        std::vector<GroupInfo *> &glist,
                        std::vector<ChatInfo *> &clist) :
-        chatWindow(this,clist),
-        contactWindow(this,plist,glist),
+        chatWindow(this, clist),
+        contactWindow(this, plist, glist),
         otherWindow(this),
         plist(plist),
         clist(clist),
-        glist(glist){
-
+        glist(glist) {
+    get_style_context()->add_class("MainWindow");
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
 
@@ -36,7 +36,9 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
     avatar.get_style_context()->add_class("avatar");
     bt_box.pack_start(avatar);
 
-    chats_bt.set_label("CHAT");
+//    chats_bt.set_label("CHAT");
+    chats_bt.set_image(
+            *Gtk::manage(new Gtk::Image("/home/ervinxie/Desktop/courier-client/UI-part/View/res/message-fill.png")));
     bt_box.pack_start(chats_bt);
     contacts_bt.set_label("CONT");
     bt_box.pack_start(contacts_bt);
@@ -54,16 +56,16 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
     bt_box.set_margin_left(10);
     bt_box.set_margin_right(10);
 
-    chats_bt.signal_clicked().connect([this]{
+    chats_bt.signal_clicked().connect([this] {
         changeWindow(CHATS);
     });
 
 
-    contacts_bt.signal_clicked().connect([this]{
+    contacts_bt.signal_clicked().connect([this] {
         changeWindow(CONTACTS);
     });
 
-    others_bt.signal_clicked().connect([this]{
+    others_bt.signal_clicked().connect([this] {
         changeWindow(OTHERS);
     });
 

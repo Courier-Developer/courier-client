@@ -24,8 +24,6 @@ int main(int argc, char *argv[])
     std::cout<<logIn.get_style_context()->get_background_color().to_string()<<std::endl;
 
     styleContext->add_provider_for_screen(screen, cssProvider,GTK_STYLE_PROVIDER_PRIORITY_USER);
-
-
-
+    
     return app->run(logIn);
 }

@@ -7,7 +7,10 @@
 
 
 GroupContactInfo::GroupContactInfo() {
-
+    set_valign(Gtk::ALIGN_FILL);
+    set_halign(Gtk::ALIGN_FILL);
+    set_border_width(10);
+    set_spacing(10);
     refAvatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     refAvatar = refAvatar->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
     avatarImage.property_pixbuf()=refAvatar;
@@ -16,9 +19,13 @@ GroupContactInfo::GroupContactInfo() {
     avatarNameBox.pack_start(groupName);
 
     pack_start(avatarNameBox, Gtk::PACK_SHRINK);
+    avatarNameBox.set_hexpand(true);
+    avatarNameBox.set_halign(Gtk::ALIGN_START);
 
     groupNotice.set_text("Notification");
     pack_start(groupNotice, Gtk::PACK_SHRINK);
+
+
     pack_start(scrolledWindow);
     scrolledWindow.add(contacts);
     contacts.append_column("avatar", groupContact.avatar);

@@ -5,6 +5,6 @@
 #ifndef COURIER_CLIENT_IMPLEMENT_H
 #define COURIER_CLIENT_IMPLEMENT_H
 
-#include "SignUp.h"
+#include "../Receiver.h"
 
 #endif //COURIER_CLIENT_IMPLEMENT_H
