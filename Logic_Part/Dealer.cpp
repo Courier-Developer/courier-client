@@ -990,7 +990,6 @@ void Dealer::login(const std::string &username, const std::string &password,
                                       std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
 
-
     //todo:
     if (/*****/1) {
 //        get_information_and_update();
@@ -1101,7 +1100,7 @@ void Dealer::addGroup(std::string name, std::vector<int> userList, std::function
         success(group);
 }
 
-void Dealer::exitGroup(GroupInfo *group, std::function<void(string)> success, std::function<void(std::string)> fail) {
+void Dealer::exitGroup(GroupInfo *group, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
     leave_group(group);
     success("可能成功了");
 }
@@ -1129,7 +1128,7 @@ MessageInfo *Dealer::newMessage(int type, std::string content, ChatInfo *chat) {
 }
 
 
-void Dealer::sendMessage(MessageInfo *msg, std::function<void(string)> success, std::function<void(std::string)> fail) {
+void Dealer::sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
     int result = send_message_to_server(*msg);
     if (result) {
         msg->setMessageId(result);
@@ -1143,6 +1142,7 @@ void Dealer::sendMessage(MessageInfo *msg, std::function<void(string)> success, 
 }
 
 void Dealer::updateMyInfo(std::function<void(std::string)> success, std::function<void(std::string)> fail) {
+    //todo: call for server
 
 }
 

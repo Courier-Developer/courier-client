@@ -4,7 +4,6 @@
 
 #ifndef COURIER_CLIENT_DEALER_H
 #define COURIER_CLIENT_DEALER_H
-
 #include "UI-Interface/UserInfo.h"
 #include "UI-Interface/ChatInfo.h"
 #include "UI-Interface/PacketInfo.h"
@@ -16,19 +15,19 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
-#include "feverrpc/feverrpc.hpp"
+//#include "feverrpc/feverrpc.hpp"
 
 #define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
 
+//extern Login Access_Key;
 class Dealer {
 private:
     int packetnum = 1;
-    std::string ip;
-
-//    FeverRPC::Client client;
+    std::string ip="191.2.153.99";
+//    FeverRPC::Client client("127.0.0.1");
     std::string getip();
 
     std::vector<PacketInfo> get_packet_from_server();
@@ -229,11 +228,11 @@ public:
     void addGroup(std::string name, std::vector<int> userList, std::function<void(GroupInfo *)> success,
                   std::function<void(std::string)> fail);
 
-    void exitGroup(GroupInfo *group, std::function<void(string)> success, std::function<void(std::string)> fail);
+    void exitGroup(GroupInfo *group, std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
     MessageInfo *newMessage(int type, std::string content, ChatInfo *chat); //1:文本消息 2.文件 3.图片
 
-    void sendMessage(MessageInfo *msg, std::function<void(string)> success, std::function<void(std::string)> fail);
+    void sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
     /**************************************Server*************************************/
 
