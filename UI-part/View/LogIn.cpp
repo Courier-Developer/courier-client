@@ -4,7 +4,9 @@
 
 #include <iostream>
 #include "implement.h"
-Receiver* receiver;
+
+Receiver *receiver;
+
 LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     get_style_context()->add_class("LogIn");
 
@@ -16,9 +18,9 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
 
     add(vbox);
-    vbox.pack_end(infoGrid,Gtk::PACK_SHRINK);
+    vbox.pack_end(infoGrid, Gtk::PACK_SHRINK);
     vbox.pack_start(welcomeImage);
-    welcomeImage.set(PixMan::TryOrDefaultUserAva(200,""));
+    welcomeImage.set(PixMan::TryOrDefaultUserAva(200, ""));
 
 
     infoGrid.set_border_width(10);
@@ -64,19 +66,20 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
 
-        dealer.login("", "", [this](std::vector<PacketInfo *>& plist, std::vector<GroupInfo *>& glist,
-                                    std::vector<ChatInfo *>& clist) {
+        dealer.login("", "", [this](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
+                                    std::vector<ChatInfo *> &clist) {
 
-            dealer.getMyprofile([&](UserInfo me){
-                receiver = new Receiver(plist,glist,clist,me);
+            dealer.getMyprofile([&](UserInfo *me) {
+                receiver = new Receiver(plist, glist, clist, me);
                 receiver->debug();
-                MainWindow *mainWindow = new MainWindow(this->app,plist,glist,clist);
+                MainWindow *mainWindow = new MainWindow(this->app, plist, glist, clist);
+                receiver->mainWindow = mainWindow;
 
                 this->app->add_window(*mainWindow);
                 mainWindow->show();
                 this->hide();
                 this->app->remove_window(*this);
-                },[this](std::string error){
+            }, [this](std::string error) {
                 std::cout << error << std::endl;
             });
 

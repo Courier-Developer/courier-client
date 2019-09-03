@@ -19,8 +19,9 @@ public:
     std::vector<ChatInfo *> &clist;
     std::map<ChatInfo *, Chatting *> c_ui;
     void changeTo(ChatInfo* c);
-protected:
     ChatList chatList;
+protected:
+
     Gtk::Frame frame;
 };
 

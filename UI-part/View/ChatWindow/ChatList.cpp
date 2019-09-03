@@ -80,24 +80,40 @@ ChatList::ChatList(ChatWindow *chatWindow,
 }
 
 void ChatList::addChat(ChatInfo *newChat) {
-    auto iter = refChatPeep->append();
-    iter->set_value(chatPeep.type, newChat->getTotype());
-    Glib::RefPtr<Gdk::Pixbuf> ava;
-    if (newChat->getTotype() == 1) {
-        iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToUser()->getNickName()));
-        iter->set_value(chatPeep.avatar,PixMan::TryOrDefaultUserAva(64,newChat->getToUser()->getAvatarPath()));
-    } else if (newChat->getTotype() == 2) {
-        iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToGroup()->getNickName()));
-        iter->set_value(chatPeep.avatar,PixMan::TryOrDefaultUserAva(64,newChat->getToGroup()->getAvatarPath()));
+    if(c_iter.count(newChat)==0) {
+        auto iter = refChatPeep->append();
+        iter->set_value(chatPeep.type, newChat->getTotype());
+        Glib::RefPtr<Gdk::Pixbuf> ava;
+        if (newChat->getTotype() == 1) {
+            iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToUser()->getNickName()));
+            iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToUser()->getAvatarPath()));
+        } else if (newChat->getTotype() == 2) {
+            iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToGroup()->getNickName()));
+            iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToGroup()->getAvatarPath()));
+        }
+        iter->set_value(chatPeep.c, newChat);
+        c_iter[newChat] = iter;
+        iter->set_value(chatPeep.msg_toread, newChat->getUnreadNumbers());
+        select->select(iter);
+    }else{
+        this->chatWindow->changeTo(newChat);
+        select->select(c_iter[newChat]);
     }
-    iter->set_value(chatPeep.c,newChat);
-    c_iter[newChat]=iter;
-    iter->set_value(chatPeep.msg_toread,newChat->getUnreadNumbers());
 }
+
+void ChatList::deleteChat(ChatInfo* c) {
+    auto iter = c_iter[c];
+    refChatPeep->erase(iter);
+    c_iter.erase(c);
+    chatWindow->changeTo(nullptr);
+}
+
 
 ChatList::~ChatList() {
 
 }
+
+
 
 
 

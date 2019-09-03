@@ -4,7 +4,7 @@
 
 #include "../implement.h"
 
-OtherWindow::OtherWindow(MainWindow* mainWindow) :myInfo(&receiver->me,128){
+OtherWindow::OtherWindow(MainWindow* mainWindow) :myInfo(receiver->me,128){
     this->mainWindow = mainWindow;
 
     set_border_width(10);

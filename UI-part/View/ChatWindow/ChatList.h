@@ -20,6 +20,8 @@ public:
     std::map<ChatInfo*,Gtk::TreeModel::iterator> c_iter;
     const int USER = 1;
     const int GROUP = 2;
+    void addChat(ChatInfo *newChat);
+    void deleteChat(ChatInfo* c);
 protected:
     Gtk::SearchEntry searchEntry;
 
@@ -53,7 +55,7 @@ protected:
 
     Glib::RefPtr<Gtk::TreeSelection> select;
 
-    void addChat(ChatInfo *newChat);
+
 
 };
 

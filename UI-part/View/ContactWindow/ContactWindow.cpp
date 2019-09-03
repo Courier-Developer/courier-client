@@ -20,7 +20,7 @@ ContactWindow::ContactWindow(MainWindow *mainWindow,
 
     pack_start(contactList,Gtk::PACK_SHRINK);
 
-    frame.add(*Gtk::manage(new ContactInfo));
+    frame.add(*Gtk::manage(new ContactInfo(plist[0]->getUsers()->at(0))));
     frame.set_shadow_type(Gtk::SHADOW_NONE);
     pack_start(frame);
     frame.set_hexpand(true);
