@@ -1,12 +1,11 @@
 #include "Dealer.h"
 #include <thread>
 #include <iostream>
-#include "feverrpc/feverrpc.hpp"
+//#include "feverrpc/feverrpc.hpp"
 Dealer dealer;
-int receivemessage()
-{
+//Login Access_Key;
 
-}
+//int receiveMsg(Mess)
 int main()
 {
     dealer.test();

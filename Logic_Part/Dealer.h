@@ -4,7 +4,6 @@
 
 #ifndef COURIER_CLIENT_DEALER_H
 #define COURIER_CLIENT_DEALER_H
-
 #include "UI-Interface/UserInfo.h"
 #include "UI-Interface/ChatInfo.h"
 #include "UI-Interface/PacketInfo.h"
@@ -24,12 +23,12 @@
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
 
+//extern Login Access_Key;
 class Dealer {
 private:
     int packetnum = 1;
-    std::string ip;
-
-//    FeverRPC::Client client;
+    std::string ip="191.2.153.99";
+//    FeverRPC::Client client("127.0.0.1");
     std::string getip();
 
     std::vector<PacketInfo> get_packet_from_server();
@@ -161,13 +160,13 @@ private:
 
     bool UI_delete_packet(PacketInfo *packet);
 
-    void UI_create_group(const std::string &groupname, const std::vector<int> &memberids);
+    GroupInfo *UI_create_group(const std::string &groupname, const std::vector<int> &memberids);
 
-    void UI_create_group(const std::string &groupname, const std::vector<UserInfo *> &members);
+    GroupInfo *UI_create_group(const std::string &groupname, const std::vector<UserInfo *> &members);
 
     void update_local_group(const GroupInfo &group);
 
-    void leave_group(GroupInfo *group);
+    bool leave_group(GroupInfo *group);
 
     void local_delete_group(const GroupInfo &group);
 
@@ -181,6 +180,8 @@ private:
 
     void update_server_groupinfo(const int &groupid, const std::string &name, const std::string &avatorpath,
                                  const std::string &notice);
+
+    void updateMyInfo(std::function<void(std::string)> success,std::function<void(std::string)> fail);
 
 public:
     /************************************** Data ***************************************/
@@ -218,13 +219,22 @@ public:
     void moveToPacket(UserInfo *user, PacketInfo *packet, std::function<void(std::string)> success,
                       std::function<void(std::string)> fail);
 
-    void addPacket(std::string name,std::function<void(PacketInfo*)> success,std::function<void(std::string)> fail);
+    void addPacket(std::string name, std::function<void(PacketInfo *)> success, std::function<void(std::string)> fail);
 
-    void renamePacket(std::string name,PacketInfo* packet,std::function<void(std::string)>success,std::function<void(std::string)> fail);
+    void renamePacket(std::string name, PacketInfo *packet, std::function<void(std::string)> success,
+                      std::function<void(std::string)> fail);
 
-    void deletePacket(PacketInfo* packet,std::function<void(std::string)> ok,std::function<void(std::string)> fail);
+    void deletePacket(PacketInfo *packet, std::function<void(std::string)> ok, std::function<void(std::string)> fail);
 
-    void addGroup(std::string name,std::vector<int> userList,std::function<void(GroupInfo*)> success,std::function<void()>);
+    void addGroup(std::string name, std::vector<int> userList, std::function<void(GroupInfo *)> success,
+                  std::function<void(std::string)> fail);
+
+    void exitGroup(GroupInfo *group, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    MessageInfo *newMessage(int type, std::string content, ChatInfo *chat); //1:文本消息 2.文件 3.图片
+
+    void sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
     /**************************************Server*************************************/
 
     void server_ask_to_add_friend(const UserInfo &user);
@@ -237,7 +247,7 @@ public:
 
     void be_added_in_group(const GroupInfo &group);
 
-    void someone_leave_group(const int &groupid, const int &userid);
+//    void someone_leave_group(const int &groupid, const int &userid);
 
     void someone_online(const int &id);
 
