@@ -12,6 +12,7 @@
 #include "UI-Interface/GroupInfo.h"
 #include <map>
 #include <string>
+#include <cstring>
 #include <functional>
 #include <net/if.h>
 #include <sys/ioctl.h>

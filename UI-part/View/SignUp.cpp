@@ -10,7 +10,7 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
 
     set_title("Sign Up at Courier");
     set_position(Gtk::WIN_POS_CENTER);
-    set_size_request(300, 50);
+    set_size_request(300, 500);
 
     add(grid);
     grid.set_border_width(10);

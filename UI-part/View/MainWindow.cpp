@@ -28,33 +28,34 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
 
     add(box);
 
-    box.pack_start(bt_box, false, false);
+    box.pack_start(avatar_button_box, false, false);
 
     auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
     avatar.set(ava);
     avatar.get_style_context()->add_class("avatar");
-    bt_box.pack_start(avatar);
+    avatar_button_box.pack_start(avatar);
+    avatar_button_box.get_style_context()->add_class("mainWindowAvatarButtonBox");
 
 //    chats_bt.set_label("CHAT");
     chats_bt.set_image(
             *Gtk::manage(new Gtk::Image("/home/ervinxie/Desktop/courier-client/UI-part/View/res/message-fill.png")));
-    bt_box.pack_start(chats_bt);
+    avatar_button_box.pack_start(chats_bt);
     contacts_bt.set_label("CONT");
-    bt_box.pack_start(contacts_bt);
+    avatar_button_box.pack_start(contacts_bt);
     others_bt.set_label("OTHE");
-    bt_box.pack_start(others_bt);
+    avatar_button_box.pack_start(others_bt);
 
 
-    bt_box.set_valign(Gtk::ALIGN_START);
-    bt_box.set_halign(Gtk::ALIGN_CENTER);
-    bt_box.set_hexpand(false);
-    bt_box.set_vexpand(false);
-    bt_box.set_spacing(20);
-    bt_box.set_margin_top(10);
-    bt_box.set_margin_bottom(10);
-    bt_box.set_margin_left(10);
-    bt_box.set_margin_right(10);
+    avatar_button_box.set_valign(Gtk::ALIGN_START);
+    avatar_button_box.set_halign(Gtk::ALIGN_CENTER);
+    avatar_button_box.set_hexpand(false);
+    avatar_button_box.set_vexpand(false);
+    avatar_button_box.set_spacing(20);
+    avatar_button_box.set_margin_top(10);
+    avatar_button_box.set_margin_bottom(10);
+    avatar_button_box.set_margin_left(10);
+    avatar_button_box.set_margin_right(10);
 
     chats_bt.signal_clicked().connect([this] {
         changeWindow(CHATS);

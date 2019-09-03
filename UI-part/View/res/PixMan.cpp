@@ -7,7 +7,7 @@
 Glib::RefPtr<Gdk::Pixbuf> PixMan::TryOrDefaultUserAva(int size, std::string path) {
     Glib::RefPtr<Gdk::Pixbuf> avatar;
     if(path=="")
-        avatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
+        avatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Desktop/courier-client/UI-part/View/res/welcome.gif");
     else {
         try {
             avatar = Gdk::Pixbuf::create_from_file(path);

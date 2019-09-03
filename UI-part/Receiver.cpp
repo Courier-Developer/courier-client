@@ -11,9 +11,7 @@ Receiver::Receiver(std::vector<PacketInfo *> &plist,
         plist(plist),
         glist(glist),
         clist(clist),
-        me(me) {
-
-}
+        me(me) {}
 
 void Receiver::debug() {
     std::cout << me.getNickName() << std::endl;

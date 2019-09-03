@@ -93,7 +93,6 @@ Chatting::Chatting(ChatWindow *chatWindow,
     });
     refMsgText->signal_insert().connect(
             [this](const Gtk::TextBuffer::iterator &it, const Glib::ustring &ustring, int x) {
-                std::cout << x << std::endl;
                 if (ustring.length() == 1 && ustring[0] == '\n') {
                     refMsgText->set_text("");
                 }
