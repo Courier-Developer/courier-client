@@ -13,14 +13,23 @@
 #include <map>
 #include <string>
 #include <functional>
+#include <net/if.h>
+#include <sys/ioctl.h>
+#include <arpa/inet.h>
+
+#define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
 
 class Dealer {
 private:
-    int packetnum=1;
-    //get something from server or local
+    int packetnum = 1;
+    std::string ip;
+
+//    FeverRPC::Client client;
+    std::string getip();
+
     std::vector<PacketInfo> get_packet_from_server();
 
     void update_local_packet(const std::vector<PacketInfo> &packet);
@@ -33,11 +42,7 @@ private:
 
     void get_information_and_update();
 
-//    void get_user_list_form_local();
-
     std::vector<MessageInfo> get_messages_from_local();
-
-//    void get_packet_list();
 
     MessageInfo *cope_new_message(const MessageInfo &msg);
 
@@ -47,33 +52,23 @@ private:
 
     std::vector<MessageInfo> get_message_from_server();
 
-//    void get_user_list();
-
-//    void get_group_list();
-
-//    void get_message();
-
-    GroupInfo* add_group(GroupInfo newgroup);
+    GroupInfo *add_group(GroupInfo newgroup);
 
     std::vector<UserInfo> get_users_from_server();
 
-//    void update_local_user();
-
-//    void log_in(std::string username, std::string password, std::function<void()> success, std::function<void()> fail);
-
-    UserInfo *add_user(const unsigned int &tmpmember);
+    UserInfo *add_user(const int &tmpmember);
 
     UserInfo *add_user(const std::string &tmpmember);
 
-    UserInfo find_user_from_server(const unsigned int &tmpmember);
+    UserInfo find_user_from_server(const int &tmpmember);
 
     UserInfo find_user_from_server(const std::string &username);
 
     UserInfo *add_user(const UserInfo &user);
 
-    PacketInfo *add_packet(int packetid,std::string name="Stranger");
+    PacketInfo *add_packet(int packetid, std::string name = "Stranger");
 
-    void delete_friend(const unsigned int &id);
+    void delete_friend(const int &id);
 
     void delete_friend(UserInfo *oldfriend);
 
@@ -81,7 +76,7 @@ private:
 
     PacketInfo *get_packet_from_id(int packetid);
 
-    void local_delete_friend(const UserInfo& oldfriend);
+    void local_delete_friend(const UserInfo &oldfriend);
 
     void update_local_user(const UserInfo &userinfo);
 
@@ -91,7 +86,7 @@ private:
 
     void add_local_message(const MessageInfo &newmsg);
 
-    MessageInfo* send_message(const std::string &content,ChatInfo *chat);
+    MessageInfo *send_message(int type, const std::string &content, ChatInfo *chat);
 
     std::vector<MessageInfo> get_histroy_of_user_from_server(UserInfo *user);
 
@@ -115,8 +110,9 @@ private:
 
     void server_delete_packet(const PacketInfo &packet);
 
-    bool tell_server_accept_friend(UserInfo newfriend);
+    void tell_server_accept_friend(UserInfo newfriend);
 
+    int ask_server_to_create_group(const std::string &name, const std::vector<int> &members);
 
     /******************************************Test**************************************/
     UserInfo test_create_myprofile();
@@ -128,21 +124,14 @@ private:
     std::vector<GroupInfo> test_create_group();
 
     std::vector<MessageInfo> test_create_message();
+
     /************************************************************************************/
-public:
-    std::map<unsigned int, UserInfo *> UserMap;
-    std::vector<PacketInfo *> PacketList;
-    std::vector<GroupInfo *> GroupList;
-    std::map<int, PacketInfo *> PacketMap;
-    std::map<int, GroupInfo *> GroupMap;
-    std::vector<UserInfo *> UserList;
-    std::vector<ChatInfo *> ChatList;
+
+    void UI_accept_add_friend(int userid, PacketInfo *packet);
 
     void AddChat(ChatInfo *newchat);
 
-    UserInfo MyProfile;
-
-    void UI_send_message(const std::string &content,ChatInfo* chat);
+    void UI_send_message(int type, const std::string &content, ChatInfo *chat);
 
     void UI_delete_friend(UserInfo *oldfriend);
 
@@ -150,43 +139,108 @@ public:
 
     ChatInfo *get_chat(GroupInfo *group);
 
-    void UI_add_friend(UserInfo *user,int packetid=1);
+    void UI_add_friend(UserInfo *user, int packetid = 1);
 
-    void UI_move_friend(UserInfo *user,int packetid=1);
+    void UI_move_friend(UserInfo *user, int packetid = 1);
 
-    void UI_add_friend(UserInfo *user,PacketInfo* packet);
+    void UI_add_friend(UserInfo *user, PacketInfo *packet);
 
-    void UI_move_friend(UserInfo *user,PacketInfo* packet);
+    void UI_move_friend(UserInfo *user, PacketInfo *packet);
 
     void UI_search_user(const std::string &username);
 
-    void UI_search_user(const unsigned int& id);
+    void UI_search_user(const int &id);
 
-    void UI_get_histroy(ChatInfo* chat);
+    void UI_get_histroy(ChatInfo *chat);
 
-    void UI_add_packet(const std::string &packetname);
+    PacketInfo *UI_add_packet(const std::string &packetname);
 
-    void UI_change_packetname(PacketInfo* packet,const std::string &name);
+    bool UI_change_packetname(PacketInfo *packet, const std::string &name);
 
-    void UI_delete_packet(PacketInfo *packet);
+    bool UI_delete_packet(PacketInfo *packet);
+
+    void UI_create_group(const std::string &groupname, const std::vector<int> &memberids);
+
+    void UI_create_group(const std::string &groupname, const std::vector<UserInfo *> &members);
+
+    void update_local_group(const GroupInfo &group);
+
+    void leave_group(GroupInfo *group);
+
+    void local_delete_group(const GroupInfo &group);
+
+    int tell_server_to_leave_group(const GroupInfo &group);
+
+    void update_groupinfo(const int &groupid, const std::string &name, const std::string &avatorpath,
+                          const std::string &notice);
+
+    void update_local_groupinfo(const int &groupid, const std::string &name, const std::string &avatorpath,
+                                const std::string &notice);
+
+    void update_server_groupinfo(const int &groupid, const std::string &name, const std::string &avatorpath,
+                                 const std::string &notice);
+
+public:
+    /************************************** Data ***************************************/
+    std::map<int, UserInfo *> UserMap;
+    std::vector<PacketInfo *> PacketList;
+    std::vector<GroupInfo *> GroupList;
+    std::map<int, PacketInfo *> PacketMap;
+    std::map<int, GroupInfo *> GroupMap;
+    std::vector<UserInfo *> UserList;
+    std::vector<ChatInfo *> ChatList;
+    UserInfo MyProfile;
+    UserInfo MyProfileCopy;
 
     /************************************** UI ***************************************/
 
-    void login(const std::string &username,const std::string &password,std::function<void(std::vector<PacketInfo *> &,std::vector<GroupInfo *> &,std::vector<ChatInfo *> &)> success,std::function<void(std::string)> fail);
 
-    void UI_accept_add_friend(unsigned int userid,PacketInfo *packet);
+    void login(const std::string &username, const std::string &password,
+               std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+                                  std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
 
-    void UI_get_myprofile(std::function<void(const UserInfo &)> getprofile,std::function<void(std::string)> error);
 
+    void getMyprofile(std::function<void(const UserInfo &)> getprofile, std::function<void(std::string)> error);
 
+    void queryUser(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
+
+    void addFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void agreefriend(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
+
+    void deleteFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void chatWith(UserInfo *user, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail);
+
+    void chatWith(GroupInfo *group, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail);
+
+    void moveToPacket(UserInfo *user, PacketInfo *packet, std::function<void(std::string)> success,
+                      std::function<void(std::string)> fail);
+
+    void addPacket(std::string name,std::function<void(PacketInfo*)> success,std::function<void(std::string)> fail);
+
+    void renamePacket(std::string name,PacketInfo* packet,std::function<void(std::string)>success,std::function<void(std::string)> fail);
+
+    void deletePacket(PacketInfo* packet,std::function<void(std::string)> ok,std::function<void(std::string)> fail);
     /**************************************Server*************************************/
 
-    bool server_ask_to_add_friend(const UserInfo user);
+    void server_ask_to_add_friend(const UserInfo &user);
 
-    bool server_delete_friend(const UserInfo& oldfriend);
+    void server_delete_friend(const UserInfo &oldfriend);
 
-    bool receive_new_message(const MessageInfo &msg);
+    void receive_new_message(const MessageInfo &msg);
 
+    void friend_be_accepted(const UserInfo &user);
+
+    void be_added_in_group(const GroupInfo &group);
+
+    void someone_leave_group(const int &groupid, const int &userid);
+
+    void someone_online(const int &id);
+
+    void someone_offline(const int &id);
+
+    void update_friend(const UserInfo &user);
 
     /**************************************Test*************************************/
 

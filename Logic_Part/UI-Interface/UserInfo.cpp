@@ -5,7 +5,7 @@
 #include "UserInfo.h"
 
 
-unsigned int UserInfo::getUserId() const {
+int UserInfo::getUserId() const {
     return UserId;
 }
 
@@ -47,7 +47,7 @@ int UserInfo::getStatus() const {
     return Status;
 }
 
-void UserInfo::setUserId(unsigned int UserId) {
+void UserInfo::setUserId(int UserId) {
     UserInfo::UserId = UserId;
 }
 
@@ -84,7 +84,7 @@ UserInfo::~UserInfo() {
 //        delete InGroups;
 }
 
-UserInfo::UserInfo(unsigned int userId, const std::string &userName, const std::string &nickName,
+UserInfo::UserInfo(int userId, const std::string &userName, const std::string &nickName,
                    const std::string &signature, const std::string &avatorPath, int status, int packet) : UserId(
         userId), UserName(userName), NickName(nickName), Signature(signature), AvatorPath(avatorPath), Status(status),
                                                                                                           packet(packet) {}

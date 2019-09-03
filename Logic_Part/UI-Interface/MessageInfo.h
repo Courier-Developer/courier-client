@@ -10,8 +10,8 @@
 
 class MessageInfo {
 private:
-    unsigned int SenderId;
-    unsigned int ReceiverId;
+    int SenderId;
+    int ReceiverId;
     int MessageId;
     std::string Content;
     int Status; //是否发送成功
@@ -28,10 +28,10 @@ public:
 
     void setMessageId(int messageId);
 
-    MessageInfo(unsigned int senderId, unsigned int receiverId, int messageId, const std::string &content, int status,
+    MessageInfo(int senderId, int receiverId, int messageId, const std::string &content, int status,
                 int type, int contentKind, const DateTime &createdTime);
 
-    MessageInfo(unsigned int senderId, unsigned int receiverId, const std::string &content, int status, int type,
+    MessageInfo(int senderId, int receiverId, const std::string &content, int status, int type,
                 int contentKind, const DateTime &createdTime);
 
     UserInfo *getSender();
@@ -42,9 +42,9 @@ public:
 
     DateTime getCreateTime();
 
-    unsigned int getSenderId() const;
+    int getSenderId() const;
 
-    unsigned int getReceiverId() const;
+    int getReceiverId() const;
 
     int getContentKind() const;
 

@@ -8,6 +8,7 @@
 UserInfo *MessageInfo::getSender() {
     return Sender;
 }
+
 // todo:
 ChatInfo *MessageInfo::getChat() {
     return InChat;
@@ -29,15 +30,15 @@ int MessageInfo::getStatus() {
     return Status;
 }
 
-unsigned int MessageInfo::getSenderId() const {
+int MessageInfo::getSenderId() const {
     return SenderId;
 }
 
-unsigned int MessageInfo::getReceiverId() const {
+int MessageInfo::getReceiverId() const {
     return ReceiverId;
 }
 
-MessageInfo::MessageInfo(unsigned int senderId, unsigned int receiverId, const std::string &content, int status,
+MessageInfo::MessageInfo(int senderId, int receiverId, const std::string &content, int status,
                          int type, int contentKind, const DateTime &createdTime) : SenderId(senderId),
                                                                                    ReceiverId(receiverId),
                                                                                    Content(content), Status(status),
@@ -66,7 +67,7 @@ MessageInfo::~MessageInfo() {
 
 }
 
-MessageInfo::MessageInfo(unsigned int senderId, unsigned int receiverId, int messageId, const std::string &content,
+MessageInfo::MessageInfo(int senderId, int receiverId, int messageId, const std::string &content,
                          int status, int type, int contentKind, const DateTime &createdTime) : SenderId(senderId),
                                                                                                ReceiverId(receiverId),
                                                                                                MessageId(messageId),

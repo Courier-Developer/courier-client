@@ -9,7 +9,7 @@
 
 class DateTime {
 public:
-    int t[6]={};
+    int t[6] = {};
     int &y = t[0];
     int &M = t[1];
     int &d = t[2];
@@ -17,21 +17,26 @@ public:
     int &m = t[4];
     int &s = t[5];
 
-    DateTime(){}
-    DateTime(int y, int M, int d, int h, int m, int s){
-        t[0]=y;
-        t[1]=M;
-        t[2]=d;
-        t[3]=h;
-        t[4]=m;
-        t[5]=s;
+    DateTime() {}
+    DateTime(const DateTime& b){
+        for(int i=0;i<6;i++){
+            t[i]=b.t[i];
+        }
+    }
+    DateTime(int y, int M, int d, int h, int m, int s) {
+        t[0] = y;
+        t[1] = M;
+        t[2] = d;
+        t[3] = h;
+        t[4] = m;
+        t[5] = s;
     }
 
-    DateTime(std::string timestr,std::string format="%d-%d-%d %d:%d:%d"){
+    DateTime(std::string timestr, std::string format = "%d-%d-%d %d:%d:%d") {
         sscanf(timestr.c_str(), format.c_str(), &y, &M, &d, &h, &m, &s);
     }
 
-    bool operator<(const DateTime &b) const{
+    bool operator<(const DateTime &b) const {
         for (int i = 0; i < 6; i++) {
             if (t[i] < b.t[i]) {
                 return true;
@@ -42,7 +47,7 @@ public:
         return false;
     }
 
-    void setDateTime(std::string datetime, std::string format="%d-%d-%d %d:%d:%d") {
+    void setDateTime(std::string datetime, std::string format = "%d-%d-%d %d:%d:%d") {
         sscanf(datetime.c_str(), format.c_str(), &y, &M, &d, &h, &m, &s);
     }
 
