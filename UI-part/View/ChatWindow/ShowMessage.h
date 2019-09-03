@@ -6,8 +6,14 @@
 #define COURIER_CLIENT_SHOWMESSAGE_H
 
 #include "HistroyMessage.h"
-class ShowMessage {
-
+class ShowMessage : public Gtk::HBox{
+public:
+    ShowMessage(MessageInfo* m,bool showNickName= false);
+    MessageInfo* m;
+    Gtk::Image avatar;
+    Gtk::VBox message;
+    Gtk::Label nickName,content;
+    Gtk::VBox messageBox;
 };
 
 

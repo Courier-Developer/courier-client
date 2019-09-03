@@ -48,30 +48,7 @@ Chatting::Chatting(ChatWindow *chatWindow,
     pack_start(*chatNameFrame, Gtk::PACK_SHRINK);
 
 
-    msgList.set_vexpand(true);
-    msgList.set_valign(Gtk::ALIGN_FILL);
-
-    msgList.append_column("Avatar", message.senderAvatar);
-    msgList.append_column("content", message.content);
-    msgList.set_headers_visible(false);
-
-    messages = Gtk::ListStore::create(message);
-    filter = Gtk::TreeModelFilter::create(messages);
-    msgList.set_model(filter);
-    filter->set_visible_func([this](const Gtk::TreeModel::const_iterator &iter) -> bool {
-        Gtk::TreeModel::Row row = *iter;
-        return true;
-    });
-
-    for (int i = 0; i < 100; i++) {
-        auto row = (*messages->append());
-        row[message.content] = "\nHello!" + std::to_string(i) + "\n";
-        auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-        ava = ava->scale_simple(32, 32, Gdk::INTERP_BILINEAR);
-        row[message.senderAvatar] = ava;
-    }
-
-
+    msgList.set_spacing(10);
     scrolledWindow.add(msgList);
     scrolledWindow.set_vexpand(true);
     scrolledWindow.set_valign(Gtk::ALIGN_FILL);
@@ -118,10 +95,13 @@ Chatting::Chatting(ChatWindow *chatWindow,
             [this](const Gtk::TextBuffer::iterator &it, const Glib::ustring &ustring, int x) {
                 std::cout << x << std::endl;
                 if (ustring.length() == 1 && ustring[0] == '\n') {
-                    this->addMessage(refMsgText->get_text());
                     refMsgText->set_text("");
                 }
             });
+
+    for(auto m:*c->getMsgList()){
+        addMessage(m);
+    }
 
     show_all_children();
 }
@@ -130,13 +110,6 @@ Chatting::~Chatting() {
 
 }
 
-
-void Chatting::addMessage(Glib::ustring content) {
-    auto iter = messages->append();
-    auto row = *iter;
-    row[message.content] = content;
-    auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    ava = ava->scale_simple(32, 32, Gdk::INTERP_BILINEAR);
-    row[message.senderAvatar] = ava;
-    msgList.scroll_to_row(messages->get_path(iter));
+void Chatting::addMessage(MessageInfo*m) {
+    msgList.pack_start(*Gtk::manage(new ShowMessage(m, true)),Gtk::PACK_SHRINK);
 }
