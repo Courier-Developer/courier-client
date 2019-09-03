@@ -26,7 +26,9 @@ protected:
     Gtk::Button expressionBt;
     Gtk::Button fileBt;
     Gtk::Button historyBt;
-    Gtk::Button chatDetailBt;
+
+    Gtk::Button chatDetailBt,cancelBt;
+
 
     Gtk::TextView msgEdit;
     Glib::RefPtr<Gtk::TextBuffer> refMsgText;

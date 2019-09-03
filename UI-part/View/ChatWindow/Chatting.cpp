@@ -42,6 +42,13 @@ Chatting::Chatting(ChatWindow *chatWindow,
 //        this->chatWindow->showingDetail = !this->chatWindow->showingDetail;
 
     });
+
+    cancelBt.set_label("Quit This");
+    cancelBt.signal_clicked().connect([this]{
+       this->chatWindow->chatList.deleteChat(this->c);
+    });
+    chatNameAndDetail->pack_end(cancelBt);
+
     chatNameFrame->add(*chatNameAndDetail);
 
     chatName.set_padding(10, 10);

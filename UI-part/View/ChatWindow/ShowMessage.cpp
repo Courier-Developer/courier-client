@@ -20,20 +20,23 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
     avatar.set(PixMan::TryOrDefaultUserAva(32, m->getSender()->getAvatarPath()));
     if (showNickName) {
         messageBox.pack_start(nickName, Gtk::PACK_SHRINK);
+        nickName.set_line_wrap(true);
     }
     messageBox.pack_start(message);
     message.pack_start(content);
+    content.set_line_wrap(true);
 
-    content.get_style_context()->add_class("ChatMessage");
 
-    std::cout<<receiver->me.getNickName()<<std::endl;
-    std::cout<<m->getSender()->getUserId()<<" "<<receiver->me.getUserId()<<std::endl;
-    if (m->getSender()->getUserId() == receiver->me.getUserId()) {
+    std::cout<<receiver->me->getNickName()<<std::endl;
+    std::cout<<m->getSender()->getUserId()<<" "<<receiver->me->getUserId()<<std::endl;
+    if (m->getSender()->getUserId() == receiver->me->getUserId()) {
+        content.get_style_context()->add_class("myChatMessage");
         set_halign(Gtk::ALIGN_END);
         pack_end(avatar);
         nickName.set_halign(Gtk::ALIGN_END);
         pack_end(messageBox);
     } else {
+        content.get_style_context()->add_class("otherChatMessage");
         set_halign(Gtk::ALIGN_START);
         pack_start(avatar);
         nickName.set_halign(Gtk::ALIGN_START);

@@ -26,9 +26,14 @@ public:
     std::vector<PacketInfo *>& plist;
     std::vector<GroupInfo *>& glist;
     std::vector<ChatInfo *>& clist;
+
+    ChatWindow chatWindow;
+    ContactWindow contactWindow;
+    OtherWindow otherWindow;
+    void changeWindow(int to);
 protected:
 
-    void changeWindow(int to);
+
 
     Gtk::VBox avatar_button_box;
     Gtk::HBox box;
@@ -37,9 +42,7 @@ protected:
 
 
     Gtk::Frame windowFrame;
-    ChatWindow chatWindow;
-    ContactWindow contactWindow;
-    OtherWindow otherWindow;
+
 
 
 

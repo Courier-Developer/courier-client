@@ -36,14 +36,14 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         addNewFriendBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             Gtk::SearchEntry newUserEntry;
-            ContactInfo newUser;
+//            ContactInfo newUser;
             newUserEntry.set_placeholder_text("Enter the target UserName");
             newUserEntry.signal_changed().connect([&] {
                 newUserEntry.get_text();
             });
 
             dialog.get_content_area()->pack_start(newUserEntry);
-            dialog.get_content_area()->pack_start(newUser);
+//            dialog.get_content_area()->pack_start(newUser);
 
             dialog.add_button("Back", 0);
             dialog.show_all_children();

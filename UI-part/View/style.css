@@ -36,9 +36,13 @@ label{
 
 
 }
-.ChatMessage{
+.myChatMessage{
+    color: black;
+    background-color: lightgray;
+}
+.otherChatMessage{
     color: white;
-    background-color: blue;
+    background-color: darkslategray;
 }
 .mainWindowAvatarButtonBox{
     background-color: azure;

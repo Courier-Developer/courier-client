@@ -25,9 +25,14 @@ ChatWindow::ChatWindow(MainWindow *mainWindow,
 }
 
 void ChatWindow::changeTo(ChatInfo *c) {
-    frame.remove();
-    frame.add(* Gtk::manage(new Chatting(this,c)));
-    frame.show_all_children();
+    if(c==nullptr){
+        frame.remove();
+    }else {
+
+        frame.remove();
+        frame.add(*Gtk::manage(new Chatting(this, c)));
+        frame.show_all_children();
+    }
 }
 
 
