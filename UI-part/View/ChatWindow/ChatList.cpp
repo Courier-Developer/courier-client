@@ -95,6 +95,7 @@ void ChatList::addChat(ChatInfo *newChat) {
         c_iter[newChat] = iter;
         iter->set_value(chatPeep.msg_toread, newChat->getUnreadNumbers());
         select->select(iter);
+
     }else{
         this->chatWindow->changeTo(newChat);
         select->select(c_iter[newChat]);
@@ -112,9 +113,5 @@ void ChatList::deleteChat(ChatInfo* c) {
 ChatList::~ChatList() {
 
 }
-
-
-
-
 
 
