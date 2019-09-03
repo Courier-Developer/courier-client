@@ -4,10 +4,8 @@
 
 该框架采用的Socket连接均由Server监听，分别负责双方的事件调用。
 
-由于还在开发阶段，因此暂时不做文件分割。
-
-- feverrpc.cpp rpc主要代码
-- lock.cpp 线程管理及通信
+- feverrpc. rpc主要代码
+- threadmanager. 线程管理及通信
 
 ## For Client Devloper
 
@@ -74,7 +72,7 @@ int main(int argc, char const *argv[]) {
 ```
 ### 退出时
 
-优先退出c2s的线程，如果收到了`已在异地登录`的通知，也需自行退出c2s的线程。
+首先，客户端会收到“异地登录”的通知，然后会抛出异常。
 
 
 ## For Server Developer

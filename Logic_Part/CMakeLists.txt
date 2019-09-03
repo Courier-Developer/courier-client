@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.14)
 project(Logic_Part)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 
 INCLUDE_DIRECTORIES(msgpack-c/include)
 INCLUDE_DIRECTORIES(../UI-part/Interface)
 
+INCLUDE_DIRECTORIES(FeverRPC/include)
 #AUX_SOURCE_DIRECTORY(Interface DIR_INT)
 
 AUX_SOURCE_DIRECTORY(UI-Interface DIR_CLS)

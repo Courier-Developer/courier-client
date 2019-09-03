@@ -1,6 +1,6 @@
 # FeverRPC
 
-一个基于Socket长连接双向RPC框架，嵌入了登录认证功能。
+一个基于Socket长连接双向RPC框架，嵌入了登录认证功能，和线程间通信功能。
 
 至于为什么叫FeverRPC，是因为写的时候发烧了。
 
@@ -41,7 +41,7 @@ int main(){
 - 双向RPC
 - 支持任意长度、类型参数绑定
 - 基于Msgpack，可自定义序列化类型
-- Socket支持任意大小传输功能（int)
+- Socket支持任意大小传输功能 (int)
 - 支持多线程，有多线程调度模块
 - 服务端线程可相互通信
 - 嵌入登录功能
@@ -49,6 +49,7 @@ int main(){
 ## Not Support
 
 - void返回值
+- 绑定非静态成员函数
 
 ## Dependencies
 
@@ -57,6 +58,10 @@ int main(){
 - msgpack
 - C++17    `std::apply`
 - Linux  未在其他平台上进行过测试
+
+## Test
+
+你可以运行`make all`编译`bin/server`,`bin/client`两个文件，接着运行他们，就能看到服务启动了
 
 ## Devlopment
 
