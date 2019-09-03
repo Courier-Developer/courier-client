@@ -6,7 +6,7 @@
 #define GTKMM_OTHERWINDOW_H
 
 #include <gtkmm.h>
-#include "../ContactWindow/GroupContactInfo.h"
+#include "../ContactWindow/PacketContactInfo.h"
 
 
 class MainWindow;

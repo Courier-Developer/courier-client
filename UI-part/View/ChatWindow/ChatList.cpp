@@ -63,6 +63,7 @@ ChatList::ChatList(ChatWindow *chatWindow,
     chatListView.set_model(sort);
 
     select = chatListView.get_selection();
+
     select->signal_changed().connect([this]{
         Gtk::TreeModel::iterator iter = select->get_selected();
         if (iter) {
@@ -94,11 +95,9 @@ void ChatList::addChat(ChatInfo *newChat) {
         iter->set_value(chatPeep.c, newChat);
         c_iter[newChat] = iter;
         iter->set_value(chatPeep.msg_toread, newChat->getUnreadNumbers());
-        select->select(iter);
 
     }else{
         this->chatWindow->changeTo(newChat);
-        select->select(c_iter[newChat]);
     }
 }
 

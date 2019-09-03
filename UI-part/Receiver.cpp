@@ -60,7 +60,7 @@ void Receiver::friendRequest(UserInfo *) {
 
     } else if(results==0){
 
-    }else{
+    }else if(results==-1){
 
     }
 }

@@ -107,6 +107,10 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
                     this->contactWindow->frame.remove();
                     this->contactWindow->frame.add(*Gtk::manage(new GroupContactInfo(iter->get_value(contact.g))));
                     this->contactWindow->frame.show_all_children();
+                }else if(iter->get_value(contact.type)==PACKET){
+                    this->contactWindow->frame.remove();
+                    this->contactWindow->frame.add(*Gtk::manage(new PacketContactInfo(iter->get_value(contact.p))));
+                    this->contactWindow->frame.show_all_children();
                 }
 
             }
@@ -155,6 +159,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         gp_iter->set_value(contact.type, PACKET);
         gp_iter->set_value(contact.nickName, Glib::ustring("群聊"));
         gp_iter->set_value(contact.sortPriority, 0);
+        gp_iter->set_value(contact.p, (PacketInfo*)nullptr);
         for (auto g:glist) {
             addNewGroup(g);
         }
