@@ -16,6 +16,7 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
+#include "feverrpc/feverrpc.hpp"
 
 #define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
@@ -200,7 +201,7 @@ public:
                                   std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
 
 
-    void getMyprofile(std::function<void(const UserInfo &)> getprofile, std::function<void(std::string)> error);
+    void getMyprofile(std::function<void(UserInfo &)> getprofile, std::function<void(std::string)> error);
 
     void queryUser(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
 

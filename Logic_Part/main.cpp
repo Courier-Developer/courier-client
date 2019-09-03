@@ -1,8 +1,12 @@
 #include "Dealer.h"
 #include <thread>
 #include <iostream>
-
+#include "feverrpc/feverrpc.hpp"
 Dealer dealer;
+int receivemessage()
+{
+
+}
 int main()
 {
     dealer.test();

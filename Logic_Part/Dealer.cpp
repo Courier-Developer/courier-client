@@ -1001,7 +1001,7 @@ void Dealer::login(const std::string &username, const std::string &password,
 
 
 void
-Dealer::getMyprofile(std::function<void(const UserInfo &)> getprofile, std::function<void(std::string)> error) {
+Dealer::getMyprofile(std::function<void(UserInfo &)> getprofile, std::function<void(std::string)> error) {
     if (MyProfile.getUserId() != 0)
         getprofile(MyProfile);
     else {
