@@ -10,7 +10,7 @@ std::vector<UserInfo *> *GroupInfo::getUsers() {
     if (Members)
         return Members;
     else
-        return Members=new std::vector<UserInfo *>;
+        return Members = new std::vector<UserInfo *>;
 }
 
 // todo:
@@ -25,7 +25,7 @@ ChatInfo *GroupInfo::getChat() {
     }
 }
 
-unsigned int GroupInfo::getGroupId() {
+int GroupInfo::getGroupId() {
     return GroupId;
 }
 
@@ -53,7 +53,7 @@ GroupInfo::~GroupInfo() {
 //        delete Members;
 }
 
-const std::vector<unsigned int> &GroupInfo::getMemberId() const {
+const std::vector<int> &GroupInfo::getMemberId() const {
     return MemberId;
 }
 
@@ -66,8 +66,8 @@ void GroupInfo::AddUser(UserInfo *user) {
     }
 }
 
-GroupInfo::GroupInfo(unsigned int groupId, const std::string &nickName, const std::string &avatorPath,
-                     const std::string &notice, const std::vector<unsigned int> &memberId) : GroupId(groupId),
+GroupInfo::GroupInfo(int groupId, const std::string &nickName, const std::string &avatorPath,
+                     const std::string &notice, const std::vector<int> &memberId) : GroupId(groupId),
                                                                                              NickName(nickName),
                                                                                              AvatorPath(avatorPath),
                                                                                              Notice(notice),
@@ -79,27 +79,26 @@ bool GroupInfo::HasChat() const {
 
 //删除成员，此处使用了auto
 void GroupInfo::delete_member(UserInfo *member) {
-    auto mark=getUsers()->end();
-    for (auto it=getUsers()->begin();it!=getUsers()->end();it++){
-        if ((*it)==member)
-        {
-            mark=it;
+    auto mark = getUsers()->end();
+    for (auto it = getUsers()->begin(); it != getUsers()->end(); it++) {
+        if ((*it) == member) {
+            mark = it;
             break;
         }
     }
-    if (mark!=getUsers()->end())
+    if (mark != getUsers()->end())
         getUsers()->erase(mark);
 
-    auto userid=getMemberId().end();
-    userid=MemberId.end();
-    int hasid=member->getUserId();
-    for (auto id=MemberId.begin();id!=MemberId.end();id++){
-        if(*id==hasid) {
+    auto userid = getMemberId().end();
+    userid = MemberId.end();
+    int hasid = member->getUserId();
+    for (auto id = MemberId.begin(); id != MemberId.end(); id++) {
+        if (*id == hasid) {
             userid = id;
             break;
         }
     }
-    if (userid!=MemberId.end())
+    if (userid != MemberId.end())
         MemberId.erase(userid);
 }
 

@@ -7,14 +7,15 @@
 
 #include "predeclare.h"
 #include "UserInfo.h"
+
 //分组类
 class PacketInfo {
 
 private:
-//    std::vector<unsigned int> MemberId; //成员ID
+//    std::vector<int> MemberId; //成员ID
     std::string PacketName;
     int PacketId;   //分组id
-    std::vector<UserInfo *> *Members= nullptr;
+    std::vector<UserInfo *> *Members = nullptr;
 public:
 
     const std::string &getPacketName() const;

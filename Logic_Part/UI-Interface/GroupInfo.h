@@ -8,13 +8,13 @@
 #include "predeclare.h"
 #include "UserInfo.h"
 
-class GroupInfo  {
+class GroupInfo {
 private:
-    unsigned int GroupId;
+    int GroupId;
     std::string NickName;
     std::string AvatorPath;
     std::string Notice;
-    std::vector<unsigned int> MemberId;
+    std::vector<int> MemberId;
     ChatInfo *chat = nullptr;
     std::vector<UserInfo *> *Members = nullptr;
 public:
@@ -28,20 +28,20 @@ public:
 
     GroupInfo();
 
-    unsigned int getGroupId();
+    int getGroupId();
 
-    const std::vector<unsigned int> &getMemberId() const;
+    const std::vector<int> &getMemberId() const;
 
     std::string getNickName();
 
-    GroupInfo(unsigned int groupId, const std::string &nickName, const std::string &avatorPath,
-              const std::string &notice, const std::vector<unsigned int> &memberId);
+    GroupInfo(int groupId, const std::string &nickName, const std::string &avatorPath,
+              const std::string &notice, const std::vector<int> &memberId);
 
     std::string getAvatarPath();
 
     std::string getNotice();
 
-    void AddUser(UserInfo * user);
+    void AddUser(UserInfo *user);
 
     bool HasChat() const;
 

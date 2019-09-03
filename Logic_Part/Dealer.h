@@ -47,11 +47,11 @@ private:
 
     std::vector<UserInfo> get_users_from_server();
 
-    UserInfo *add_user(const unsigned int &tmpmember);
+    UserInfo *add_user(const int &tmpmember);
 
     UserInfo *add_user(const std::string &tmpmember);
 
-    UserInfo find_user_from_server(const unsigned int &tmpmember);
+    UserInfo find_user_from_server(const int &tmpmember);
 
     UserInfo find_user_from_server(const std::string &username);
 
@@ -59,7 +59,7 @@ private:
 
     PacketInfo *add_packet(int packetid, std::string name = "Stranger");
 
-    void delete_friend(const unsigned int &id);
+    void delete_friend(const int &id);
 
     void delete_friend(UserInfo *oldfriend);
 
@@ -103,7 +103,7 @@ private:
 
     void tell_server_accept_friend(UserInfo newfriend);
 
-    int ask_server_to_create_group(const std::string &name, const std::vector<unsigned int> &members);
+    int ask_server_to_create_group(const std::string &name, const std::vector<int> &members);
 
     /******************************************Test**************************************/
     UserInfo test_create_myprofile();
@@ -117,6 +117,8 @@ private:
     std::vector<MessageInfo> test_create_message();
 
     /************************************************************************************/
+
+    void UI_accept_add_friend(int userid, PacketInfo *packet);
 
     void AddChat(ChatInfo *newchat);
 
@@ -140,7 +142,7 @@ private:
 
     void UI_search_user(const std::string &username);
 
-    void UI_search_user(const unsigned int &id);
+    void UI_search_user(const int &id);
 
     void UI_get_histroy(ChatInfo *chat);
 
@@ -150,7 +152,7 @@ private:
 
     void UI_delete_packet(PacketInfo *packet);
 
-    void UI_create_group(const std::string &groupname, const std::vector<unsigned int> &memberids);
+    void UI_create_group(const std::string &groupname, const std::vector<int> &memberids);
 
     void UI_create_gorup(const std::string &groupname, const std::vector<UserInfo *> &members);
 
@@ -173,7 +175,7 @@ private:
 
 public:
     /************************************** Data ***************************************/
-    std::map<unsigned int, UserInfo *> UserMap;
+    std::map<int, UserInfo *> UserMap;
     std::vector<PacketInfo *> PacketList;
     std::vector<GroupInfo *> GroupList;
     std::map<int, PacketInfo *> PacketMap;
@@ -188,7 +190,6 @@ public:
                std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                   std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
 
-    void UI_accept_add_friend(unsigned int userid, PacketInfo *packet);
 
     void UI_get_myprofile(std::function<void(const UserInfo &)> getprofile, std::function<void(std::string)> error);
 
@@ -207,9 +208,9 @@ public:
 
     void someone_leave_group(const int &groupid, const int &userid);
 
-    void someone_online(const unsigned int &id);
+    void someone_online(const int &id);
 
-    void someone_offline(const unsigned int &id);
+    void someone_offline(const int &id);
 
     /**************************************Test*************************************/
 

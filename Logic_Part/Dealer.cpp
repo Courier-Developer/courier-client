@@ -138,7 +138,7 @@ MessageInfo *Dealer::cope_new_message(const MessageInfo &msg) {
     MessageInfo *tmpmsg = new MessageInfo(msg);
     tmpmsg->setSender(UserMap[tmpmsg->getSenderId()]);
     if (tmpmsg->getType() == 1) {
-        unsigned int chatto = tmpmsg->getSenderId();
+        int chatto = tmpmsg->getSenderId();
         if (chatto == MyProfile.getUserId())
             chatto = tmpmsg->getReceiverId();
         //there maybe some bug
@@ -290,7 +290,7 @@ void Dealer::update_server_groupinfo(const int &groupid, const std::string &name
 }
 
 //建群
-void Dealer::UI_create_group(const std::string &groupname, const std::vector<unsigned int> &memberids) {
+void Dealer::UI_create_group(const std::string &groupname, const std::vector<int> &memberids) {
     int id = ask_server_to_create_group(groupname, memberids);
     GroupInfo *newgroup = add_group(GroupInfo(id, groupname, "", "", memberids));
     update_local_group(*newgroup);
@@ -299,7 +299,7 @@ void Dealer::UI_create_group(const std::string &groupname, const std::vector<uns
 
 //建群
 void Dealer::UI_create_gorup(const std::string &groupname, const std::vector<UserInfo *> &members) {
-    std::vector<unsigned int> memberids;
+    std::vector<int> memberids;
     for (auto &tmp:members) {
         memberids.push_back(tmp->getUserId());
     }
@@ -310,7 +310,7 @@ void Dealer::UI_create_gorup(const std::string &groupname, const std::vector<Use
 }
 
 //告诉服务器要建群
-int Dealer::ask_server_to_create_group(const std::string &name, const std::vector<unsigned int> &members) {
+int Dealer::ask_server_to_create_group(const std::string &name, const std::vector<int> &members) {
     //todo: call for server
     return 10001;
 }
@@ -372,7 +372,7 @@ GroupInfo *Dealer::add_group(GroupInfo newgroup) {
         GroupMap[tmpgroup->getGroupId()] = tmpgroup;
         GroupList.push_back(tmpgroup);
         for (auto &tmpmember:tmpgroup->getMemberId()) {
-            std::map<unsigned int, UserInfo *>::iterator it = UserMap.find(tmpmember);
+            std::map<int, UserInfo *>::iterator it = UserMap.find(tmpmember);
             if (it == UserMap.end()) {
                 UserInfo *tmp = add_user(tmpmember);
                 tmp->setInGroup(tmpgroup);
@@ -389,7 +389,7 @@ GroupInfo *Dealer::add_group(GroupInfo newgroup) {
 
 /*************************************好友上下线****************************************************/
 
-void Dealer::someone_online(const unsigned int &id) {
+void Dealer::someone_online(const int &id) {
     if (UserMap.count(id)) {
         UserInfo *user = UserMap[id];
         user->setStatus(1);
@@ -397,7 +397,7 @@ void Dealer::someone_online(const unsigned int &id) {
     }
 }
 
-void Dealer::someone_offline(const unsigned int &id) {
+void Dealer::someone_offline(const int &id) {
     if (UserMap.count(id)) {
         UserInfo *user = UserMap[id];
         user->setStatus(0);
@@ -409,7 +409,7 @@ void Dealer::someone_offline(const unsigned int &id) {
 /*************************************添加好友或移动好友分组或搜索好友*********************************/
 
 //用id添加新用户
-UserInfo *Dealer::add_user(const unsigned int &tmpmember) {
+UserInfo *Dealer::add_user(const int &tmpmember) {
     if (UserMap.count(tmpmember)) {
         std::cerr << "some mistakes, try to add an existed user whose id is " << tmpmember << std::endl;
         return UserMap[tmpmember];
@@ -440,7 +440,7 @@ UserInfo *Dealer::add_user(const std::string &tmpmember) {
 }
 
 //用id向服务器请求对方信息
-UserInfo Dealer::find_user_from_server(const unsigned int &tmpmember) {
+UserInfo Dealer::find_user_from_server(const int &tmpmember) {
     if (UserMap.count(tmpmember)) {
         std::cerr << "some mistakes, try to find an existed user from server whose id is " << tmpmember << std::endl;
         return *UserMap[tmpmember];
@@ -530,7 +530,7 @@ void Dealer::UI_search_user(const std::string &username) {
     UserInfo *tmp = add_user(username);
 }
 
-void Dealer::UI_search_user(const unsigned int &id) {
+void Dealer::UI_search_user(const int &id) {
     UserInfo *tmp = add_user(id);
 }
 
@@ -545,7 +545,7 @@ void Dealer::server_ask_to_add_friend(const UserInfo &user) {
     }
 }
 
-void Dealer::UI_accept_add_friend(unsigned int userid, PacketInfo *packet) {
+void Dealer::UI_accept_add_friend(int userid, PacketInfo *packet) {
     UI_move_friend(UserMap[userid], packet);
 }
 
@@ -565,7 +565,7 @@ void Dealer::friend_be_accepted(const UserInfo &user) {
 /*************************************删除好友**********************************/
 
 //删除好友（实际上仅仅是删除User的好友分组关系，因为好友关系仅仅体现在分组列表上
-void Dealer::delete_friend(const unsigned int &id) {
+void Dealer::delete_friend(const int &id) {
     if (UserMap.count(id)) {
         UserInfo *user = UserMap[id];
         delete_friend(user);
@@ -758,7 +758,7 @@ std::vector<UserInfo> Dealer::test_create_users() {
 
 std::vector<GroupInfo> Dealer::test_create_group() {
     std::vector<GroupInfo> test;
-    std::vector<unsigned int> members;
+    std::vector<int> members;
     members.push_back(10001), members.push_back(10002), members.push_back(10004);
     test.push_back(GroupInfo(10001, "雀魂交友群", "", "杠上开花", members));
     members.clear();
@@ -960,6 +960,7 @@ Dealer::UI_get_myprofile(std::function<void(const UserInfo &)> getprofile, std::
         error("还未获得个人信息");
     }
 }
+
 
 
 

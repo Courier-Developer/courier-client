@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Threads REQUIRED)
 #include_directories(${GTEST_INCLUDE_DIRS})
 
-
+INCLUDE_DIRECTORIES(../msgpack-c/include)
 add_executable(feverrpc main.cpp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

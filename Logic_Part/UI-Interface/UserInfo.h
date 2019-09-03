@@ -8,9 +8,9 @@
 #include "predeclare.h"
 
 
-class UserInfo  {
+class UserInfo {
 private:
-    unsigned int UserId;
+    int UserId;
     std::string UserName;
     std::string NickName;
     std::string Signature;
@@ -24,11 +24,11 @@ private:
 public:
     const std::string &getAvatorPath() const;
 
-    void setUserId(unsigned int UserId);
+    void setUserId(int UserId);
 
     void setUserName(const std::string &UserName);
 
-    UserInfo(unsigned int userId, const std::string &userName, const std::string &nickName,
+    UserInfo(int userId, const std::string &userName, const std::string &nickName,
              const std::string &signature, const std::string &avatorPath, int status, int packet);
 
     virtual ~UserInfo();
@@ -45,7 +45,7 @@ public:
 
     int getStatus() const;
 
-    unsigned int getUserId() const;
+    int getUserId() const;
 
     std::string getUserName();
 
