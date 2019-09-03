@@ -5,6 +5,7 @@
 #include <iostream>
 #include "implement.h"
 SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
+    get_style_context()->add_class("SignUp");
     this->app = app;
 
     set_title("Sign Up at Courier");

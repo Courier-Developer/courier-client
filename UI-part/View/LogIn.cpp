@@ -5,6 +5,8 @@
 #include <iostream>
 #include "implement.h"
 LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
+    get_style_context()->add_class("LogIn");
+
     this->app = app;
 
     set_title("Welcome to Courier");
@@ -81,6 +83,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
                 }
             }
             MainWindow *mainWindow = new MainWindow(this->app,plist,glist,clist);
+            receiver = new Receiver(plist,glist,clist,);
             this->app->add_window(*mainWindow);
             mainWindow->show();
             this->hide();

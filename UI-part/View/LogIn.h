@@ -8,7 +8,7 @@
 
 #include <gtkmm.h>
 #include "OtherWindow/OtherWindow.h"
-
+Receiver* receiver;
 class LogIn : public Gtk::Window {
 public:
     LogIn(Glib::RefPtr<Gtk::Application> app);
