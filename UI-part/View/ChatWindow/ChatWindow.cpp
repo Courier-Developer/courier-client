@@ -30,6 +30,7 @@ void ChatWindow::changeTo(ChatInfo *c) {
     }else {
 
         frame.remove();
+
         frame.add(*Gtk::manage(new Chatting(this, c)));
         frame.show_all_children();
     }

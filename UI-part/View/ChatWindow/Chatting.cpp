@@ -22,10 +22,12 @@ Chatting::Chatting(ChatWindow *chatWindow,
     chatDetailBt.set_image_from_icon_name("format-justify-fill");
     chatDetailBt.signal_clicked().connect([this] {
         Gtk::Dialog dialog;
-        if(this->c->getTotype()==1){
-            dialog.get_content_area()->pack_start(*Gtk::manage(new ContactInfo(this->c->getToUser())), Gtk::PACK_SHRINK);
-        }else if(this->c->getTotype()==2){
-            dialog.get_content_area()->pack_start(*Gtk::manage(new GroupContactInfo(this->c->getToGroup())), Gtk::PACK_SHRINK);
+        if (this->c->getTotype() == 1) {
+            dialog.get_content_area()->pack_start(*Gtk::manage(new ContactInfo(this->c->getToUser())),
+                                                  Gtk::PACK_SHRINK);
+        } else if (this->c->getTotype() == 2) {
+            dialog.get_content_area()->pack_start(*Gtk::manage(new GroupContactInfo(this->c->getToGroup())),
+                                                  Gtk::PACK_SHRINK);
         }
 
         dialog.add_button("OK", 0);
@@ -44,8 +46,8 @@ Chatting::Chatting(ChatWindow *chatWindow,
     });
 
     cancelBt.set_label("Quit This");
-    cancelBt.signal_clicked().connect([this]{
-       this->chatWindow->chatList.deleteChat(this->c);
+    cancelBt.signal_clicked().connect([this] {
+        this->chatWindow->chatList.deleteChat(this->c);
     });
     chatNameAndDetail->pack_end(cancelBt);
 
@@ -72,18 +74,18 @@ Chatting::Chatting(ChatWindow *chatWindow,
         fileChooserDialog.run();
     });
     historyBt.set_label("History");
-    historyBt.signal_clicked().connect([this]{
+    historyBt.signal_clicked().connect([this] {
         Gtk::Dialog dialog;
         dialog.set_title("History");
         dialog.get_content_area()->pack_start(*Gtk::manage(new HistroyMessage(this->c)));
         dialog.show_all_children();
-        dialog.add_button("OK",0);
+        dialog.add_button("OK", 0);
         dialog.run();
     });
 
     tools.pack_start(expressionBt, Gtk::PACK_SHRINK);
     tools.pack_start(fileBt, Gtk::PACK_SHRINK);
-    tools.pack_start(historyBt,Gtk::PACK_SHRINK);
+    tools.pack_start(historyBt, Gtk::PACK_SHRINK);
 
 
     Gtk::Frame *msgEditFrame = Gtk::manage(new Gtk::Frame);
@@ -98,14 +100,16 @@ Chatting::Chatting(ChatWindow *chatWindow,
     refMsgText->signal_changed().connect([this] {
 //        std::cout<<refMsgText->get_text()<<std::endl;
     });
+    msgEdit.set_wrap_mode(Gtk::WRAP_CHAR);
     refMsgText->signal_insert().connect(
             [this](const Gtk::TextBuffer::iterator &it, const Glib::ustring &ustring, int x) {
                 if (ustring.length() == 1 && ustring[0] == '\n') {
                     refMsgText->set_text("");
+
                 }
             });
 
-    for(auto m:*c->getMsgList()){
+    for (auto m:*c->getMsgList()) {
         addMessage(m);
     }
 
@@ -116,6 +120,6 @@ Chatting::~Chatting() {
 
 }
 
-void Chatting::addMessage(MessageInfo*m) {
-    msgList.pack_start(*Gtk::manage(new ShowMessage(m, true)),Gtk::PACK_SHRINK);
+void Chatting::addMessage(MessageInfo *m) {
+    msgList.pack_start(*Gtk::manage(new ShowMessage(m, true)), Gtk::PACK_SHRINK);
 }
