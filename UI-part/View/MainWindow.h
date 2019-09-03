@@ -30,7 +30,7 @@ protected:
 
     void changeWindow(int to);
 
-    Gtk::VBox bt_box;
+    Gtk::VBox avatar_button_box;
     Gtk::HBox box;
     Gtk::Image avatar;
     Gtk::Button chats_bt,contacts_bt,others_bt;

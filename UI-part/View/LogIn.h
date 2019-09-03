@@ -18,8 +18,10 @@ public:
 
 protected:
     Glib::RefPtr<Gtk::Application> app;
+    Gtk::VBox vbox;
+    Gtk::Image welcomeImage;
+    Gtk::Grid infoGrid;
 
-    Gtk::Grid grid;
 
     Gtk::Entry username, password;
     Gtk::Label usernameLabel, passwordLabel;

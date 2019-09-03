@@ -23,8 +23,11 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
     }
     messageBox.pack_start(message);
     message.pack_start(content);
+
     content.get_style_context()->add_class("ChatMessage");
 
+    std::cout<<receiver->me.getNickName()<<std::endl;
+    std::cout<<m->getSender()->getUserId()<<" "<<receiver->me.getUserId()<<std::endl;
     if (m->getSender()->getUserId() == receiver->me.getUserId()) {
         set_halign(Gtk::ALIGN_END);
         pack_end(avatar);
