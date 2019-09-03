@@ -4,20 +4,25 @@
 
 #ifndef COURIER_CLIENT_DEALER_H
 #define COURIER_CLIENT_DEALER_H
+
 #include "UI-Interface/UserInfo.h"
 #include "UI-Interface/ChatInfo.h"
 #include "UI-Interface/PacketInfo.h"
 #include "UI-Interface/MessageInfo.h"
 #include "UI-Interface/GroupInfo.h"
 #include <map>
+#include <iostream>
+#include <thread>
+#include <zconf.h>
+#include <mutex>
 #include <string>
 #include <functional>
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
-//#include "feverrpc/feverrpc.hpp"
-
-#define ETH_NAME    "eth0"
+//#include "feverrpc/feverrpc-client.hpp"
+//#include "feverrpc/utils.hpp"
+//#define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
@@ -26,10 +31,9 @@
 class Dealer {
 private:
     int packetnum = 1;
-    std::string ip="191.2.153.99";
-//    FeverRPC::Client client("127.0.0.1");
-    std::string getip();
-
+    std::string ip = "191.2.153.99";
+    std::mutex _mtx;
+//    FeverRPC::Client rpc("127.0.0.1");
     std::vector<PacketInfo> get_packet_from_server();
 
     void update_local_packet(const std::vector<PacketInfo> &packet);
@@ -180,7 +184,7 @@ private:
     void update_server_groupinfo(const int &groupid, const std::string &name, const std::string &avatorpath,
                                  const std::string &notice);
 
-    void updateMyInfo(std::function<void(std::string)> success,std::function<void(std::string)> fail);
+    void updateMyInfo(std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
 public:
     /************************************** Data ***************************************/
@@ -236,23 +240,36 @@ public:
 
     /**************************************Server*************************************/
 
-    void server_ask_to_add_friend(const UserInfo &user);
+    void server_ask_to_add_friend(UserInfo user);
 
-    void server_delete_friend(const UserInfo &oldfriend);
+    void server_delete_friend(UserInfo oldfriend);
 
-    void receive_new_message(const MessageInfo &msg);
+    void receive_new_message(MessageInfo msg);
 
-    void friend_be_accepted(const UserInfo &user);
+    void friend_be_accepted(UserInfo user);
 
-    void be_added_in_group(const GroupInfo &group);
+    void be_added_in_group(GroupInfo group); //bug here
 
 //    void someone_leave_group(const int &groupid, const int &userid);
 
-    void someone_online(const int &id);
+    void someone_online(int id);
 
-    void someone_offline(const int &id);
+    void someone_offline(int id);
 
-    void update_friend(const UserInfo &user);
+    void update_friend(UserInfo user);
+
+    /****************************thread************************/
+    void receiveMessage(MessageInfo msg);
+
+    void friendWanttoAdd(UserInfo user);
+
+    void friendConfirm(UserInfo user);
+
+    void userLogin(int id);
+
+    void userLogout(int id);
+
+    void groupAdd(GroupInfo group);
 
     /**************************************Test*************************************/
 
@@ -267,6 +284,8 @@ public:
     void ShowTestChatInfo();
 
     /*******************************************************************************/
+
+//    void push();
 };
 
 #endif //COURIER_CLIENT_DEALER_H
