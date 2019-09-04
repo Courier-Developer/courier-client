@@ -1158,7 +1158,7 @@ MessageInfo *Dealer::newMessage(int type, std::string content, ChatInfo *chat) {
 
 void Dealer::signinMethod(std::string username, std::string password, std::function<void(std::string)> success,
                           std::function<void(std::string)> fail) {
-
+    
 }
 
 void Dealer::sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
