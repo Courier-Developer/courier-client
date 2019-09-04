@@ -6,22 +6,45 @@
 #define GTKMM_CONTACTINFO_H
 
 
-#include "../ChatWindow/ChatWindow.h"
-#include "../../../Logic_Part/UI-Interface/UserInfo.h"
+#include "../ChatWindow/ShowMessage.h"
 
-class ContactInfo : public Gtk::Grid{
+class ContactInfo : public Gtk::VBox {
 public:
-    ContactInfo(int avatarSize = 64);
-    ContactInfo(UserInfo* userInfo,int avatarSize = 64);
+    ContactInfo(UserInfo *userInfo, int avatarSize = 64,int reduce=0);
+
     virtual ~ContactInfo();
-    void ChangeUser(UserInfo* newUser);
 
-
+    UserInfo *u;
+    std::map<PacketInfo*,Gtk::TreeModel::iterator>p_iter;
+    bool dialoging=0;
 protected:
-    UserInfo* user;
-    int avatarSize=64;
+    Gtk::Grid grid;
+    int avatarSize = 64;
     Glib::RefPtr<Gdk::Pixbuf> avatar;
     Gtk::Label nickName;
+    Gtk::Label signature;
+    Gtk::Button addFriend,
+            agreeFriend,
+            deleteFriend,
+            startChat;
+
+    //Tree model columns:
+    class PacketColumn : public Gtk::TreeModel::ColumnRecord
+    {
+    public:
+        PacketColumn()
+        { add(p); add(name);}
+
+        Gtk::TreeModelColumn<PacketInfo*> p;
+        Gtk::TreeModelColumn<Glib::ustring> name;
+    }packetColumn;
+
+    //Child widgets:
+    Gtk::ComboBox packetCombo;
+    Gtk::CellRendererText packetCell;
+    Glib::RefPtr<Gtk::ListStore> refListStore;
+
+
 };
 
 

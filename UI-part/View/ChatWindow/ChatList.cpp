@@ -4,8 +4,13 @@
 
 #include <iostream>
 #include "../implement.h"
+#include "ChatList.h"
 
-ChatList::ChatList(ChatWindow *chatWindow) : chatWindow(chatWindow) {
+
+ChatList::ChatList(ChatWindow *chatWindow,
+                   std::vector<ChatInfo *> &clist) :
+        chatWindow(chatWindow),
+        clist(clist) {
 
     set_margin_top(5);
     set_spacing(5);
@@ -27,7 +32,7 @@ ChatList::ChatList(ChatWindow *chatWindow) : chatWindow(chatWindow) {
 
     chatListView.append_column("Avatar", chatPeep.avatar);
     chatListView.append_column("ChatEntity Name", chatPeep.chatName);
-    chatListView.append_column("", chatPeep.msg_toread);
+    chatListView.append_column("Unread", chatPeep.msg_toread);
     chatListView.set_headers_visible(false);
 
 
@@ -57,38 +62,56 @@ ChatList::ChatList(ChatWindow *chatWindow) : chatWindow(chatWindow) {
 
     chatListView.set_model(sort);
 
-
     select = chatListView.get_selection();
-    select->signal_changed().connect(sigc::mem_fun(*this, &ChatList::on_select_change));
 
+    select->signal_changed().connect([this] {
+        Gtk::TreeModel::iterator iter = select->get_selected();
+        if (iter) {
+            Gtk::TreeModel::Row row = *iter;
+            std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. "
+                      << std::endl;
+            this->chatWindow->changeTo(iter->get_value(chatPeep.c));
+        }
+    });
 
-    for (int i = 0; i < 10; i++) {
-        Gtk::TreeModel::Row row;
-        if (i % 2)
-            row = *(refChatPeep->append());
-        else
-            row = *(refChatPeep->prepend());
-        row[chatPeep.chatName] = "ChatEntity Name";
-        row[chatPeep.msg_toread] = i;
-        row[chatPeep.sortPriority] = i * 10;
-
-        auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-        ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
-        row[chatPeep.avatar] = ava;
+    for (auto c:clist) {
+        addChat(c);
     }
 
     show_all_children();
 }
 
+void ChatList::addChat(ChatInfo *newChat) {
+    Gtk::TreeModel::iterator iter;
+    if (c_iter.count(newChat) == 0) {
+        iter = refChatPeep->append();
+    } else {
+        iter = c_iter[newChat];
+    }
+    iter->set_value(chatPeep.type, newChat->getTotype());
+    Glib::RefPtr<Gdk::Pixbuf> ava;
+    if (newChat->getTotype() == 1) {
+        iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToUser()->getNickName()));
+        iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToUser()->getAvatarPath()));
+    } else if (newChat->getTotype() == 2) {
+        iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToGroup()->getNickName()));
+        iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToGroup()->getAvatarPath()));
+    }
+    iter->set_value(chatPeep.c, newChat);
+    c_iter[newChat] = iter;
+    iter->set_value(chatPeep.msg_toread, newChat->getUnreadNumbers());
+}
+
+void ChatList::deleteChat(ChatInfo *c) {
+    auto iter = c_iter[c];
+    refChatPeep->erase(iter);
+    c_iter.erase(c);
+    chatWindow->changeTo(nullptr);
+}
+
+
 ChatList::~ChatList() {
 
 }
 
-void ChatList::on_select_change() {
-    Gtk::TreeModel::iterator iter = select->get_selected();
-    if (iter) {
-        Gtk::TreeModel::Row row = *iter;
-        std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. " << std::endl;
-        //Do something with the row.
-    }
-}
+

@@ -5,7 +5,11 @@
 #include "../implement.h"
 #include <iostream>
 
-Chatting::Chatting(ChatWindow *chatWindow) : chatName("ChatEntity"), chatWindow(chatWindow) {
+Chatting::Chatting(ChatWindow *chatWindow,
+                   ChatInfo *c) :
+        chatName("ChatEntity"),
+        chatWindow(chatWindow),
+        c(c) {
     set_size_request(400, 500);
 
     Gtk::Frame *chatNameFrame = Gtk::manage(new Gtk::Frame);
@@ -17,10 +21,15 @@ Chatting::Chatting(ChatWindow *chatWindow) : chatName("ChatEntity"), chatWindow(
     chatDetailBt.set_halign(Gtk::ALIGN_END);
     chatDetailBt.set_image_from_icon_name("format-justify-fill");
     chatDetailBt.signal_clicked().connect([this] {
-        contactInfo = Gtk::manage(new ContactInfo);
-
         Gtk::Dialog dialog;
-        dialog.get_content_area()->pack_start(*contactInfo, Gtk::PACK_SHRINK);
+        if (this->c->getTotype() == 1) {
+            dialog.get_content_area()->pack_start(*Gtk::manage(new ContactInfo(this->c->getToUser())),
+                                                  Gtk::PACK_SHRINK);
+        } else if (this->c->getTotype() == 2) {
+            dialog.get_content_area()->pack_start(*Gtk::manage(new GroupContactInfo(this->c->getToGroup())),
+                                                  Gtk::PACK_SHRINK);
+        }
+
         dialog.add_button("OK", 0);
         dialog.show_all_children();
         dialog.run();
@@ -35,36 +44,20 @@ Chatting::Chatting(ChatWindow *chatWindow) : chatName("ChatEntity"), chatWindow(
 //        this->chatWindow->showingDetail = !this->chatWindow->showingDetail;
 
     });
+
+    cancelBt.set_label("Quit This");
+    cancelBt.signal_clicked().connect([this] {
+        this->chatWindow->chatList.deleteChat(this->c);
+    });
+    chatNameAndDetail->pack_end(cancelBt);
+
     chatNameFrame->add(*chatNameAndDetail);
 
     chatName.set_padding(10, 10);
     pack_start(*chatNameFrame, Gtk::PACK_SHRINK);
 
 
-    msgList.set_vexpand(true);
-    msgList.set_valign(Gtk::ALIGN_FILL);
-
-    msgList.append_column("Avatar", message.senderAvatar);
-    msgList.append_column("content", message.content);
-    msgList.set_headers_visible(false);
-
-    messages = Gtk::ListStore::create(message);
-    filter = Gtk::TreeModelFilter::create(messages);
-    msgList.set_model(filter);
-    filter->set_visible_func([this](const Gtk::TreeModel::const_iterator &iter) -> bool {
-        Gtk::TreeModel::Row row = *iter;
-        return true;
-    });
-
-    for (int i = 0; i < 100; i++) {
-        auto row = (*messages->append());
-        row[message.content] = "\nHello!" + std::to_string(i) + "\n";
-        auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-        ava = ava->scale_simple(32, 32, Gdk::INTERP_BILINEAR);
-        row[message.senderAvatar] = ava;
-    }
-
-
+    msgList.set_spacing(10);
     scrolledWindow.add(msgList);
     scrolledWindow.set_vexpand(true);
     scrolledWindow.set_valign(Gtk::ALIGN_FILL);
@@ -80,9 +73,19 @@ Chatting::Chatting(ChatWindow *chatWindow) : chatName("ChatEntity"), chatWindow(
         fileChooserDialog.add_button("Cancel", 1);
         fileChooserDialog.run();
     });
+    historyBt.set_label("History");
+    historyBt.signal_clicked().connect([this] {
+        Gtk::Dialog dialog;
+        dialog.set_title("History");
+        dialog.get_content_area()->pack_start(*Gtk::manage(new HistroyMessage(this->c)));
+        dialog.show_all_children();
+        dialog.add_button("OK", 0);
+        dialog.run();
+    });
 
     tools.pack_start(expressionBt, Gtk::PACK_SHRINK);
     tools.pack_start(fileBt, Gtk::PACK_SHRINK);
+    tools.pack_start(historyBt, Gtk::PACK_SHRINK);
 
 
     Gtk::Frame *msgEditFrame = Gtk::manage(new Gtk::Frame);
@@ -94,16 +97,21 @@ Chatting::Chatting(ChatWindow *chatWindow) : chatName("ChatEntity"), chatWindow(
     msgEdit.set_buffer(refMsgText);
 
     msgEdit.set_size_request(100, 100);
-    refMsgText->signal_changed().connect([this]{
+    refMsgText->signal_changed().connect([this] {
 //        std::cout<<refMsgText->get_text()<<std::endl;
     });
-    refMsgText->signal_insert().connect([this](const Gtk::TextBuffer::iterator& it, const Glib::ustring& ustring, int x){
-        std::cout<<x<<std::endl;
-        if(ustring.length()==1&&ustring[0]=='\n'){
-            this->addMessage(refMsgText->get_text());
-            refMsgText->set_text("");
-        }
-    });
+    msgEdit.set_wrap_mode(Gtk::WRAP_CHAR);
+    refMsgText->signal_insert().connect(
+            [this](const Gtk::TextBuffer::iterator &it, const Glib::ustring &ustring, int x) {
+                if (ustring.length() == 1 && ustring[0] == '\n') {
+                    refMsgText->set_text("");
+
+                }
+            });
+
+    for (auto m:*c->getMsgList()) {
+        addMessage(m);
+    }
 
     show_all_children();
 }
@@ -112,12 +120,6 @@ Chatting::~Chatting() {
 
 }
 
-void Chatting::addMessage(Glib::ustring content) {
-    auto iter = messages->append();
-    auto row = *iter;
-    row[message.content] = content;
-    auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    ava = ava->scale_simple(32, 32, Gdk::INTERP_BILINEAR);
-    row[message.senderAvatar] = ava;
-    msgList.scroll_to_row(messages->get_path(iter));
+void Chatting::addMessage(MessageInfo *m) {
+    msgList.pack_start(*Gtk::manage(new ShowMessage(m, true)), Gtk::PACK_SHRINK);
 }

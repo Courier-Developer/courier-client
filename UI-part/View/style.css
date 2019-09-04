@@ -1,23 +1,49 @@
-window{
-    background-color: burlywood;
+window {
 }
-box{
+
+box {
 }
-button{
-    margin: 10px;
-    color: black;
-    background-color: green;
-    transition-duration: 1s;
+
+frame {
 }
-button:hover{
-    transition-duration: 1s;
-    color: green;
+
+button {
 }
-.avatar{
-    border-width: 10px;
-    border-color: yellow;
+
+button:hover {
+
 }
-cellview{
-    color: green;
+titlebar{
     background-color: yellow;
+}
+
+
+treeview.view:hover{
+    /*background-color: blue;*/
+}
+treeview.view:selected{
+    /*background-color: yellow;*/
+}
+.LogIn {
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/welcome.gif");
+}
+label{
+    background-color: red;
+    color: yellow;
+}
+
+.avatar {
+
+
+}
+.myChatMessage{
+    color: black;
+    background-color: lightgray;
+}
+.otherChatMessage{
+    color: white;
+    background-color: darkslategray;
+}
+.mainWindowAvatarButtonBox{
+    background-color: azure;
 }

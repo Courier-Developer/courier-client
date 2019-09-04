@@ -4,29 +4,40 @@
 
 #include <iostream>
 #include "implement.h"
+
+Receiver *receiver;
+
 LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
+    get_style_context()->add_class("LogIn");
+
     this->app = app;
 
     set_title("Welcome to Courier");
     set_position(Gtk::WIN_POS_CENTER);
-    set_size_request(300, 50);
+    set_size_request(300, 500);
 
 
-    grid.set_border_width(10);
-    grid.set_halign(Gtk::ALIGN_CENTER);
-    grid.set_valign(Gtk::ALIGN_CENTER);
-    grid.set_row_spacing(2);
-    grid.set_column_spacing(2);
-    add(grid);
+    add(vbox);
+    vbox.pack_end(infoGrid, Gtk::PACK_SHRINK);
+    vbox.pack_start(welcomeImage);
+    welcomeImage.set(PixMan::TryOrDefaultUserAva(200, ""));
+
+
+    infoGrid.set_border_width(10);
+    infoGrid.set_halign(Gtk::ALIGN_CENTER);
+    infoGrid.set_valign(Gtk::ALIGN_CENTER);
+    infoGrid.set_row_spacing(2);
+    infoGrid.set_column_spacing(2);
+
 
     usernameLabel.set_text("User Name");
-    grid.attach(usernameLabel, 0, 0, 1, 1);
+    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
 
-    grid.attach(username, 1, 0, 1, 1);
+    infoGrid.attach(username, 1, 0, 1, 1);
 
     passwordLabel.set_text("Password");
-    grid.attach(passwordLabel, 0, 1, 1, 1);
-    grid.attach(password, 1, 1, 1, 1);
+    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
+    infoGrid.attach(password, 1, 1, 1, 1);
     password.set_visibility(false);
     password.set_invisible_char('*');
 
@@ -40,7 +51,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
             password.set_visibility(false);
         }
     });
-    grid.attach(showPassword, 0, 2, 2, 1);
+    infoGrid.attach(showPassword, 0, 2, 2, 1);
 
     signUpBt.set_label("Sign Up");
     signUpBt.signal_clicked().connect([this] {
@@ -50,17 +61,34 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
         this->hide();
         this->app->remove_window(*this);
     });
-    grid.attach(signUpBt, 0, 3, 2, 1);
+    infoGrid.attach(signUpBt, 0, 3, 2, 1);
 
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
-        MainWindow *mainWindow = new MainWindow(this->app);
-        this->app->add_window(*mainWindow);
-        mainWindow->show();
-        this->hide();
-        this->app->remove_window(*this);
+
+        dealer.login("", "", [this](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
+                                    std::vector<ChatInfo *> &clist) {
+
+            dealer.getMyprofile([&](UserInfo *me) {
+                receiver = new Receiver(plist, glist, clist, me);
+                receiver->debug();
+                MainWindow *mainWindow = new MainWindow(this->app, plist, glist, clist);
+                receiver->mainWindow = mainWindow;
+
+                this->app->add_window(*mainWindow);
+                mainWindow->show();
+                this->hide();
+                this->app->remove_window(*this);
+            }, [this](std::string error) {
+                std::cout << error << std::endl;
+            });
+
+        }, [this](std::string error) {
+            std::cout << error << std::endl;
+        });
+
     });
-    grid.attach(logInBt, 0, 4, 2, 1);
+    infoGrid.attach(logInBt, 0, 4, 2, 1);
 
 
     show_all_children();

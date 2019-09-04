@@ -14,26 +14,35 @@ const int CONTACTS = 2;
 const int OTHERS = 3;
 
 
-
 class MainWindow : public Gtk::Window{
 public:
-    MainWindow(Glib::RefPtr<Gtk::Application> app);
+    MainWindow(Glib::RefPtr<Gtk::Application> app,
+            std::vector<PacketInfo *>& plist,
+            std::vector<GroupInfo *>& glist,
+            std::vector<ChatInfo *>& clist);
     virtual ~MainWindow();
     Glib::RefPtr<Gtk::Application> app;
+
+    std::vector<PacketInfo *>& plist;
+    std::vector<GroupInfo *>& glist;
+    std::vector<ChatInfo *>& clist;
+
+    ChatWindow chatWindow;
+    ContactWindow contactWindow;
+    OtherWindow otherWindow;
+    void changeWindow(int to);
 protected:
 
-    void on_bt(const int& bt_id);
 
-    Gtk::VBox bt_box;
+
+    Gtk::VBox avatar_button_box;
     Gtk::HBox box;
     Gtk::Image avatar;
     Gtk::Button chats_bt,contacts_bt,others_bt;
 
 
     Gtk::Frame windowFrame;
-    ChatWindow chatWindow;
-    ContactWindow contactWindow;
-    OtherWindow otherWindow;
+
 
 
 

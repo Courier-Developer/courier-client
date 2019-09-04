@@ -2,8 +2,19 @@
 
 #include "View/implement.h"
 #include <iostream>
+#include <thread>
+#include <mutex>
+Dealer dealer;
 int main(int argc, char *argv[])
 {
+    tm *local;
+    time_t t;
+    t = time(NULL);
+    local = localtime(&t);
+    MessageInfo *tmp;
+    DateTime sendtime("2019-8-31 21:23:54");
+    std::cout<<sendtime.getString()<<std::endl;
+
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv,"com.courier");
     LogIn logIn(app);
 
@@ -19,8 +30,6 @@ int main(int argc, char *argv[])
     std::cout<<logIn.get_style_context()->get_background_color().to_string()<<std::endl;
 
     styleContext->add_provider_for_screen(screen, cssProvider,GTK_STYLE_PROVIDER_PRIORITY_USER);
-
-
-
+    
     return app->run(logIn);
 }

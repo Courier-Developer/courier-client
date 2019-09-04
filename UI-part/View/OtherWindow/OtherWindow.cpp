@@ -4,7 +4,7 @@
 
 #include "../implement.h"
 
-OtherWindow::OtherWindow(MainWindow* mainWindow) :myInfo(128){
+OtherWindow::OtherWindow(MainWindow* mainWindow) :myInfo(receiver->me,128){
     this->mainWindow = mainWindow;
 
     set_border_width(10);
@@ -15,8 +15,6 @@ OtherWindow::OtherWindow(MainWindow* mainWindow) :myInfo(128){
 
     myInfo.set_halign(Gtk::ALIGN_CENTER);
     pack_start(myInfo,Gtk::PACK_SHRINK);
-
-
 
     pack_start(bt_box,Gtk::PACK_SHRINK);
 
@@ -32,9 +30,9 @@ OtherWindow::OtherWindow(MainWindow* mainWindow) :myInfo(128){
         logIn->show();
         this->mainWindow->hide();
         this->mainWindow->app->remove_window(*(this->mainWindow));
+        delete receiver;
     });
     pack_end(logOut,Gtk::PACK_SHRINK);
-
 
 
     show_all_children();

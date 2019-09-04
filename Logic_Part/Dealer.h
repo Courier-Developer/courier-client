@@ -16,6 +16,7 @@
 #include <zconf.h>
 #include <mutex>
 #include <string>
+#include <cstring>
 #include <functional>
 #include <net/if.h>
 #include <sys/ioctl.h>

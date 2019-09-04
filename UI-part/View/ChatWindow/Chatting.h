@@ -10,36 +10,25 @@
 
 class Chatting : public Gtk::VBox {
 public:
-    Chatting(ChatWindow* chatWindow);
+    Chatting(ChatWindow* chatWindow,ChatInfo* c);
     virtual ~Chatting();
     ChatWindow *chatWindow;
-    void addMessage(Glib::ustring content);
+    void addMessage(MessageInfo*);
+    ChatInfo* c;
 protected:
     Gtk::Label chatName;
+
     Gtk::ScrolledWindow scrolledWindow;
-    Gtk::TreeView msgList;
-    class Message : public Gtk::TreeModel::ColumnRecord {
-    public:
-        Gtk::TreeModelColumn<Glib::ustring> content;
-        Gtk::TreeModelColumn<Glib::ustring> senderName;
-        Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf>> senderAvatar;
-        Gtk::TreeModelColumn<Glib::ustring> msgTime;
 
-        Message() {
-            add(content);
-            add(senderName);
-            add(senderAvatar);
-            add(msgTime);
-        }
-    } message;
-
-    Glib::RefPtr<Gtk::ListStore> messages;
-    Glib::RefPtr<Gtk::TreeModelFilter> filter;
+    Gtk::VBox msgList;
 
     Gtk::HBox tools;
     Gtk::Button expressionBt;
     Gtk::Button fileBt;
-    Gtk::Button chatDetailBt;
+    Gtk::Button historyBt;
+
+    Gtk::Button chatDetailBt,cancelBt;
+
 
     Gtk::TextView msgEdit;
     Glib::RefPtr<Gtk::TextBuffer> refMsgText;

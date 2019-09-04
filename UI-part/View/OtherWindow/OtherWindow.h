@@ -6,18 +6,16 @@
 #define GTKMM_OTHERWINDOW_H
 
 #include <gtkmm.h>
-#include "../ContactWindow/GroupContactInfo.h"
+#include "../ContactWindow/PacketContactInfo.h"
 
 
 class MainWindow;
 class LogIn;
 class OtherWindow :public Gtk::VBox{
 public:
-
     OtherWindow(MainWindow* mainWindow);
     virtual ~OtherWindow();
     MainWindow* mainWindow;
-
 protected:
     ContactInfo myInfo;
     Gtk::HBox bt_box;

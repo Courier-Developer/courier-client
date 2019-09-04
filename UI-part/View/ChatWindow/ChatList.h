@@ -8,11 +8,20 @@
 
 #include <gtkmm.h>
 #include "../predeclare.h"
+
 class ChatList : public Gtk::VBox {
 public:
-    ChatList(ChatWindow * chatWindow);
+    ChatList(ChatWindow *chatWindow, std::vector<ChatInfo *> &clist);
+
     virtual ~ChatList();
-    ChatWindow * chatWindow;
+
+    ChatWindow *chatWindow;
+    std::vector<ChatInfo *> &clist;
+    std::map<ChatInfo*,Gtk::TreeModel::iterator> c_iter;
+    const int USER = 1;
+    const int GROUP = 2;
+    void addChat(ChatInfo *newChat);
+    void deleteChat(ChatInfo* c);
 protected:
     Gtk::SearchEntry searchEntry;
 
@@ -21,10 +30,10 @@ protected:
         Gtk::TreeModelColumn<Glib::ustring> chatName;
         Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > avatar;
         Gtk::TreeModelColumn<int> msg_toread;
-
         Gtk::TreeModelColumn<Glib::ustring> lastMsgTime;
-
         Gtk::TreeModelColumn<int> sortPriority;
+        Gtk::TreeModelColumn<int> type;
+        Gtk::TreeModelColumn<ChatInfo *> c;
 
         ChatPeep() {
             add(chatName);
@@ -32,8 +41,10 @@ protected:
             add(msg_toread);
             add(lastMsgTime);
             add(sortPriority);
+            add(type);
+            add(c);
         }
-    }chatPeep;
+    } chatPeep;
 
     Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView chatListView;
@@ -44,7 +55,8 @@ protected:
 
     Glib::RefPtr<Gtk::TreeSelection> select;
 
-    void on_select_change();
+
+
 };
 
 
