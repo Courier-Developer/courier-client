@@ -31,6 +31,7 @@ public:
     ContactWindow contactWindow;
     OtherWindow otherWindow;
     void changeWindow(int to);
+    void refresh();
 protected:
 
 

@@ -4,6 +4,7 @@
 
 
 #include "../UI-part/View/implement.h"
+#include "../file/MyFile.h"
 
 /*************************************获取ip**************************************/
 
@@ -740,14 +741,20 @@ MessageInfo *Dealer::send_message(int type, const std::string &content, ChatInfo
 
 /**************************************接收信息************************************/
 //todo: add file and pic
+
 void Dealer::receive_new_message(MessageInfo msg) {
     _mtx.lock();
     add_local_message(msg);
     MessageInfo *newmsg = cope_new_message(msg); //may exist bug here
+    if (newmsg->getContentKind()>1)
+    {
+        std::vector<char> it=client.call<std::vector<char> >("read_file",newmsg->getContent());
+        MyFile download;
+        download.save_file(newmsg->getContent(),it);
+    }
     _mtx.unlock();
     //todo:
     receiver->receiveMessage(newmsg);
-
 }
 
 /**********************************获取云端历史信息*********************************/
@@ -1096,8 +1103,12 @@ void Dealer::queryUserMethod(std::string username, std::function<void(UserInfo *
 void Dealer::addFriendMethod(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
     _mtx.lock();
     //todo:
-    if (!UserMap.count(id) || UserMap[id]->getPacket() != 0) {
+    std::cout<<"add friend "<<UserMap.count(id)<<" "<<UserMap[id]->getPacket()<<std::endl;
+    if (UserMap[id]->getPacket() == 0) {
+        std::cout<<" addddd "<<id<<std::endl;
+
         bool op = client.call<bool>("request_friend", userid, id);
+        std::cout<<" ok"<<std::endl;
         _mtx.unlock();
         success("我觉得可以");
     } else {
@@ -1109,7 +1120,7 @@ void Dealer::addFriendMethod(int id, std::function<void(std::string)> success, s
 void Dealer::agreefriendMethod(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
     _mtx.lock();
     //todo:
-    if (!UserMap.count(id) || UserMap[id]->getPacket() != 0) {
+    if ( UserMap[id]->getPacket() == 0) {
         bool op = client.call<bool>("make_friend", userid, id);
         UI_move_friend(add_user(id), 1);
         _mtx.unlock();
@@ -1242,10 +1253,14 @@ void Dealer::signinMethod(std::string username, std::string password, std::funct
 }
 
 
-
 void Dealer::sendMessageMethod(MessageInfo *msg, std::function<void(std::string)> success,
                                std::function<void(std::string)> fail) {
     _mtx.lock();
+    if (msg->getContentKind()>1){
+        MyFile loadfile(msg->getContent(),msg->getContentKind());
+        int ok=client.call<int>("save_file",loadfile.getfilename(),loadfile.getvefile());
+        msg->setContent(loadfile.getfilename());
+    }
     int result = send_message_to_server(*msg);
     if (result) {
         msg->setMessageId(result);
@@ -1259,6 +1274,7 @@ void Dealer::sendMessageMethod(MessageInfo *msg, std::function<void(std::string)
         fail("这样不行");
     }
 }
+
 
 
 //void Dealer::updateMyInfoMethod(std::function<void(std::string)> success, std::function<void(std::string)> fail) {

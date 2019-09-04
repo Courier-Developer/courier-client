@@ -104,3 +104,7 @@ void MainWindow::changeWindow(int to) {
     }
 }
 
+void MainWindow::refresh() {
+    avatar.set(PixMan::TryOrDefaultUserAva(64,receiver->me->getAvatarPath()));
+}
+

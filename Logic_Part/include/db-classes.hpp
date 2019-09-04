@@ -197,7 +197,7 @@ struct Message {
 
 	int receiver;
 
-	MsgType type;
+	int type;
 
 	std::string createdTime;
 

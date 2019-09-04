@@ -16,6 +16,10 @@ private:
     std::string Content;
     int Status; //是否发送成功
     int type;      //1 个人 2 群聊
+public:
+    void setContent(const std::string &content);
+
+private:
     int ContentKind;   //消息类型 1 文本消息 2 文件
     DateTime CreatedTime;
     UserInfo *Sender = nullptr;

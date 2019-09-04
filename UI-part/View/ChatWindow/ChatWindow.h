@@ -21,9 +21,8 @@ public:
     void receiveMsg(MessageInfo* msg);
     void changeTo(ChatInfo* c);
     ChatList chatList;
-protected:
-
     Gtk::Frame frame;
+
 };
 
 

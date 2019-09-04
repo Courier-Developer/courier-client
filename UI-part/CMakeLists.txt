@@ -62,6 +62,7 @@ add_executable(main main.cpp
         ../Logic_Part/include/src/feverrpc-client.cpp
         ../Logic_Part/include/src/feverrpc.cpp
         ../Logic_Part/include/Convert.cpp
+        ../Logic_Part/file/MyFile.cpp
         )
 
 

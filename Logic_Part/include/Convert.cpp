@@ -3,7 +3,7 @@
 
 UserInfo Convert::cv_user_to_client(userinfo _su)
 {
-	return UserInfo(_su.id, _su.username, _su.nickname, _su.signature, "", 1, 1);
+	return UserInfo(_su.id, _su.username, _su.nickname, _su.signature, "", 1, 0);
 }
 
 UserInfo Convert::cv_friend_to_client(Friend _su)
@@ -23,7 +23,7 @@ GroupInfo Convert::cv_group_to_client(chatGroup_with_members _cg)
 
 MessageInfo Convert::cv_message_to_client(Message _mes)
 {
-	return MessageInfo(_mes.sender, _mes.receiver, _mes.content, 1, _mes.isToGroup == 1 ? 2 : 1, _mes.type == MsgType::MSGTYPE_TEXT ? 1 : (_mes.type == MsgType::MSGTYPE_FILE ? 2 : 3), DateTime(_mes.createdTime));
+	return MessageInfo(_mes.sender, _mes.receiver, _mes.content, 1, _mes.isToGroup == 1 ? 2 : 1, _mes.type, DateTime(_mes.createdTime));
 }
 
 PacketInfo Convert::cv_packet_to_client(package _pa)
@@ -82,17 +82,6 @@ Message Convert::cv_message_to_server(MessageInfo _cmes)
 	mes.isToGroup = _cmes.getType() == 2 ? 1 : 0;
 	mes.sender = _cmes.getSenderId();
 	mes.receiver = _cmes.getReceiverId();
-	if (_cmes.getContentKind() == 1)
-	{
-		mes.type = MsgType::MSGTYPE_TEXT;
-	}
-	else if (_cmes.getContentKind() == 2)
-	{
-		mes.type = MsgType::MSGTYPE_FILE;
-	}
-	else if (_cmes.getContentKind() == 3)
-	{
-		mes.type = MsgType::MSGTYPE_IMAGE;
-	}
+	mes.type=_cmes.getContentKind();
 	return mes;
 }

@@ -93,3 +93,7 @@ void MessageInfo::setSender(UserInfo *sender) {
 void MessageInfo::setInChat(ChatInfo *inChat) {
     InChat = inChat;
 }
+
+void MessageInfo::setContent(const std::string &content) {
+    Content = content;
+}

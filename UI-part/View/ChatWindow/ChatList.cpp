@@ -108,6 +108,7 @@ void ChatList::deleteChat(ChatInfo *c) {
     auto iter = c_iter[c];
     refChatPeep->erase(iter);
     c_iter.erase(c);
+    chatWindow->frame.remove();
 //    chatWindow->changeTo(nullptr);
 }
 
