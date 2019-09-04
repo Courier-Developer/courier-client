@@ -1206,6 +1206,7 @@ void Dealer::sendMessageMethod(MessageInfo *msg, std::function<void(std::string)
 /***************************************SERVER***************************************/
 
 void Dealer::receiveMessage(MessageInfo msg) {
+    std::cout<<msg.getContent()<<std::endl;
     std::thread t(std::bind(&Dealer::receive_new_message, this, msg));
     t.detach();
 }

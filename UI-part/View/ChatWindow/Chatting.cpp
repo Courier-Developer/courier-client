@@ -145,7 +145,12 @@ Chatting::~Chatting() {
 }
 
 void Chatting::addMessage(MessageInfo *m) {
+
     std::cout<<"Chatting adding Messsage"<<std::endl;
+    std::cout<<m<<std::endl;
+    std::cout<<m->getSender()<<std::endl;
+    std::cout<<m->getContent()<<std::endl;
+    std::cout<<m->getSender()->getNickName()<<std::endl;
     msgList.pack_start(*Gtk::manage(new ShowMessage(m, true)), Gtk::PACK_SHRINK);
     msgList.show_all_children();
     auto adj = scrolledWindow.get_vadjustment();

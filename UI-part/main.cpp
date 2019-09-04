@@ -66,12 +66,15 @@ int main(int argc, char *argv[]) {
 //    });
 //    _t.detach();
 
+//    for(int i=0;i<100;i++) {
+//        std::thread test([=] {
+//            sleep(5+i);
+//            std::cout << "??" << std::endl;
+//            dealer.receiveMessage(MessageInfo(10002, 10001, "12345"+std::to_string(i), 1, 1, 1, DateTime("2019-08-31 11:32:05")));
+//        });
+//        test.detach();
+//    }
 
-    std::thread test([&] {
-        sleep(5);
-        std::cout << "??" << std::endl;
-        dealer.receiveMessage(MessageInfo(10002, 10001, "蛤afewfq？", 1, 1, 1, DateTime("2019-08-31 11:32:05")));
-    });
 
 
 
