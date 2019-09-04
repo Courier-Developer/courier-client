@@ -39,11 +39,12 @@ public:
     void addNewGroup(GroupInfo *newGroup);
 
     void deleteGroup(GroupInfo *g);
+    Glib::Dispatcher dispatcher;
 protected:
 
     Gtk::SearchEntry searchEntry;
     Gtk::HBox btBox;
-    Gtk::Button addNewFriendBt, addNewGroupBt;
+    Gtk::Button addNewFriendBt, addNewGroupBt,addNewPacketBt;
 
     class Contact : public Gtk::TreeModel::ColumnRecord {
     public:

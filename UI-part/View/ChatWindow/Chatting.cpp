@@ -19,7 +19,7 @@ Chatting::Chatting(ChatWindow *chatWindow,
     chatNameAndDetail->pack_start(chatName, Gtk::PACK_SHRINK);
     chatNameAndDetail->pack_end(chatDetailBt, Gtk::PACK_SHRINK);
     chatDetailBt.set_halign(Gtk::ALIGN_END);
-    chatDetailBt.set_image_from_icon_name("format-justify-fill");
+    chatDetailBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("menu",20))));
     chatDetailBt.signal_clicked().connect([this] {
         Gtk::Dialog dialog;
         if (this->c->getTotype() == 1) {
@@ -45,11 +45,11 @@ Chatting::Chatting(ChatWindow *chatWindow,
 
     });
 
-    cancelBt.set_label("Quit This");
+    cancelBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("close-circle",20))));
     cancelBt.signal_clicked().connect([this] {
         this->chatWindow->chatList.deleteChat(this->c);
     });
-    chatNameAndDetail->pack_end(cancelBt);
+    chatNameAndDetail->pack_end(cancelBt,Gtk::PACK_SHRINK);
 
     chatNameFrame->add(*chatNameAndDetail);
 
@@ -65,15 +65,17 @@ Chatting::Chatting(ChatWindow *chatWindow,
 
 
     pack_start(tools, Gtk::PACK_SHRINK);
-    expressionBt.set_image_from_icon_name("face-smile");
-    fileBt.set_image_from_icon_name("document-open");
+    tools.get_style_context()->add_class("tools");
+
+    expressionBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("smile",20))));
+    fileBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("file-copy",20))));
     fileBt.signal_clicked().connect([this] {
         Gtk::FileChooserDialog fileChooserDialog("");
         fileChooserDialog.add_button("OK", 0);
         fileChooserDialog.add_button("Cancel", 1);
         fileChooserDialog.run();
     });
-    historyBt.set_label("History");
+    historyBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("database",20))));
     historyBt.signal_clicked().connect([this] {
         Gtk::Dialog dialog;
         dialog.set_title("History");
@@ -95,6 +97,9 @@ Chatting::Chatting(ChatWindow *chatWindow,
 
     refMsgText = Gtk::TextBuffer::create();
     msgEdit.set_buffer(refMsgText);
+    msgEditFrame->get_style_context()->add_class("msgEditFrame");
+    msgEdit.get_style_context()->add_class("msgEdit");
+
 
     msgEdit.set_size_request(100, 100);
     refMsgText->signal_changed().connect([this] {

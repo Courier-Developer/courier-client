@@ -22,6 +22,7 @@ public:
     const int GROUP = 2;
     void addChat(ChatInfo *newChat);
     void deleteChat(ChatInfo* c);
+
 protected:
     Gtk::SearchEntry searchEntry;
 

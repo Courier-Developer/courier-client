@@ -32,7 +32,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
 
         btBox.pack_start(addNewFriendBt);
 
-        addNewFriendBt.set_label("Add New User");
+        addNewFriendBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("adduser",32))));
         addNewFriendBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             Gtk::SearchEntry newUserEntry;
@@ -51,7 +51,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         });
 
         btBox.pack_start(addNewGroupBt);
-        addNewGroupBt.set_label("Add New Group");
+        addNewGroupBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("addteam",32))));
         addNewGroupBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             dialog.set_size_request(300, 400);
@@ -64,19 +64,53 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
 
             auto cancel = Gtk::manage(new Gtk::Button("Cancel"));
             dialog.get_content_area()->pack_end(*cancel);
-            cancel->signal_clicked().connect([&]{
+            cancel->signal_clicked().connect([&] {
                 dialog.hide();
             });
 
             auto confirm = Gtk::manage(new Gtk::Button("Confirm"));
             dialog.get_content_area()->pack_end(*confirm);
-            confirm->signal_clicked().connect([&]{
+            confirm->signal_clicked().connect([&] {
                 dialog.hide();
             });
 
             dialog.show_all_children();
             dialog.run();
         });
+
+        btBox.pack_start(addNewPacketBt);
+        addNewPacketBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("plus-square",32))));
+        addNewPacketBt.signal_clicked().connect([this] {
+            Gtk::Dialog dialog;
+            dialog.set_border_width(10);
+            dialog.set_size_request(100, 100);
+            Glib::ustring info = "Add a New Packet";
+            Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
+            Gtk::Entry *entry = Gtk::manage(new Gtk::Entry);
+            entry->set_placeholder_text("Name the Packet");
+            label->set_line_wrap(true);
+            dialog.get_content_area()->pack_start(*label);
+            dialog.get_content_area()->pack_start(*entry);
+            dialog.add_button("Cancel", 0);
+            dialog.add_button("Confirm", 1);
+            dialog.show_all_children();
+            int results = dialog.run();
+            if (results == 1) {
+                dealer.addPacket(entry->get_text(),[this](PacketInfo* np){
+                    dispatcher.connect([&]{
+                        addNewPacket(np);
+                    });
+                    dispatcher.emit();
+                },[this](std::string err){
+                    dispatcher.connect([&]{
+                        Gtk::MessageDialog dialog(err);
+                        dialog.run();
+                    });
+                });
+            }
+
+        });
+
         pack_start(btBox, Gtk::PACK_SHRINK);
 
         filter = Gtk::TreeModelFilter::create(refTreeStore);
@@ -99,15 +133,15 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
             Gtk::TreeModel::iterator iter = select->get_selected();
             if (iter) {
                 std::cout << "The " << iter->get_value(contact.nickName) << " Clicked. " << std::endl;
-                if(iter->get_value(contact.type)==USER){
+                if (iter->get_value(contact.type) == USER) {
                     this->contactWindow->frame.remove();
                     this->contactWindow->frame.add(*Gtk::manage(new ContactInfo(iter->get_value(contact.u))));
                     this->contactWindow->frame.show_all_children();
-                }else if(iter->get_value(contact.type)==GROUP){
+                } else if (iter->get_value(contact.type) == GROUP) {
                     this->contactWindow->frame.remove();
                     this->contactWindow->frame.add(*Gtk::manage(new GroupContactInfo(iter->get_value(contact.g))));
                     this->contactWindow->frame.show_all_children();
-                }else if(iter->get_value(contact.type)==PACKET){
+                } else if (iter->get_value(contact.type) == PACKET) {
                     this->contactWindow->frame.remove();
                     this->contactWindow->frame.add(*Gtk::manage(new PacketContactInfo(iter->get_value(contact.p))));
                     this->contactWindow->frame.show_all_children();
@@ -158,7 +192,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         gp_iter->set_value(contact.type, PACKET);
         gp_iter->set_value(contact.nickName, Glib::ustring("群聊"));
         gp_iter->set_value(contact.sortPriority, 0);
-        gp_iter->set_value(contact.p, (PacketInfo*)nullptr);
+        gp_iter->set_value(contact.p, (PacketInfo *) nullptr);
         for (auto g:glist) {
             addNewGroup(g);
         }
@@ -186,11 +220,11 @@ ContactList::~ContactList() {
 
 void ContactList::addNewPacket(PacketInfo *newPacketInfo) {
     Gtk::TreeModel::iterator iter;
-    if(p_iter.count(newPacketInfo)==0){
+    if (p_iter.count(newPacketInfo) == 0) {
         iter = refTreeStore->append();
-        p_iter[newPacketInfo]=iter;
-    }else{
-        iter=p_iter[newPacketInfo];
+        p_iter[newPacketInfo] = iter;
+    } else {
+        iter = p_iter[newPacketInfo];
     }
     iter->set_value(contact.type, PACKET);
     iter->set_value(contact.nickName, Glib::ustring(newPacketInfo->getName()));
@@ -199,8 +233,8 @@ void ContactList::addNewPacket(PacketInfo *newPacketInfo) {
 }
 
 void ContactList::deletePacket(PacketInfo *p) {
-    if(p_iter.count(p)&&p->getUsers()->empty()){
-        auto iter=p_iter[p];
+    if (p_iter.count(p) && p->getUsers()->empty()) {
+        auto iter = p_iter[p];
         refTreeStore->erase(iter);
         p_iter.erase(p);
     }
@@ -209,22 +243,22 @@ void ContactList::deletePacket(PacketInfo *p) {
 
 void ContactList::addNewFriend(UserInfo *newUser) {
     Gtk::TreeModel::iterator iter;
-    if(u_iter.count(newUser)==0){
+    if (u_iter.count(newUser) == 0) {
         iter = refTreeStore->append(p_iter[newUser->getInPacket()]->children());
-        u_iter[newUser]=iter;
-    }else{
-        iter=u_iter[newUser];
+        u_iter[newUser] = iter;
+    } else {
+        iter = u_iter[newUser];
     }
     iter->set_value(contact.nickName, Glib::ustring(newUser->getNickName()));
-    iter->set_value(contact.avatar, PixMan::TryOrDefaultUserAva(24,newUser->getAvatarPath()));
+    iter->set_value(contact.avatar, PixMan::TryOrDefaultUserAva(24, newUser->getAvatarPath()));
     iter->set_value(contact.u, newUser);
     iter->set_value(contact.type, USER);
     iter->set_value(contact.sortPriority, 0);
 }
 
 void ContactList::deleteFriend(UserInfo *u) {
-    if(u_iter.count(u)){
-        auto iter=u_iter[u];
+    if (u_iter.count(u)) {
+        auto iter = u_iter[u];
         refTreeStore->erase(iter);
         u_iter.erase(u);
     }
@@ -233,14 +267,14 @@ void ContactList::deleteFriend(UserInfo *u) {
 
 void ContactList::addNewGroup(GroupInfo *newGroup) {
     Gtk::TreeModel::iterator iter;
-    if(g_iter.count(newGroup)==0){
+    if (g_iter.count(newGroup) == 0) {
         iter = refTreeStore->append(gp_iter->children());
-        g_iter[newGroup]=iter;
-    }else{
-        iter=g_iter[newGroup];
+        g_iter[newGroup] = iter;
+    } else {
+        iter = g_iter[newGroup];
     }
     iter->set_value(contact.nickName, Glib::ustring(newGroup->getNickName()));
-    iter->set_value(contact.avatar, PixMan::TryOrDefaultUserAva(24,newGroup->getAvatarPath()));
+    iter->set_value(contact.avatar, PixMan::TryOrDefaultUserAva(24, newGroup->getAvatarPath()));
     iter->set_value(contact.g, newGroup);
     iter->set_value(contact.type, GROUP);
     iter->set_value(contact.sortPriority, 0);
@@ -248,7 +282,7 @@ void ContactList::addNewGroup(GroupInfo *newGroup) {
 }
 
 void ContactList::deleteGroup(GroupInfo *g) {
-    if(g_iter.count(g)){
+    if (g_iter.count(g)) {
         auto iter = g_iter[g];
         refTreeStore->erase(iter);
         g_iter.erase(g);

@@ -11,8 +11,12 @@
 #include "../../Logic_Part/Dealer.h"
 #include "res/PixMan.h"
 class Receiver;
+class ThemeManage;
+
 extern Dealer dealer;
 extern Receiver* receiver;
+extern ThemeManage* themeManage;
+
 class MainWindow;
 class SignUp;
 class LogIn;

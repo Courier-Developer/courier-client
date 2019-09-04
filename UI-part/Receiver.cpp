@@ -13,7 +13,7 @@ Receiver::Receiver(std::vector<PacketInfo *> &plist,
         plist(plist),
         glist(glist),
         clist(clist),
-        me(me){}
+        me(me) {}
 
 void Receiver::debug() {
     std::cout << me->getNickName() << std::endl;
@@ -43,79 +43,114 @@ void Receiver::debug() {
 
 }
 
-void Receiver::friendRequest(UserInfo * u) {
-    Gtk::Dialog dialog;
-    dialog.set_border_width(10);
-    dialog.set_size_request(100,100);
-    Glib::ustring info = "Someone wants to make friend with you!";
-    Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
-    label->set_line_wrap(true);
-    dialog.get_content_area()->pack_start(*label);
-    dialog.get_action_area()->pack_start(*Gtk::manage(new ContactInfo(u,64,10)));
-    dialog.add_button("Refuse", -1);
-    dialog.add_button("Wait", 0);
-    dialog.add_button("Accept", 1);
-    dialog.show_all_children();
-    int results=dialog.run();
-    if (results==1) {
-        dealer.agreefriend(u->getUserId(),[this](UserInfo*u){
-            Gtk::Dialog dialog;
-            dialog.set_border_width(10);
-            dialog.set_size_request(100,100);
-            Glib::ustring info = "Success!";
-            Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
-            label->set_line_wrap(true);
-            dialog.get_content_area()->pack_start(*label);
-            dialog.get_action_area()->pack_start(*Gtk::manage(new ContactInfo(u,64,10)));
-            dialog.add_button("OK", 1);
-            this->friendUpdate(u);
-            dialog.show_all_children();
+void Receiver::friendRequest(UserInfo *u) {
+    sigc::connection conn = dispatcher.connect([&] {
+        Gtk::Dialog dialog;
+        dialog.set_border_width(10);
+        dialog.set_size_request(100, 100);
+        Glib::ustring info = "Someone wants to make friend with you!";
+        Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
+        label->set_line_wrap(true);
+        dialog.get_content_area()->pack_start(*label);
+        dialog.get_action_area()->pack_start(*Gtk::manage(new ContactInfo(u, 64, 10)));
+        dialog.add_button("Refuse", -1);
+        dialog.add_button("Wait", 0);
+        dialog.add_button("Accept", 1);
+        dialog.show_all_children();
+        int results = dialog.run();
+        if (results == 1) {
+            dealer.agreefriend(u->getUserId(), [this](UserInfo *u) {
+                Gtk::Dialog dialog;
+                dialog.set_border_width(10);
+                dialog.set_size_request(100, 100);
+                Glib::ustring info = "Success!";
+                Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
+                label->set_line_wrap(true);
+                dialog.get_content_area()->pack_start(*label);
+                dialog.get_action_area()->pack_start(*Gtk::manage(new ContactInfo(u, 64, 10)));
+                dialog.add_button("OK", 1);
+                this->friendUpdate(u);
+                dialog.show_all_children();
 
-            dialog.run();
-            },[this](std::string err){
-            Gtk::Dialog dialog;
-            dialog.set_border_width(10);
-            dialog.set_size_request(100,100);
-            Glib::ustring info = err;
-            Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
-            label->set_line_wrap(true);
-            dialog.get_content_area()->pack_start(*label);
-            dialog.add_button("OK", 1);
-            dialog.show_all_children();
-            dialog.run();
-        });
-    } else if(results==0){
+                dialog.run();
+            }, [this](std::string err) {
+                Gtk::Dialog dialog;
+                dialog.set_border_width(10);
+                dialog.set_size_request(100, 100);
+                Glib::ustring info = err;
+                Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
+                label->set_line_wrap(true);
+                dialog.get_content_area()->pack_start(*label);
+                dialog.add_button("OK", 1);
+                dialog.show_all_children();
+                dialog.run();
+            });
+        } else if (results == 0) {
 
-    }else if(results==-1){
+        } else if (results == -1) {
 
-    }
+        }
+    });
+    dispatcher.emit();
+    conn.disconnect();
+
 }
 
+
 void Receiver::receiveMessage(MessageInfo *msg) {
-    mainWindow->chatWindow.receiveMsg(msg);
+    sigc::connection conn = dispatcher.connect([&] {
+        mainWindow->chatWindow.receiveMsg(msg);
+    });
+    dispatcher.emit();
+    conn.disconnect();
 }
 
 void Receiver::friendUpdate(UserInfo *u) {
-    mainWindow->contactWindow.contactList.deleteFriend(u);
-    mainWindow->contactWindow.contactList.addNewFriend(u);
+    sigc::connection conn = dispatcher.connect([&] {
+        mainWindow->contactWindow.contactList.deleteFriend(u);
+        mainWindow->contactWindow.contactList.addNewFriend(u);
+    });
+    dispatcher.emit();
+    conn.disconnect();
+
 }
 
 void Receiver::friendDelete(UserInfo *u) {
-    friendUpdate(u);
+    sigc::connection conn = dispatcher.connect([&] {
+        mainWindow->contactWindow.contactList.deleteFriend(u);
+        mainWindow->contactWindow.contactList.addNewFriend(u);
+    });
+    dispatcher.emit();
+    conn.disconnect();
 }
 
 void Receiver::groupUpdate(GroupInfo *g) {
-    mainWindow->contactWindow.contactList.deleteGroup(g);
-    mainWindow->contactWindow.contactList.addNewGroup(g);
+    sigc::connection conn = dispatcher.connect([&] {
+        mainWindow->contactWindow.contactList.deleteGroup(g);
+        mainWindow->contactWindow.contactList.addNewGroup(g);
+    });
+    dispatcher.emit();
+    conn.disconnect();
+
 }
 
 void Receiver::groupDelete(GroupInfo *g) {
-    groupUpdate(g);
+    sigc::connection conn = dispatcher.connect([&] {
+        mainWindow->contactWindow.contactList.deleteGroup(g);
+        mainWindow->contactWindow.contactList.addNewGroup(g);
+    });
+    dispatcher.emit();
+    conn.disconnect();
 }
 
 void Receiver::groupRequest(GroupInfo *g) {
-    groupUpdate(g);
-    mainWindow->chatWindow.chatList.addChat(g->getChat());
+    sigc::connection conn = dispatcher.connect([&] {
+        mainWindow->contactWindow.contactList.deleteGroup(g);
+        mainWindow->contactWindow.contactList.addNewGroup(g);
+        mainWindow->chatWindow.chatList.addChat(g->getChat());
+    });
+    dispatcher.emit();
+    conn.disconnect();
 }
 
 

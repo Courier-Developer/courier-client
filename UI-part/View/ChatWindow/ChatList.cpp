@@ -68,9 +68,10 @@ ChatList::ChatList(ChatWindow *chatWindow,
         Gtk::TreeModel::iterator iter = select->get_selected();
         if (iter) {
             Gtk::TreeModel::Row row = *iter;
-            std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. "
-                      << std::endl;
+            std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. "<< std::endl;
             this->chatWindow->changeTo(iter->get_value(chatPeep.c));
+        }else{
+            this->chatWindow->changeTo(nullptr);
         }
     });
 
@@ -103,10 +104,11 @@ void ChatList::addChat(ChatInfo *newChat) {
 }
 
 void ChatList::deleteChat(ChatInfo *c) {
+    std::cout<<c->getMsgList()->at(0)->getContent()<<std::endl;
     auto iter = c_iter[c];
     refChatPeep->erase(iter);
     c_iter.erase(c);
-    chatWindow->changeTo(nullptr);
+//    chatWindow->changeTo(nullptr);
 }
 
 

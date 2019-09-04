@@ -20,7 +20,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     add(vbox);
     vbox.pack_end(infoGrid, Gtk::PACK_SHRINK);
     vbox.pack_start(welcomeImage);
-    welcomeImage.set(PixMan::TryOrDefaultUserAva(200, ""));
+    welcomeImage.set(PixMan::getIcon("welcome",300));
 
 
     infoGrid.set_border_width(10);
@@ -31,19 +31,21 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
 
     usernameLabel.set_text("User Name");
-    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
+//    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
 
-    infoGrid.attach(username, 1, 0, 1, 1);
+    infoGrid.attach(username, 0, 0, 2, 1);
+    username.set_icon_from_pixbuf(PixMan::getIcon("user",15));
 
     passwordLabel.set_text("Password");
-    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
-    infoGrid.attach(password, 1, 1, 1, 1);
+//    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
+    infoGrid.attach(password, 0, 1, 2, 1);
     password.set_visibility(false);
-    password.set_invisible_char('*');
+    password.set_invisible_char(Glib::ustring("·").at(0));
+    password.set_icon_from_pixbuf(PixMan::getIcon("lock",15));
 
     showPassword.set_label("Show Password");
     showPassword.set_active(false);
-    showPassword.set_halign(Gtk::ALIGN_END);
+    showPassword.set_halign(Gtk::ALIGN_START);
     showPassword.signal_toggled().connect([this] {
         if (this->showPassword.get_active()) {
             password.set_visibility(true);
@@ -54,6 +56,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     infoGrid.attach(showPassword, 0, 2, 2, 1);
 
     signUpBt.set_label("Sign Up");
+
     signUpBt.signal_clicked().connect([this] {
         SignUp *signUp = new SignUp(this->app);
         this->app->add_window(*signUp);
@@ -61,28 +64,30 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
         this->hide();
         this->app->remove_window(*this);
     });
+
     infoGrid.attach(signUpBt, 0, 3, 2, 1);
 
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
-
-        dealer.login("", "", [this](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
+        dealer.login("", "", [&](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
                                     std::vector<ChatInfo *> &clist) {
-
+            std::cout<<"Log In Success"<<std::endl;
             dealer.getMyprofile([&](UserInfo *me) {
-                receiver = new Receiver(plist, glist, clist, me);
-                receiver->debug();
-                MainWindow *mainWindow = new MainWindow(this->app, plist, glist, clist);
-                receiver->mainWindow = mainWindow;
-
-                this->app->add_window(*mainWindow);
-                mainWindow->show();
-                this->hide();
-                this->app->remove_window(*this);
+                dispatcher.connect([&]{
+                    receiver = new Receiver(plist, glist, clist, me);
+                    receiver->debug();
+                    mainWindow = new MainWindow(this->app, plist, glist, clist);
+                    receiver->mainWindow = mainWindow;
+                    std::cout << "Finished?" << std::endl;
+                    this->app->add_window(*(this->mainWindow));
+                    this->mainWindow->show();
+                    this->hide();
+                    this->app->remove_window(*this);
+                });
+                dispatcher.emit();
             }, [this](std::string error) {
                 std::cout << error << std::endl;
             });
-
         }, [this](std::string error) {
             std::cout << error << std::endl;
         });

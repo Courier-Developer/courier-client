@@ -19,7 +19,9 @@ public:
 protected:
     ContactInfo myInfo;
     Gtk::HBox bt_box;
-    Gtk::Button skinChoose;
+    Gtk::Button editMyInfo;
+    Gtk::Button themeChoose;
+
 
     Gtk::Button logOut;
 

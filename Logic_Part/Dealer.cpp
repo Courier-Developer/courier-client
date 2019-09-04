@@ -983,6 +983,7 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
                          std::function<void(std::string)> fail) {
 
     _mtx.lock();
+
     client = FeverRPC::Client(serverip.c_str());
     ::Access_Key.username = username;
     ::Access_Key.password = password;
@@ -992,6 +993,7 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
     if (uid) {
         userid = uid;
         get_information_and_update();
+
         success(PacketList, GroupList, ChatList);
         _mtx.unlock();
         std::cout << "ok" << std::endl;
@@ -999,6 +1001,7 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
         _mtx.unlock();
         fail("不知道出了什么问题，反正就是登录失败了！");
     }
+
 }
 
 
