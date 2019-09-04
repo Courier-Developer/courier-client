@@ -217,7 +217,7 @@ public:
 
     void getMyprofileMethod(std::function<void(UserInfo *)> getprofile, std::function<void(std::string)> error);
 
-    void queryUserMethod(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
+    void queryUserMethod(std::string username, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
 
     void addFriendMethod(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
@@ -252,7 +252,7 @@ public:
 
     void getMyprofile(std::function<void(UserInfo *)> getprofile, std::function<void(std::string)> error);
 
-    void queryUser(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
+    void queryUser(std::string username, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
 
     void addFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail);
 

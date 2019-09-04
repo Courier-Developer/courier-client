@@ -88,7 +88,7 @@ void Dealer::update_local_packet(const std::vector<PacketInfo> &packet) {
 //从服务端获取有关用户信息
 std::vector<UserInfo> Dealer::get_users_from_server() {
     //todo: call for the server
-    std::vector<UserInfo> users = Convert::cv_vfriend_to_client(client.call<Response< vector<Friend> > >("get_all_friends_info").data);
+    std::vector<UserInfo> users = Convert::cv_vfriend_to_client(client.call< vector<Friend> >("get_all_friends_info"));
     return users;
 }
 
@@ -211,7 +211,7 @@ PacketInfo *Dealer::add_packet(int packetid, std::string name) {
 //服务器添加分组
 int Dealer::ask_server_to_add_packet(const std::string &packetname) {
     //todo: ask server to add packet
-    return client.call<int>("create_package", userid, packetname);
+    return client.call<int>("create_package", userid,0, packetname);
 }
 
 
@@ -1022,9 +1022,9 @@ Dealer::getMyprofileMethod(std::function<void(UserInfo *)> getprofile, std::func
     }
 }
 
-void Dealer::queryUserMethod(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+void Dealer::queryUserMethod(std::string username, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
     _mtx.lock();
-    UserInfo *user = add_user(id);
+    UserInfo *user = add_user(username);
     if (user) {
         _mtx.unlock();
         success(user);
@@ -1237,8 +1237,8 @@ void Dealer::groupAdd(GroupInfo group) {
 }
 
 /**************************************************thread ********************************************************/
-void Dealer::queryUser(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
-    std::thread t(std::bind(&Dealer::queryUserMethod, this, id, success, fail));
+void Dealer::queryUser(std::string username, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+    std::thread t(std::bind(&Dealer::queryUserMethod, this, username, success, fail));
     t.detach();
 }
 

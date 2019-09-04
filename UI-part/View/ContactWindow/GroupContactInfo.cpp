@@ -61,13 +61,6 @@ GroupContactInfo::GroupContactInfo() {
     });
     contacts.set_model(filter);
 
-    for (int i = 0; i < 10; i++) {
-        auto row = *(refListStore->append());
-        row[groupContact.nickName] = "GroupMember Name";
-        auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-        ava = ava->scale_simple(24, 24, Gdk::INTERP_BILINEAR);
-        row[groupContact.avatar] = ava;
-    }
     pack_end(quitGroupBt, Gtk::PACK_SHRINK);
     quitGroupBt.set_label("Quit This Group");
     quitGroupBt.signal_clicked().connect([this] {

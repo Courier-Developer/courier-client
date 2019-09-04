@@ -37,6 +37,20 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
     if (u->getUserId() != receiver->me->getUserId()) {
         if (u->getPacket() == 0) {
             addFriend.set_label("Add As Friend");
+            addFriend.signal_clicked().connect([this]{
+                dealer.addFriend(this->u->getUserId(),[this](std::string suc){
+                    if (conn.connected()) {
+                        conn.disconnect();
+                    }
+                    conn = dispatcher.connect([=] {
+                        receiver->mainWindow->contactWindow.contactList.addNewFriend(this->u);
+                        std::cout<<suc<<std::endl;
+                    });
+                    dispatcher.emit();
+                    },[this](std::string err){
+                    std::cout<<err<<std::endl;
+                });
+            });
             pack_start(addFriend, Gtk::PACK_SHRINK);
         }
         if (u->getPacket() == 0) {

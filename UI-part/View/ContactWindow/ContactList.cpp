@@ -32,17 +32,30 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
 
         btBox.pack_start(addNewFriendBt);
 
-        addNewFriendBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("adduser",32))));
+        addNewFriendBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("adduser", 32))));
         addNewFriendBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             Gtk::SearchEntry newUserEntry;
-//            ContactInfo newUser;
+            this->newUser=new ContactInfo(receiver->me,64,10);
             newUserEntry.set_placeholder_text("Enter the target UserName");
+
             newUserEntry.signal_changed().connect([&] {
-//                dealer.queryUser();
+                dealer.queryUser(newUserEntry.get_text(), [this](UserInfo *u) {
+                    if (conn.connected()) {
+                        conn.disconnect();
+                    }
+                    conn = dispatcher.connect([=] {
+                        this->newUser = new ContactInfo(u,64,0);
+                    });
+                    dispatcher.emit();
+                }, [this](std::string err) {
+                    std::cout << err << std::endl;
+                });
             });
+
             dialog.get_content_area()->pack_start(newUserEntry);
-//            dialog.get_content_area()->pack_start(newUser);
+
+            dialog.get_content_area()->pack_start(*newUser);
 
             dialog.add_button("Back", 0);
             dialog.show_all_children();
@@ -50,7 +63,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         });
 
         btBox.pack_start(addNewGroupBt);
-        addNewGroupBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("addteam",32))));
+        addNewGroupBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("addteam", 32))));
         addNewGroupBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             dialog.set_size_request(300, 400);
@@ -78,7 +91,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         });
 
         btBox.pack_start(addNewPacketBt);
-        addNewPacketBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("plus-square",32))));
+        addNewPacketBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("plus-square", 32))));
         addNewPacketBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             dialog.set_border_width(10);
@@ -95,13 +108,19 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
             dialog.show_all_children();
             int results = dialog.run();
             if (results == 1) {
-                dealer.addPacket(entry->get_text(),[this](PacketInfo* np){
-                    dispatcher.connect([&]{
+                dealer.addPacket(entry->get_text(), [this](PacketInfo *np) {
+                    if (conn.connected()) {
+                        conn.disconnect();
+                    }
+                    conn = dispatcher.connect([=] {
                         addNewPacket(np);
                     });
                     dispatcher.emit();
-                },[this](std::string err){
-                    dispatcher.connect([&]{
+                }, [this](std::string err) {
+                    if (conn.connected()) {
+                        conn.disconnect();
+                    }
+                    conn = dispatcher.connect([=] {
                         Gtk::MessageDialog dialog(err);
                         dialog.run();
                     });

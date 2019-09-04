@@ -17,6 +17,8 @@ public:
     UserInfo *u;
     std::map<PacketInfo*,Gtk::TreeModel::iterator>p_iter;
     bool dialoging=0;
+    Glib::Dispatcher dispatcher;
+    sigc::connection conn;
 protected:
     Gtk::Grid grid;
     int avatarSize = 64;

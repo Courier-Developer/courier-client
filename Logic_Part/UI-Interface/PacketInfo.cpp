@@ -2,6 +2,7 @@
 // Created by 孙璋亮 on 2019-08-30.
 //
 
+#include <iostream>
 #include "PacketInfo.h"
 
 
@@ -41,6 +42,7 @@ PacketInfo::~PacketInfo() {
 }
 
 void PacketInfo::AddUser(UserInfo *user) {
+    std::cout<<user->getNickName()<<" "<<user->getPacket()<<std::endl;
     if (Members != nullptr) {
         Members->push_back(user);
     } else {

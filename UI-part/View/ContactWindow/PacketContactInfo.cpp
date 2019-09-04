@@ -14,7 +14,7 @@ PacketContactInfo::PacketContactInfo(PacketInfo *p) : p(p) {
     pack_end(deleteBt, Gtk::PACK_SHRINK);
 
     if(p!=nullptr) {
-        deleteBt.set_label("Delete This Group");
+        deleteBt.set_label("Delete This Packet");
         deleteBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             dialog.set_border_width(10);

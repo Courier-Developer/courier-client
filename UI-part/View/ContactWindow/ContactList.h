@@ -40,6 +40,8 @@ public:
 
     void deleteGroup(GroupInfo *g);
     Glib::Dispatcher dispatcher;
+    ContactInfo* newUser;
+    sigc::connection conn;
 protected:
 
     Gtk::SearchEntry searchEntry;
