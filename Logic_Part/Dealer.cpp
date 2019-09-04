@@ -2,26 +2,11 @@
 // Created by 孙璋亮 on 2019-08-31.
 //
 
-#include <iostream>
+
 #include "Dealer.h"
 
 /*************************************获取ip**************************************/
 
-std::string Dealer::getip() {
-    int sockfd;
-    struct sockaddr_in sin;
-    struct ifreq ifr;
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd == -1) {
-        perror("socket error");
-        exit(1);
-    }
-    strncpy(ifr.ifr_name, ETH_NAME, IFNAMSIZ);   //Interface name
-    if (ioctl(sockfd, SIOCGIFADDR, &ifr) == 0) {  //SIOCGIFADDR 获取interface address
-        memcpy(&sin, &ifr.ifr_addr, sizeof(ifr.ifr_addr));
-        return inet_ntoa(sin.sin_addr);
-    }
-}
 
 /*************************************登录初始化*********************************/
 //从服务器拉取好友分组信息
@@ -348,7 +333,7 @@ void Dealer::update_local_group(const GroupInfo &group) {
 }
 
 //被拉进群
-void Dealer::be_added_in_group(const GroupInfo &group) {
+void Dealer::be_added_in_group(GroupInfo group) {
     GroupInfo *newgroup = add_group(group);
     update_local_group(group);
     //todo: call for UI
@@ -410,20 +395,24 @@ GroupInfo *Dealer::add_group(GroupInfo newgroup) {
 
 /*************************************好友上下线****************************************************/
 
-void Dealer::someone_online(const int &id) {
+void Dealer::someone_online(int id) {
+    _mtx.lock();
     if (UserMap.count(id)) {
         UserInfo *user = UserMap[id];
         user->setStatus(1);
         //todo: call UI
     }
+    _mtx.unlock();
 }
 
-void Dealer::someone_offline(const int &id) {
+void Dealer::someone_offline(int id) {
+    _mtx.lock();
     if (UserMap.count(id)) {
         UserInfo *user = UserMap[id];
         user->setStatus(0);
         //todo: call UI
     }
+    _mtx.unlock();
 }
 
 
@@ -527,7 +516,7 @@ void Dealer::update_server_user(const UserInfo &user) {
     //todo: call for server to update user
 }
 
-void Dealer::update_friend(const UserInfo &user) {   //server_call
+void Dealer::update_friend(UserInfo user) {   //server_call
     if (UserMap.count(user.getUserId())) {
         UI_move_friend(UserMap[user.getUserId()], PacketMap[user.getPacket()]);
         update_local_user(user);
@@ -565,7 +554,8 @@ void Dealer::UI_search_user(const int &id) {
     UserInfo *tmp = add_user(id);
 }
 
-void Dealer::server_ask_to_add_friend(const UserInfo &user) {
+void Dealer::server_ask_to_add_friend(UserInfo user) {
+    _mtx.lock();
     if (UserMap.count(user.getUserId())) {
         if (user.getPacket() > 0) {
             std::cerr << "does exist this friend" << std::endl;
@@ -574,6 +564,7 @@ void Dealer::server_ask_to_add_friend(const UserInfo &user) {
         UserInfo *newuser = add_user(user);
         //todo: call for UI to choose whether to accept
     }
+    _mtx.unlock();
 }
 
 void Dealer::UI_accept_add_friend(int userid, PacketInfo *packet) {
@@ -585,12 +576,14 @@ void Dealer::tell_server_accept_friend(UserInfo newfriend) {
 }
 
 
-void Dealer::friend_be_accepted(const UserInfo &user) {
+void Dealer::friend_be_accepted(UserInfo user) {
+    _mtx.lock();
     if (UserMap.count(user.getUserId())) {
         UI_move_friend(UserMap[user.getUserId()], PacketMap[user.getPacket()]);
     } else {
         add_user(user);
     }
+    _mtx.unlock();
 }
 
 /*************************************删除好友**********************************/
@@ -631,7 +624,7 @@ void Dealer::UI_delete_friend(UserInfo *oldfriend) {
 }
 
 //服务器请求删除好友
-void Dealer::server_delete_friend(const UserInfo &oldfriend) {
+void Dealer::server_delete_friend(UserInfo oldfriend) {
     local_delete_friend(oldfriend);
     delete_friend(oldfriend);
     //todo: call for UI
@@ -703,10 +696,12 @@ MessageInfo *Dealer::send_message(int type, const std::string &content, ChatInfo
 
 /**************************************接收信息************************************/
 //todo: add file and pic
-void Dealer::receive_new_message(const MessageInfo &msg) {
+void Dealer::receive_new_message(MessageInfo msg) {
+    _mtx.lock();
     add_local_message(msg);
     MessageInfo *newmsg = cope_new_message(msg); //may exist bug here
     //todo: call for UI
+    _mtx.unlock();
 }
 
 /**********************************获取云端历史信息*********************************/
@@ -915,6 +910,7 @@ void Dealer::ShowTestUserInfo() {
 }
 
 void Dealer::ShowTestGroupInfo() {
+    sleep(2);
     using std::cout, std::endl;
     cout << endl << endl;
     cout << "***********************GroupInfo********************" << endl;
@@ -985,12 +981,14 @@ void Dealer::ShowTestChatInfo() {
 /***********************************UI-Interface**************************************/
 
 //登录
-void Dealer::login(const std::string &username, const std::string &password,
-                   std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+void Dealer::loginMethod(const std::string &username, const std::string &password,
+                         std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                       std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
-
+    _mtx.lock();
     //todo:
+
+//    client=FeverRPC::Client("127.0.0.1");
     if (/*****/1) {
 //        get_information_and_update();
         test();
@@ -998,36 +996,44 @@ void Dealer::login(const std::string &username, const std::string &password,
     } else {
         fail("不知道出了什么问题，反正就是登录失败了！");
     }
+    _mtx.unlock();
 }
 
 
 void
 Dealer::getMyprofile(std::function<void(UserInfo *)> getprofile, std::function<void(std::string)> error) {
+    _mtx.lock();
     if (MyProfile.getUserId() != 0)
         getprofile(MyProfileCopy);
     else {
         error("还未获得个人信息");
     }
+    _mtx.unlock();
 }
 
 void Dealer::queryUser(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     UserInfo *user = add_user(id);
     if (user)
         success(user);
     else
         fail("查无此人");
+    _mtx.unlock();
 }
 
 void Dealer::addFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     //todo:
     if (/*******/1 && (!UserMap.count(id) || UserMap[id]->getPacket() != 0)) {
         success("我觉得可以");
     } else {
         fail("我觉得不行");
     }
+    _mtx.unlock();
 }
 
 void Dealer::agreefriend(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     //todo:
     if (/*********/1 && (!UserMap.count(id) || UserMap[id]->getPacket() != 0)) {
         UI_move_friend(add_user(id), 1);
@@ -1035,9 +1041,11 @@ void Dealer::agreefriend(int id, std::function<void(UserInfo *)> success, std::f
     } else {
         fail("我觉得不行");
     }
+    _mtx.unlock();
 }
 
 void Dealer::deleteFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     //todo:
     if (/********/ 1) {
         UI_delete_friend(UserMap[id]);
@@ -1045,64 +1053,81 @@ void Dealer::deleteFriend(int id, std::function<void(std::string)> success, std:
     } else {
         fail("我觉得不行");
     }
+    _mtx.unlock();
 }
 
 void Dealer::chatWith(UserInfo *user, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     success(get_chat(user));
+    _mtx.unlock();
 }
 
 void
 Dealer::chatWith(GroupInfo *group, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     success(get_chat(group));
+    _mtx.unlock();
 }
 
 void Dealer::moveToPacket(UserInfo *user, PacketInfo *packet, std::function<void(std::string)> success,
                           std::function<void(std::string)> fail) {
+    _mtx.lock();
     if (user->getInPacket() != packet) {
         UI_move_friend(user, packet);
         success("可能可以");
     } else {
         fail("这样不行");
     }
+    _mtx.unlock();
 }
 
 void
 Dealer::addPacket(std::string name, std::function<void(PacketInfo *)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     PacketInfo *packet = UI_add_packet(name);
     if (packet)
         success(packet);
     else
         fail("我觉得不行");
+    _mtx.unlock();
 }
 
 void Dealer::renamePacket(std::string name, PacketInfo *packet, std::function<void(std::string)> success,
                           std::function<void(std::string)> fail) {
+    _mtx.lock();
     if (UI_change_packetname(packet, name))
         fail("这样不行");
     else
         success("好像可以");
+    _mtx.unlock();
 }
 
 void
 Dealer::deletePacket(PacketInfo *packet, std::function<void(std::string)> ok, std::function<void(std::string)> fail) {
+    _mtx.lock();
     if (UI_delete_packet(packet))
         fail("这样不行");
     else
         ok("好像可以");
+    _mtx.unlock();
 }
 
 void Dealer::addGroup(std::string name, std::vector<int> userList, std::function<void(GroupInfo *)> success,
                       std::function<void(std::string)> fail) {
+    _mtx.lock();
     GroupInfo *group = UI_create_group(name, userList);
     if (group == nullptr)
         fail("好像不行");
     else
         success(group);
+    _mtx.unlock();
 }
 
 void Dealer::exitGroup(GroupInfo *group, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     leave_group(group);
     success("可能成功了");
+    _mtx.unlock();
 }
 
 MessageInfo *Dealer::newMessage(int type, std::string content, ChatInfo *chat) {
@@ -1129,6 +1154,7 @@ MessageInfo *Dealer::newMessage(int type, std::string content, ChatInfo *chat) {
 
 
 void Dealer::sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
+    _mtx.lock();
     int result = send_message_to_server(*msg);
     if (result) {
         msg->setMessageId(result);
@@ -1139,12 +1165,56 @@ void Dealer::sendMessage(MessageInfo *msg, std::function<void(std::string)> succ
         add_local_message(*msg);
         fail("这样不行");
     }
+    _mtx.unlock();
 }
 
 void Dealer::updateMyInfo(std::function<void(std::string)> success, std::function<void(std::string)> fail) {
     //todo: call for server
 
 }
+
+
+/**************************************Thread***************************************/
+void Dealer::login(const std::string &username, const std::string &password,
+                   std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+                                      std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
+    //todo:
+    std::thread t(std::bind(&Dealer::loginMethod,this,username,password,success,fail));
+    t.detach();
+}
+
+/***************************************SERVER***************************************/
+
+void Dealer::receiveMessage(MessageInfo msg) {
+    std::thread t(std::bind(&Dealer::receive_new_message,this,msg));
+    t.detach();
+}
+
+void Dealer::friendWanttoAdd(UserInfo user) {
+    std::thread t(std::bind(&Dealer::server_ask_to_add_friend,this,user));
+    t.detach();
+}
+
+void Dealer::friendConfirm(UserInfo user) {
+    std::thread t(std::bind(&Dealer::friend_be_accepted,this,user));
+    t.detach();
+}
+
+void Dealer::userLogin(int id) {
+    std::thread t(std::bind(&Dealer::someone_online,this,id));
+    t.detach();
+}
+
+void Dealer::userLogout(int id) {
+    std::thread t(std::bind(&Dealer::someone_offline,this,id));
+    t.detach();
+}
+
+void Dealer::groupAdd(GroupInfo group) {
+    //todo: fix the problem
+}
+
+
 
 
 
