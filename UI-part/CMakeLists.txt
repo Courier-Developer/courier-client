@@ -42,7 +42,7 @@ add_executable(main main.cpp
         View/predeclare.h
         View/implement.h
 
-        Receiver.cpp Receiver.h View/ChatWindow/HistroyMessage.cpp View/ChatWindow/HistroyMessage.h View/res/PixMan.cpp View/res/PixMan.h View/ChatWindow/ShowMessage.cpp View/ChatWindow/ShowMessage.h View/ContactWindow/PacketContactInfo.cpp View/ContactWindow/PacketContactInfo.h)
+        Receiver.cpp Receiver.h View/ChatWindow/HistroyMessage.cpp View/ChatWindow/HistroyMessage.h View/res/PixMan.cpp View/res/PixMan.h View/ChatWindow/ShowMessage.cpp View/ChatWindow/ShowMessage.h View/ContactWindow/PacketContactInfo.cpp View/ContactWindow/PacketContactInfo.h View/ThemeManage.cpp View/ThemeManage.h)
 
 
 TARGET_LINK_LIBRARIES(main ${GTKmm_LIBRARIES})

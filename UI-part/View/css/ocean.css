@@ -1,0 +1,94 @@
+
+dialog{
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-clouds.jpeg");
+    background-size: cover;
+}
+window{
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-clouds.jpeg");
+    background-size: cover;
+}
+
+
+.mainWindowAvatarButtonBox {
+    padding: 10px;
+}
+
+button{
+    box-shadow: none;
+    background-color: transparent;
+    transition-duration: 500ms;
+}
+button label{
+    color: black;
+}
+button:hover{
+    transition-duration: 500ms;
+    background-color: white;
+}
+
+.avatar{
+    box-shadow: 0px 0px 2px ;
+}
+
+
+
+treeview {
+    background-color: transparent;
+}
+
+treeview.view {
+    color: black;
+}
+
+treeview.view:hover {
+    color: black;
+}
+
+treeview.view:selected {
+    transition-duration: 500ms;
+    color: black;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.tools {
+
+}
+.msgEditFrame{
+    background-color: rgba(0,0,0,0.2);
+}
+.msgEdit{
+    font-size: 20px;
+}
+textview.text{
+    background: transparent;
+}
+
+.LogIn {
+
+}
+
+label {
+    transition: color;
+    transition-duration: 500ms;
+    color: black;
+}
+
+
+
+.myChatMessage {
+    color: black;
+    background-color: #c5c0c0;
+    padding: 5px;
+}
+
+.otherChatMessage {
+    color: black;
+    background-color: #ffffff;
+    padding: 5px;
+}
+
+.messageNickName{
+    font-size: 13px;
+}
+
+

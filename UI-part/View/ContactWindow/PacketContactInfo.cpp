@@ -19,6 +19,7 @@ PacketContactInfo::PacketContactInfo(PacketInfo *p) : p(p) {
             Gtk::Dialog dialog;
             dialog.set_border_width(10);
             dialog.set_size_request(100, 100);
+
             if (this->p->getUsers()->size() == 0) {
                 Glib::ustring info = "Confirm Delete This User Classification?";
                 Gtk::Label *label = Gtk::manage(new Gtk::Label(info));
@@ -26,6 +27,7 @@ PacketContactInfo::PacketContactInfo(PacketInfo *p) : p(p) {
                 dialog.get_content_area()->pack_start(*label);
                 dialog.add_button("Cancel", 0);
                 dialog.add_button("Confirm", 1);
+                dialog.show_all_children();
                 int results = dialog.run();
                 if (results == 1) {
 
@@ -38,8 +40,10 @@ PacketContactInfo::PacketContactInfo(PacketInfo *p) : p(p) {
                 label->set_line_wrap(true);
                 dialog.get_content_area()->pack_start(*label);
                 dialog.add_button("OK", 0);
+                dialog.show_all_children();
+                dialog.run();
             }
-            dialog.show_all_children();
+
         });
     }
     show_all_children();
