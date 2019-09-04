@@ -38,7 +38,7 @@ public:
 
     ChatInfo *getChat();
 
-    int getType();
+    int getType() const;
 
     DateTime getCreateTime();
 
@@ -54,7 +54,7 @@ public:
 
     ChatInfo *getInChat() const;
 
-    std::string getContent();
+    std::string getContent() const;
 
     int getStatus();
 

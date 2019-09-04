@@ -14,7 +14,7 @@ ChatInfo *MessageInfo::getChat() {
     return InChat;
 }
 
-int MessageInfo::getType() {
+int MessageInfo::getType() const{
     return type;
 }
 
@@ -22,7 +22,7 @@ DateTime MessageInfo::getCreateTime() {
     return CreatedTime;
 }
 
-std::string MessageInfo::getContent() {
+std::string MessageInfo::getContent() const {
     return Content;
 }
 

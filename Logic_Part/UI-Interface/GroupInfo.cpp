@@ -25,7 +25,7 @@ ChatInfo *GroupInfo::getChat() {
     }
 }
 
-int GroupInfo::getGroupId() {
+int GroupInfo::getGroupId() const{
     return GroupId;
 }
 

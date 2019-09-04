@@ -28,7 +28,7 @@ public:
 
     GroupInfo();
 
-    int getGroupId();
+    int getGroupId() const;
 
     const std::vector<int> &getMemberId() const;
 
