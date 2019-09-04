@@ -22,9 +22,9 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
-#include "feverrpc/include/feverrpc/feverrpc-client.hpp"
+#include "include/feverrpc/feverrpc-client.hpp"
 #include "include/Convert.h"
-#include "feverrpc/include/feverrpc/utils.hpp"
+#include "include/feverrpc/utils.hpp"
 //#define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"

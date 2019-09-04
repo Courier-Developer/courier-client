@@ -59,8 +59,8 @@ add_executable(main main.cpp
         View/ThemeManage.cpp
         View/ThemeManage.h
 
-        ../Logic_Part/feverrpc/src/feverrpc-client.cpp
-        ../Logic_Part/feverrpc/src/feverrpc.cpp
+        ../Logic_Part/include/src/feverrpc-client.cpp
+        ../Logic_Part/include/src/feverrpc.cpp
         ../Logic_Part/include/Convert.cpp
         )
 

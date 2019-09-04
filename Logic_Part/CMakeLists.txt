@@ -23,8 +23,8 @@ add_executable(Logic_Part
         main.cpp
         Dealer.cpp
         Dealer.h
-        feverrpc/src/feverrpc-client.cpp
-        feverrpc/src/feverrpc.cpp
+        include/src/feverrpc-client.cpp
+        include/src/feverrpc.cpp
         include/Convert.cpp)
 
 #add_executable(Test main.cpp ${DIR_CLS})
