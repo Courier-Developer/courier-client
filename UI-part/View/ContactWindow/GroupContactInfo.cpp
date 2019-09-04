@@ -15,6 +15,7 @@ GroupContactInfo::GroupContactInfo() {
     refAvatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     refAvatar = refAvatar->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
     avatarImage.property_pixbuf() = refAvatar;
+    avatarImage.get_style_context()->add_class("avatar");
     avatarNameBox.pack_start(avatarImage);
     groupName.set_text("Group Name");
     avatarNameBox.pack_start(groupName);
@@ -94,12 +95,8 @@ GroupContactInfo::GroupContactInfo(GroupInfo *group) : GroupContactInfo() {
 
 void GroupContactInfo::changeGroup(GroupInfo *group) {
     this->group = group;
-    try {
-        refAvatar = Gdk::Pixbuf::create_from_file(group->getAvatarPath());
-        avatarImage.property_pixbuf() = refAvatar;
-    } catch (...) {
-        std::cout << group->getNickName() << ":Group Avatar Load Failed at" << group->getAvatarPath() << std::endl;
-    }
+
+    avatarImage.property_pixbuf() = PixMan::TryOrDefaultUserAva(64,group->getAvatarPath());
     groupName.set_text(group->getNickName());
     groupNotice.set_text(group->getNotice());
     refListStore->clear();
@@ -112,17 +109,7 @@ void GroupContactInfo::changeGroup(GroupInfo *group) {
 void GroupContactInfo::addUserAsMember(UserInfo *newUser) {
     auto iter = refListStore->append();
     iter->set_value(groupContact.nickName, Glib::ustring(newUser->getNickName()));
-    Glib::RefPtr<Gdk::Pixbuf> ava;
-    try {
-        ava = Gdk::Pixbuf::create_from_file(newUser->getAvatarPath());
-    }
-    catch (...) {
-        std::cout << newUser->getNickName() << ":Group Member Avatar Load Failed at" << newUser->getAvatarPath()
-                  << std::endl;
-        ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    }
-    ava = ava->scale_simple(24, 24, Gdk::INTERP_BILINEAR);
-    iter->set_value(groupContact.avatar, ava);
+    iter->set_value(groupContact.avatar, PixMan::TryOrDefaultUserAva(24,newUser->getAvatarPath()));
 }
 
 GroupContactInfo::~GroupContactInfo() {

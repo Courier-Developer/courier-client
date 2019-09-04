@@ -31,19 +31,21 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
 
     usernameLabel.set_text("User Name");
-    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
+//    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
 
-    infoGrid.attach(username, 1, 0, 1, 1);
+    infoGrid.attach(username, 0, 0, 2, 1);
+    username.set_icon_from_pixbuf(PixMan::getIcon("user",15));
 
     passwordLabel.set_text("Password");
-    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
-    infoGrid.attach(password, 1, 1, 1, 1);
+//    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
+    infoGrid.attach(password, 0, 1, 2, 1);
     password.set_visibility(false);
-    password.set_invisible_char('*');
+    password.set_invisible_char(Glib::ustring("·").at(0));
+    password.set_icon_from_pixbuf(PixMan::getIcon("lock",15));
 
     showPassword.set_label("Show Password");
     showPassword.set_active(false);
-    showPassword.set_halign(Gtk::ALIGN_END);
+    showPassword.set_halign(Gtk::ALIGN_START);
     showPassword.signal_toggled().connect([this] {
         if (this->showPassword.get_active()) {
             password.set_visibility(true);

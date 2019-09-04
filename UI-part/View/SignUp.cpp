@@ -29,28 +29,32 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
 
     usernameLabel.set_text("User Name");
     username.set_placeholder_text("Must Be Unique");
-    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
-    infoGrid.attach(username, 1, 0, 1, 1);
+    username.set_icon_from_pixbuf(PixMan::getIcon("user",15));
+//    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
+    infoGrid.attach(username, 0, 0, 2, 1);
 
     passwordLabel.set_text("Password");
     password.set_placeholder_text("Decide Password");
     password.set_visibility(false);
-    password.set_invisible_char('*');
-    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
-    infoGrid.attach(password, 1, 1, 1, 1);
+    password.set_invisible_char(Glib::ustring("·").at(0));
+    password.set_icon_from_pixbuf(PixMan::getIcon("lock",15));
+//    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
+    infoGrid.attach(password, 0, 1, 2, 1);
 
 
     rePasswordLabel.set_text("Repeat Password");
     rePassword.set_placeholder_text("Repeat Password");
     rePassword.set_visibility(false);
-    rePassword.set_invisible_char('*');
-    infoGrid.attach(rePasswordLabel, 0, 2, 1, 1);
-    infoGrid.attach(rePassword, 1, 2, 1, 1);
+    rePassword.set_invisible_char(Glib::ustring("·").at(0));
+    rePassword.set_icon_from_pixbuf(PixMan::getIcon("lock",15));
+//    infoGrid.attach(rePasswordLabel, 0, 2, 1, 1);
+    infoGrid.attach(rePassword, 0, 2, 2, 1);
+
 
 
     showPassword.set_label("Show Password");
     showPassword.set_active(false);
-    showPassword.set_halign(Gtk::ALIGN_END);
+    showPassword.set_halign(Gtk::ALIGN_START);
     showPassword.signal_toggled().connect([this] {
         if (this->showPassword.get_active()) {
             password.set_visibility(true);
@@ -61,7 +65,7 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
             rePassword.set_visibility(false);
         }
     });
-    infoGrid.attach(showPassword, 1, 3, 1, 1);
+    infoGrid.attach(showPassword, 0, 3, 2, 1);
 
     signUpBt.set_label("Sign Up");
     infoGrid.attach(signUpBt, 0, 4, 2, 1);

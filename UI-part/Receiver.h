@@ -5,7 +5,7 @@
 #ifndef COURIER_CLIENT_RECEIVER_H
 #define COURIER_CLIENT_RECEIVER_H
 
-#include "View/SignUp.h"
+#include "View/ThemeManage.h"
 
 class Receiver {
 public:

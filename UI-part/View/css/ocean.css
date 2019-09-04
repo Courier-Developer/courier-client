@@ -1,10 +1,10 @@
 
 dialog{
-    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg_desert.jpeg");
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-clouds.jpeg");
     background-size: cover;
 }
 window{
-    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg_desert.jpeg");
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-clouds.jpeg");
     background-size: cover;
 }
 
@@ -26,22 +26,27 @@ button:hover{
     background-color: white;
 }
 
+.avatar{
+    box-shadow: 0px 0px 2px ;
+}
+
+
 
 treeview {
     background-color: transparent;
 }
 
 treeview.view {
-    color: white;
+    color: black;
 }
 
 treeview.view:hover {
-    color: white;
+    color: black;
 }
 
 treeview.view:selected {
     transition-duration: 500ms;
-    color: white;
+    color: black;
     background-color: rgba(0,0,0,0.5);
 }
 
@@ -65,14 +70,10 @@ textview.text{
 label {
     transition: color;
     transition-duration: 500ms;
-    color: white;
+    color: black;
 }
 
 
-.avatar {
-
-
-}
 
 .myChatMessage {
     color: black;
@@ -82,7 +83,7 @@ label {
 
 .otherChatMessage {
     color: black;
-    background-color: white;
+    background-color: #ffffff;
     padding: 5px;
 }
 

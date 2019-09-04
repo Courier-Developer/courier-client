@@ -15,21 +15,12 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
     grid.set_row_spacing(10);
     grid.set_column_spacing(10);
 
-    avatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    avatar = avatar->scale_simple(avatarSize, avatarSize, Gdk::INTERP_BILINEAR);
-
-    try {
-        avatar = Gdk::Pixbuf::create_from_file(u->getAvatarPath());
-    } catch (...) {
-        std::cout << u->getNickName() << ":ContactInfo Avatar Load Failed at" << u->getAvatarPath()
-                  << std::endl;
-        avatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    }
-    avatar = avatar->scale_simple(avatarSize, avatarSize, Gdk::INTERP_BILINEAR);
+    avatar = PixMan::TryOrDefaultUserAva(avatarSize,u->getAvatarPath());
     nickName.set_text(u->getNickName());
     nickName.set_line_wrap(true);
 
     Gtk::Image *avatarImg = Gtk::manage(new Gtk::Image(avatar));
+    avatarImg->get_style_context()->add_class("avatar");
     grid.attach(*avatarImg, 0, 0, 1, 1);
 
     nickName.set_text(u->getNickName());

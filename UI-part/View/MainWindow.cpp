@@ -29,10 +29,8 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
     add(box);
 
     box.pack_start(avatar_button_box,Gtk::PACK_SHRINK);
+    avatar.set(PixMan::TryOrDefaultUserAva(64,receiver->me->getAvatarPath()));
 
-    auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
-    avatar.set(ava);
     avatar.get_style_context()->add_class("avatar");
     avatar_button_box.pack_start(avatar);
     avatar_button_box.get_style_context()->add_class("mainWindowAvatarButtonBox");

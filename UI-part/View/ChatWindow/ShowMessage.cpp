@@ -16,6 +16,7 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
     avatar.set_margin_bottom(10);
     avatar.set_margin_left(10);
     avatar.set_margin_right(10);
+    avatar.get_style_context()->add_class("avatar");
     avatar.set(PixMan::TryOrDefaultUserAva(32, m->getSender()->getAvatarPath()));
     if (showNickName) {
         messageBox.pack_start(nickName, Gtk::PACK_SHRINK);
