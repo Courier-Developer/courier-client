@@ -18,6 +18,8 @@ public:
 protected:
     Gtk::Label chatName;
 
+    Gtk::Menu popup;
+
     Gtk::ScrolledWindow scrolledWindow;
 
     Gtk::VBox msgList;

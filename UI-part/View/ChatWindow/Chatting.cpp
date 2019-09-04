@@ -67,25 +67,56 @@ Chatting::Chatting(ChatWindow *chatWindow,
     pack_start(tools, Gtk::PACK_SHRINK);
     tools.get_style_context()->add_class("tools");
 
-    expressionBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("smile",20))));
-    expressionBt.signal_clicked().connect([this]{
 
+    Glib::ustring emoji;
+    std::ifstream fin("emoji.txt");
+    fin>>emoji;
+    std::cout<<emoji<<std::endl;
+    expressionBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("smile",20))));
+    expressionBt.signal_clicked().connect([=]{
+        Gtk::Dialog dialog;
+        Gtk::Label label(emoji);
+        label.set_line_wrap(true);
+        dialog.get_content_area()->pack_start(label);
+        dialog.show_all_children();
+        int re=dialog.run();
     });
 
     imageBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("image",20))));
     imageBt.signal_clicked().connect([this]{
         Gtk::FileChooserDialog fileChooserDialog("Choose an image to send");
-        fileChooserDialog.add_button("OK", 0);
-        fileChooserDialog.add_button("Cancel", 1);
-        fileChooserDialog.run();
+        fileChooserDialog.add_button("OK", 1);
+        fileChooserDialog.add_button("Cancel", 0);
+        int re = fileChooserDialog.run();
+        if(re==1){
+            auto nm = dealer.newMessage(3,fileChooserDialog.get_filename(),this->c);
+            std::cout<<"nm:"<<nm->getContentKind()<<std::endl;
+            addMessage(nm);
+            dealer.sendMessage(nm,[this](std::string s){
+                std::cout<<s<<std::endl;
+            },[this](std::string s){
+                std::cout<<s<<std::endl;
+            });
+        }
     });
 
     fileBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("file-copy",20))));
     fileBt.signal_clicked().connect([this] {
         Gtk::FileChooserDialog fileChooserDialog("Choose a File to Send");
-        fileChooserDialog.add_button("OK", 0);
-        fileChooserDialog.add_button("Cancel", 1);
-        fileChooserDialog.run();
+        fileChooserDialog.add_button("OK", 1);
+        fileChooserDialog.add_button("Cancel", 0);
+        int re=fileChooserDialog.run();
+        if(re==1){
+            auto nm = dealer.newMessage(2,fileChooserDialog.get_filename(),this->c);
+            std::cout<<"nm:"<<nm->getContentKind()<<std::endl;
+            addMessage(nm);
+            dealer.sendMessage(nm,[this](std::string s){
+                std::cout<<s<<std::endl;
+            },[this](std::string s){
+                std::cout<<s<<std::endl;
+            });
+        }
+
     });
     historyBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("database",20))));
     historyBt.signal_clicked().connect([this] {
@@ -124,6 +155,7 @@ Chatting::Chatting(ChatWindow *chatWindow,
                 if (ustring.length() == 1 && ustring[0] == '\n') {
 
                     auto nm = dealer.newMessage(1,refMsgText->get_text().substr(0,refMsgText->get_text().length()-1),this->c);
+                    std::cout<<"nm:"<<nm->getContentKind()<<std::endl;
                     addMessage(nm);
                     dealer.sendMessage(nm,[this](std::string s){
                         std::cout<<s<<std::endl;

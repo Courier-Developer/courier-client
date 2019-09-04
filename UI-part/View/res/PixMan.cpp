@@ -3,7 +3,7 @@
 //
 
 #include "PixMan.h"
-const std::string local_res="/home/ervinxie/Desktop/courier-client/UI-part/View/res/";
+const std::string local_res="../../UI-part/View/res/";
 Glib::RefPtr<Gdk::Pixbuf> PixMan::TryOrDefaultUserAva(int size, std::string path) {
     Glib::RefPtr<Gdk::Pixbuf> avatar;
     if (path == "")
@@ -74,4 +74,21 @@ Glib::RefPtr<Gdk::Pixbuf> PixMan::getIcon(std::string name, int size) {
 
 Gtk::Image PixMan::getIconImage(std::string name, int size) {
     return Gtk::Image(getIcon(name, size));
+}
+
+Glib::RefPtr<Gdk::Pixbuf> PixMan::getPic(std::string path, int width) {
+    Glib::RefPtr<Gdk::Pixbuf> img;
+    if (path == "")
+        img = Gdk::Pixbuf::create_from_file(local_res + "/NoAvatar.png");
+    else {
+        try {
+            img = Gdk::Pixbuf::create_from_file(path);
+        } catch (...) {
+            std::cout << "Avatar Load Failed at" << path << std::endl;
+            img = Gdk::Pixbuf::create_from_file(
+                    local_res + "/NoAvatar.png");
+        }
+    }
+    img = img->scale_simple(width, width * .0 * img->get_height() / img->get_width(), Gdk::INTERP_BILINEAR);
+    return img;
 }

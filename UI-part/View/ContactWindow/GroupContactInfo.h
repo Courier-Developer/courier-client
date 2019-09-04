@@ -45,7 +45,7 @@ protected:
         }
     }groupContact;
     void addUserAsMember(UserInfo* newUser);
-
+    Gtk::Button startChat;
     Gtk::Button quitGroupBt;
 };
 

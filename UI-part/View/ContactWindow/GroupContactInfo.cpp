@@ -12,7 +12,7 @@ GroupContactInfo::GroupContactInfo() {
     set_border_width(10);
     set_size_request(100, 300);
     set_spacing(10);
-    refAvatar = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
+    refAvatar = PixMan::TryOrDefaultUserAva(64,"");
     refAvatar = refAvatar->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
     avatarImage.property_pixbuf() = refAvatar;
     avatarImage.get_style_context()->add_class("avatar");
@@ -60,6 +60,19 @@ GroupContactInfo::GroupContactInfo() {
         }
     });
     contacts.set_model(filter);
+
+    startChat.set_label("Start Chat");
+    pack_end(startChat,Gtk::PACK_SHRINK);
+
+    startChat.signal_clicked().connect([this]{
+        if(this->group){
+            auto c= dealer.chatWith(this->group);
+            receiver->mainWindow->changeWindow(CHATS);
+            receiver->mainWindow->chatWindow.chatList.addChat(c);
+            receiver->mainWindow->chatWindow.changeTo(c);
+        }
+    });
+
 
     pack_end(quitGroupBt, Gtk::PACK_SHRINK);
     quitGroupBt.set_label("Quit This Group");

@@ -103,6 +103,7 @@ void Receiver::receiveMessage(MessageInfo *msg) {
         conn.disconnect();
     }
     conn = dispatcher.connect([=] {
+        std::cout<<msg->getContent()<<" "<<msg->getContentKind()<<std::endl;
         mainWindow->chatWindow.receiveMsg(msg);
     });
     dispatcher.emit();

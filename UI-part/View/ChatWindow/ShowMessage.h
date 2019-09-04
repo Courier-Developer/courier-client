@@ -12,7 +12,7 @@ public:
     MessageInfo* m;
     Gtk::Image avatar;
     Gtk::VBox message;
-    Gtk::Label nickName,content;
+    Gtk::Label nickName,textContent;
     Gtk::VBox messageBox;
 };
 

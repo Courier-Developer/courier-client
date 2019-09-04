@@ -4,7 +4,7 @@
 
 #include "implement.h"
 #include "ThemeManage.h"
-const std::string local_css="/home/ervinxie/Desktop/courier-client/UI-part/View/css/";
+const std::string local_css="../../UI-part/View/css/";
 ThemeManage::ThemeManage() {
     styleContext = Gtk::StyleContext::create();
     screen = Gdk::Screen::get_default();

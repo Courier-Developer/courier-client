@@ -83,6 +83,9 @@ protected:
     Glib::RefPtr<Gtk::TreeModelSort> sort;
     Glib::RefPtr<Gtk::TreeSelection> select;
 
+    Gtk::Dialog* dialog;
+    Gtk::Frame* dframe;
+
 
 };
 

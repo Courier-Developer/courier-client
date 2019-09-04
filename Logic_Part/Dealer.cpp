@@ -12,12 +12,12 @@
 //从服务器拉取好友分组信息
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server
-    auto v=client.call< std::vector<package> >("get_all_my_package");
-    std::cout<<v.size()<<std::endl;
+    auto v = client.call<std::vector<package> >("get_all_my_package");
+    std::cout << v.size() << std::endl;
     std::vector<PacketInfo> packets = Convert::cv_vpacket_to_client(v);
-    std::cout<<packets.size()<<std::endl;
+    std::cout << packets.size() << std::endl;
     for (auto &tmp:packets)
-        std::cout<<tmp.getPacketId()<<std::endl;
+        std::cout << tmp.getPacketId() << std::endl;
     return packets;
 }
 
@@ -28,8 +28,8 @@ void Dealer::get_information_and_update() {
     MyProfile = get_my_profile_from_server();
     MyProfileCopy = new UserInfo(MyProfile);
     //PacketInfo
-    UserMap[MyProfileCopy->getUserId()]=MyProfileCopy;
-    PacketMap[0]=new PacketInfo("stranger",0);
+    UserMap[MyProfileCopy->getUserId()] = MyProfileCopy;
+    PacketMap[0] = new PacketInfo("stranger", 0);
     PacketMap[0]->AddUser(MyProfileCopy);
     MyProfileCopy->setInPacket(PacketMap[0]);
     std::vector<PacketInfo> packets = get_packet_from_server();
@@ -39,13 +39,13 @@ void Dealer::get_information_and_update() {
         PacketInfo *tmppacket = new PacketInfo(tmp);
         PacketMap[tmppacket->getPacketId()] = tmppacket;
         PacketList.push_back(tmppacket);
-        cout<<tmp.getPacketId()<<std::endl;
+        cout << tmp.getPacketId() << std::endl;
     }
 
     // UserInfo
     std::vector<UserInfo> users = get_users_from_server();
     for (auto &tmp:users)
-        std::cout<<tmp.getNickName()<<" "<<tmp.getUserId()<<" "<<std::endl;
+        std::cout << tmp.getNickName() << " " << tmp.getUserId() << " " << std::endl;
 //    update_local_users(users);
     for (auto &tmp:users) {
         if (UserMap.count(tmp.getUserId())) continue;
@@ -64,16 +64,16 @@ void Dealer::get_information_and_update() {
     }
 
     //todo:
-//    //GroupInfo
-//    std::vector<GroupInfo> groups = get_group_from_server();
-////    update_local_group(groups);
-//    std::cout<<groups.size()<<std::endl;
-//    for (auto &tmp:groups) {
-//        std::cout<<"ok"<<std::endl;
-//        add_group(tmp);
-//    }
+    //GroupInfo
+    std::vector<GroupInfo> groups = get_group_from_server();
+//    update_local_group(groups);
+    std::cout << groups.size() << std::endl;
+    for (auto &tmp:groups) {
+        std::cout << "ok" << std::endl;
+        add_group(tmp);
+    }
 
-    std::cout<<"ok"<<std::endl;
+    std::cout << "ok" << std::endl;
     //MessageInfo
     std::vector<MessageInfo> messages = get_message_from_server();
     for (auto &tmp:messages) {
@@ -84,8 +84,9 @@ void Dealer::get_information_and_update() {
 //从服务器获取我的个人信息
 UserInfo Dealer::get_my_profile_from_server() {
     //todo: call for server
-    UserInfo myprofile = Convert::cv_user_to_client(client.call< userinfo>("get_my_info"));
-    std::cout<<myprofile.getNickName()<<std::endl;
+    auto xxx = client.call<userinfo>("get_my_info");
+    UserInfo myprofile = Convert::cv_user_to_client(xxx);
+    std::cout << myprofile.getNickName() << std::endl;
     return myprofile;
 }
 
@@ -102,9 +103,10 @@ void Dealer::update_local_packet(const std::vector<PacketInfo> &packet) {
 //从服务端获取有关用户信息
 std::vector<UserInfo> Dealer::get_users_from_server() {
     //todo: call for the server
-    std::vector<UserInfo> users = Convert::cv_vfriend_to_client(client.call< vector<Friend> >("get_all_friends_info"));
+    auto xxx = client.call<vector<Friend> >("get_all_friends_info");
+    std::vector<UserInfo> users = Convert::cv_vfriend_to_client(xxx);
     for (auto &tmp:users)
-        std::cout<<tmp.getNickName()<<" "<<tmp.getPacket()<<endl;
+        std::cout << tmp.getNickName() << " " << tmp.getPacket() << endl;
     return users;
 }
 
@@ -116,16 +118,15 @@ void Dealer::update_local_users(const std::vector<UserInfo> &user) {
 //从服务端获取群组信息
 std::vector<GroupInfo> Dealer::get_group_from_server() {
     //todo: call for the server
-    auto v =client.call< std::vector<chatGroup_with_members> >("get_chatGroupWithMembers", userid);
+    auto v = client.call<std::vector<chatGroup_with_members> >("get_all_chatGroups");
 //    std::cout<<v.size()<<std::endl;
     std::vector<GroupInfo> groups = Convert::cv_vgroup_to_client(v);
-    std::cout<<groups.size()<<std::endl;
-    for (auto &tmp:groups)
-    {
-        std::cout<<tmp.getGroupId()<<std::endl;
+    std::cout << groups.size() << std::endl;
+    for (auto &tmp:groups) {
+        std::cout << tmp.getGroupId() << std::endl;
         for (auto &ss:tmp.getMemberId())
-            std::cout<<"   "<<ss;
-        std::cout<<std::endl;
+            std::cout << "   " << ss;
+        std::cout << std::endl;
     }
     return groups;
 }
@@ -138,9 +139,10 @@ void Dealer::update_local_group(const std::vector<GroupInfo> &group) {
 //从服务端获取消息信息
 std::vector<MessageInfo> Dealer::get_message_from_server() {
     //todo: call for the server;
-    std::vector<MessageInfo> messages = Convert::cv_vmessage_to_client(
-            client.call< vector<Message>  >("get_all_message", userid));
-    std::cout<<"handle"<<std::endl;
+    auto xxx = client.call<vector<Message> >("get_all_message", userid);
+    std::vector<MessageInfo> messages = Convert::cv_vmessage_to_client(xxx);
+    std::cout << "handle:" << messages.size() << std::endl;
+
     return messages;
 }
 
@@ -237,7 +239,7 @@ PacketInfo *Dealer::add_packet(int packetid, std::string name) {
 //服务器添加分组
 int Dealer::ask_server_to_add_packet(const std::string &packetname) {
     //todo: ask server to add packet
-    return client.call<int>("create_package", userid,0, packetname);
+    return client.call<int>("create_package", userid, 0, packetname);
 }
 
 
@@ -426,7 +428,7 @@ void Dealer::someone_online(int id) {
         _mtx.unlock();
         receiver->friendUpdate(user);
         //todo: call UI
-    }else {
+    } else {
         _mtx.unlock();
     }
 }
@@ -439,7 +441,7 @@ void Dealer::someone_offline(int id) {
         _mtx.unlock();
         receiver->friendUpdate(user);
         //todo: call UI
-    }else {
+    } else {
         _mtx.unlock();
     }
 }
@@ -465,6 +467,7 @@ UserInfo *Dealer::add_user(const int &tmpmember) {
 //用username添加用户
 UserInfo *Dealer::add_user(const std::string &tmpmember) {
     UserInfo tmpuser = find_user_from_server(tmpmember);
+    std::cout << "Find OK" << std::endl;
     if (tmpuser.getUserId()) {
         if (UserMap.count(tmpuser.getUserId())) {
             std::cerr << "some mistakes, try to add an existed user whose id is " << tmpmember << std::endl;
@@ -484,14 +487,17 @@ UserInfo Dealer::find_user_from_server(const int &tmpmember) {
         std::cerr << "some mistakes, try to find an existed user from server whose id is " << tmpmember << std::endl;
         return *UserMap[tmpmember];
     }
-    return Convert::cv_user_to_client(client.call< userinfo> ("get_info_by_uid", tmpmember));
+    auto xxx=client.call<userinfo>("get_info_by_uid", tmpmember);
+    return Convert::cv_user_to_client(xxx);
 }
 
 //用nickname向服务器请求对方信息
 UserInfo Dealer::find_user_from_server(const std::string &username) {
-    std::cout<<username<<std::endl;
-    UserInfo user = Convert::cv_user_to_client(client.call< userinfo >("get_info_by_username", username));
-    std::cout<<user.getUserName()<<std::endl;
+    std::cout << "query:" << username << std::endl;
+    auto xxx=client.call<userinfo>("get_info_by_username", username);
+    std::cout<<"after get"<<xxx.id<<std::endl;
+    UserInfo user = Convert::cv_user_to_client(xxx);
+    std::cout << user.getUserId() << std::endl;
     if (UserMap.count(user.getUserId())) {
         std::cerr << "some mistakes, try to find an existed user from server whose name is " << user.getUserName()
                   << std::endl;
@@ -615,7 +621,7 @@ void Dealer::friend_be_accepted(UserInfo user) {
         _mtx.unlock();
         receiver->friendUpdate(UserMap[user.getUserId()]);
     } else {
-        UserInfo *tmp=add_user(user);
+        UserInfo *tmp = add_user(user);
         _mtx.unlock();
         receiver->friendUpdate(tmp);
     }
@@ -1038,23 +1044,23 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
 
     if (uid) {
         userid = uid;
-        std::thread _t([=](){
+        std::thread _t([=]() {
             FeverRPC::Client s2c(serverip.c_str());
-            s2c.bind("login",CheckAccess);
-            s2c.bind("friendQuest",FriendWantAdd);
-            s2c.bind("friendConfirm",FriendConfirm);
-            s2c.bind("userLogin",SomeoneOnline);
-            s2c.bind("userLogout",SomeoneOffline);
-            s2c.bind("groupAdd",GroupAdd);
-            s2c.bind("newMessage",ReveiveMessage);
+            s2c.bind("login", CheckAccess);
+            s2c.bind("friendQuest", FriendWantAdd);
+            s2c.bind("friendConfirm", FriendConfirm);
+            s2c.bind("userLogin", SomeoneOnline);
+            s2c.bind("userLogout", SomeoneOffline);
+            s2c.bind("groupAdd", GroupAdd);
+            s2c.bind("newMessage", ReveiveMessage);
             s2c.s2c();
         });
         _t.detach();
         get_information_and_update();
 //    test();
-    success(PacketList, GroupList, ChatList);
-    _mtx.unlock();
-    std::cout << "ok" << std::endl;
+        success(PacketList, GroupList, ChatList);
+        _mtx.unlock();
+        std::cout << "ok" << std::endl;
     } else {
         _mtx.unlock();
         fail("不知道出了什么问题，反正就是登录失败了！");
@@ -1074,7 +1080,8 @@ Dealer::getMyprofileMethod(std::function<void(UserInfo *)> getprofile, std::func
     }
 }
 
-void Dealer::queryUserMethod(std::string username, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+void Dealer::queryUserMethod(std::string username, std::function<void(UserInfo *)> success,
+                             std::function<void(std::string)> fail) {
     _mtx.lock();
     UserInfo *user = add_user(username);
     if (user) {
@@ -1212,8 +1219,11 @@ MessageInfo *Dealer::newMessage(int type, std::string content, ChatInfo *chat) {
         tmp = cope_new_message(newmsg);
         return tmp;
     } else {
-        std::cerr << "chat to what?" << std::endl;
-        return nullptr;
+        MessageInfo newmsg = MessageInfo(MyProfile.getUserId(), chat->getToGroup()->getGroupId(), content, 1, 2,
+                                         type,
+                                         sendtime);
+        tmp = cope_new_message(newmsg);
+        return tmp;
     }
 }
 
@@ -1230,6 +1240,8 @@ void Dealer::signinMethod(std::string username, std::string password, std::funct
         fail("用户已被注册");
     }
 }
+
+
 
 void Dealer::sendMessageMethod(MessageInfo *msg, std::function<void(std::string)> success,
                                std::function<void(std::string)> fail) {
@@ -1248,6 +1260,7 @@ void Dealer::sendMessageMethod(MessageInfo *msg, std::function<void(std::string)
     }
 }
 
+
 //void Dealer::updateMyInfoMethod(std::function<void(std::string)> success, std::function<void(std::string)> fail) {
 //    client.call<int>("update_info")
 //}
@@ -1258,7 +1271,7 @@ void Dealer::sendMessageMethod(MessageInfo *msg, std::function<void(std::string)
 /***************************************SERVER***************************************/
 
 void Dealer::receiveMessage(MessageInfo msg) {
-    std::cout<<msg.getContent()<<std::endl;
+    std::cout << msg.getContent() << std::endl;
     std::thread t(std::bind(&Dealer::receive_new_message, this, msg));
     t.detach();
 }
@@ -1289,7 +1302,8 @@ void Dealer::groupAdd(GroupInfo group) {
 }
 
 /**************************************************thread ********************************************************/
-void Dealer::queryUser(std::string username, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail) {
+void Dealer::queryUser(std::string username, std::function<void(UserInfo *)> success,
+                       std::function<void(std::string)> fail) {
     std::thread t(std::bind(&Dealer::queryUserMethod, this, username, success, fail));
     t.detach();
 }

@@ -14,7 +14,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         isCheck(isCheck),
         glist(glist),
         plist(plist) {
-    std::cout<<"Contact List Building"<<std::endl;
+    std::cout << "Contact List Building" << std::endl;
 
     set_margin_top(5);
     set_spacing(5);
@@ -35,32 +35,41 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
 
         addNewFriendBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("adduser", 32))));
         addNewFriendBt.signal_clicked().connect([this] {
-            Gtk::Dialog dialog;
+            this->dialog = new Gtk::Dialog;
+            this->dframe = new Gtk::Frame;
             Gtk::SearchEntry newUserEntry;
-            this->newUser=new ContactInfo(receiver->me,64,10);
-            newUserEntry.set_placeholder_text("Enter the target UserName");
+            this->newUser = new ContactInfo(receiver->me, 64, 10);
+            Gtk::Button se("Search");
+            this->dialog->get_content_area()->pack_start(newUserEntry);
+            this->dialog->get_content_area()->pack_start(se, Gtk::PACK_SHRINK);
 
-            newUserEntry.signal_changed().connect([&] {
+            newUserEntry.set_placeholder_text("Enter the target UserName");
+            se.signal_clicked().connect([&] {
+
                 dealer.queryUser(newUserEntry.get_text(), [this](UserInfo *u) {
+                    std::cout << "Dispacther OK" << std::endl;
                     if (conn.connected()) {
                         conn.disconnect();
                     }
                     conn = dispatcher.connect([=] {
-                        this->newUser = new ContactInfo(u,64,0);
+                        std::cout << "query OK" << std::endl;
+                        dframe->remove();
+                        dframe->add(*Gtk::manage(new ContactInfo(u, 64, 0)));
+                        this->dialog->show_all_children();
                     });
                     dispatcher.emit();
                 }, [this](std::string err) {
                     std::cout << err << std::endl;
                 });
+
             });
 
-            dialog.get_content_area()->pack_start(newUserEntry);
 
-            dialog.get_content_area()->pack_start(*newUser);
-
-            dialog.add_button("Back", 0);
-            dialog.show_all_children();
-            dialog.run();
+            dialog->get_content_area()->pack_start(*dframe);
+            dframe->add(*(this->newUser));
+            dialog->add_button("Back", 0);
+            dialog->show_all_children();
+            dialog->run();
         });
 
         btBox.pack_start(addNewGroupBt);
@@ -84,6 +93,22 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
             auto confirm = Gtk::manage(new Gtk::Button("Confirm"));
             dialog.get_content_area()->pack_end(*confirm);
             confirm->signal_clicked().connect([&] {
+                vector<int> v;
+                for (auto iter:(gselect->refTreeStore)->children()) {
+                    std::cout<<iter->get_value(contact.nickName)<<std::endl;
+                    for (auto kid:iter->children()) {
+                        std::cout << kid->get_value(contact.nickName) << std::endl;
+                        if (kid->get_value(contact.checked)) {
+                            if (kid->get_value(contact.type) == USER) {
+                                v.push_back(kid->get_value(contact.u)->getUserId());
+                            }
+                        }
+                    }
+                }
+                for (int i:v) {
+                    std::cout << i << std::endl;
+                }
+
                 dialog.hide();
             });
 

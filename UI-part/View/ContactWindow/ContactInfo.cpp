@@ -3,6 +3,8 @@
 //
 
 #include "../implement.h"
+#include "ContactInfo.h"
+
 
 ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(avatarSize), u(u) {
 
@@ -35,7 +37,8 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
         goto end;
     }
     if (u->getUserId() != receiver->me->getUserId()) {
-        if (u->getPacket() == 0) {
+        std::cout<<u->getPacket()<<std::endl;
+        if (u->getPacket() ==0) {
             addFriend.set_label("Add As Friend");
             addFriend.signal_clicked().connect([this]{
                 dealer.addFriend(this->u->getUserId(),[this](std::string suc){
@@ -129,6 +132,8 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
 ContactInfo::~ContactInfo() {
     hide();
 }
+
+
 
 
 
