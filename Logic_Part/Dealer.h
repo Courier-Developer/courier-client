@@ -10,7 +10,7 @@
 #include "UI-Interface/PacketInfo.h"
 #include "UI-Interface/MessageInfo.h"
 #include "UI-Interface/GroupInfo.h"
-#include "db-classes.hpp"
+#include "include/db-classes.hpp"
 #include <map>
 #include <iostream>
 #include <thread>
@@ -23,8 +23,8 @@
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
 #include "feverrpc/include/feverrpc/feverrpc-client.hpp"
-#include "Convert.h"
-#include "feverrpc/utils.hpp"
+#include "include/Convert.h"
+#include "feverrpc/include/feverrpc/utils.hpp"
 //#define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
@@ -34,6 +34,7 @@
 extern Login Access_Key;
 class Dealer {
 private:
+
     //todo:
 //    Reveiver *receiver;
     int packetnum = 1;

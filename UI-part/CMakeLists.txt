@@ -3,7 +3,11 @@
 # Use the package PkgConfig to detect GTK+ headers/library files
 FIND_PACKAGE(PkgConfig REQUIRED)
 PKG_CHECK_MODULES(GTKmm REQUIRED gtkmm-3.0)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+INCLUDE_DIRECTORIES(../Logic_Part/msgpack-c/include)
+
+INCLUDE_DIRECTORIES(../Logic_Part/feverrpc/include)
+INCLUDE_DIRECTORIES(../Logic_Part/include)
+
 INCLUDE_DIRECTORIES(${GTKmm_INCLUDE_DIRS})
 LINK_DIRECTORIES(${GTKmm_LIBRARY_DIRS})
 AUX_SOURCE_DIRECTORY(../Logic_Part/UI-Interface DIR_CLS)
@@ -42,7 +46,23 @@ add_executable(main main.cpp
         View/predeclare.h
         View/implement.h
 
-        Receiver.cpp Receiver.h View/ChatWindow/HistroyMessage.cpp View/ChatWindow/HistroyMessage.h View/res/PixMan.cpp View/res/PixMan.h View/ChatWindow/ShowMessage.cpp View/ChatWindow/ShowMessage.h View/ContactWindow/PacketContactInfo.cpp View/ContactWindow/PacketContactInfo.h View/ThemeManage.cpp View/ThemeManage.h)
+        Receiver.cpp
+        Receiver.h
+        View/ChatWindow/HistroyMessage.cpp
+        View/ChatWindow/HistroyMessage.h
+        View/res/PixMan.cpp
+        View/res/PixMan.h
+        View/ChatWindow/ShowMessage.cpp
+        View/ChatWindow/ShowMessage.h
+        View/ContactWindow/PacketContactInfo.cpp
+        View/ContactWindow/PacketContactInfo.h
+        View/ThemeManage.cpp
+        View/ThemeManage.h
+
+        ../Logic_Part/feverrpc/src/feverrpc-client.cpp
+        ../Logic_Part/feverrpc/src/feverrpc.cpp
+        ../Logic_Part/include/Convert.cpp
+        )
 
 
 TARGET_LINK_LIBRARIES(main ${GTKmm_LIBRARIES})

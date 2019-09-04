@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "implement.h"
+
 SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
     get_style_context()->add_class("SignUp");
     this->app = app;
@@ -15,10 +16,9 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
 
     vbox.pack_end(infoGrid, Gtk::PACK_SHRINK);
     vbox.pack_start(welcomeImage);
-    welcomeImage.set(PixMan::getIcon("welcome",300));
+    welcomeImage.set(PixMan::getIcon("welcome", 300));
 
     add(vbox);
-
 
 
     infoGrid.set_border_width(10);
@@ -29,7 +29,7 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
 
     usernameLabel.set_text("User Name");
     username.set_placeholder_text("Must Be Unique");
-    username.set_icon_from_pixbuf(PixMan::getIcon("user",15));
+    username.set_icon_from_pixbuf(PixMan::getIcon("user", 15));
 //    infoGrid.attach(usernameLabel, 0, 0, 1, 1);
     infoGrid.attach(username, 0, 0, 2, 1);
 
@@ -37,7 +37,7 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
     password.set_placeholder_text("Decide Password");
     password.set_visibility(false);
     password.set_invisible_char(Glib::ustring("·").at(0));
-    password.set_icon_from_pixbuf(PixMan::getIcon("lock",15));
+    password.set_icon_from_pixbuf(PixMan::getIcon("lock", 15));
 //    infoGrid.attach(passwordLabel, 0, 1, 1, 1);
     infoGrid.attach(password, 0, 1, 2, 1);
 
@@ -46,10 +46,9 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
     rePassword.set_placeholder_text("Repeat Password");
     rePassword.set_visibility(false);
     rePassword.set_invisible_char(Glib::ustring("·").at(0));
-    rePassword.set_icon_from_pixbuf(PixMan::getIcon("lock",15));
+    rePassword.set_icon_from_pixbuf(PixMan::getIcon("lock", 15));
 //    infoGrid.attach(rePasswordLabel, 0, 2, 1, 1);
     infoGrid.attach(rePassword, 0, 2, 2, 1);
-
 
 
     showPassword.set_label("Show Password");
@@ -68,11 +67,20 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
     infoGrid.attach(showPassword, 0, 3, 2, 1);
 
     signUpBt.set_label("Sign Up");
+    signUpBt.signal_clicked().connect([this] {
+        dealer.signinMethod(this->username.get_text(), this->password.get_text(), [&](std::string s) {
+            std::cout << s << std::endl;
+        }, [&](std::string f) {
+            std::cout << f << std::endl;
+
+        });
+
+    });
     infoGrid.attach(signUpBt, 0, 4, 2, 1);
 
     logInBt.set_label("Back to Log In");
-    logInBt.signal_clicked().connect([this]{
-        LogIn* logIn = new LogIn(this->app);
+    logInBt.signal_clicked().connect([this] {
+        LogIn *logIn = new LogIn(this->app);
         this->app->add_window(*logIn);
         logIn->show();
 
