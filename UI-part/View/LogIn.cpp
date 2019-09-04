@@ -20,7 +20,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     add(vbox);
     vbox.pack_end(infoGrid, Gtk::PACK_SHRINK);
     vbox.pack_start(welcomeImage);
-    welcomeImage.set(PixMan::TryOrDefaultUserAva(200, ""));
+    welcomeImage.set(PixMan::getIcon("welcome",300));
 
 
     infoGrid.set_border_width(10);

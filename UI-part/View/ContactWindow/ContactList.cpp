@@ -32,7 +32,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
 
         btBox.pack_start(addNewFriendBt);
 
-        addNewFriendBt.set_label("Add New User");
+        addNewFriendBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("adduser",32))));
         addNewFriendBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             Gtk::SearchEntry newUserEntry;
@@ -51,7 +51,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         });
 
         btBox.pack_start(addNewGroupBt);
-        addNewGroupBt.set_label("Add New Group");
+        addNewGroupBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("addteam",32))));
         addNewGroupBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             dialog.set_size_request(300, 400);
@@ -79,7 +79,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         });
 
         btBox.pack_start(addNewPacketBt);
-        addNewPacketBt.set_label("New Packet");
+        addNewPacketBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("plus-square",32))));
         addNewPacketBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
             dialog.set_border_width(10);

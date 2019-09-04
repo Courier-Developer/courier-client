@@ -1,49 +1,93 @@
-window {
-}
 
-box {
+dialog{
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg_desert.jpeg");
+    background-size: cover;
 }
-
-frame {
-}
-
-button {
-}
-
-button:hover {
-
-}
-titlebar{
-    background-color: yellow;
+window{
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg_desert.jpeg");
+    background-size: cover;
 }
 
 
-treeview.view:hover{
-    /*background-color: blue;*/
+.mainWindowAvatarButtonBox {
+    padding: 10px;
 }
-treeview.view:selected{
-    /*background-color: yellow;*/
+
+button{
+    box-shadow: none;
+    background-color: transparent;
+    transition-duration: 500ms;
 }
+button label{
+    color: black;
+}
+button:hover{
+    transition-duration: 500ms;
+    background-color: white;
+}
+
+
+treeview {
+    background-color: transparent;
+}
+
+treeview.view {
+    color: white;
+}
+
+treeview.view:hover {
+    color: white;
+}
+
+treeview.view:selected {
+    transition-duration: 500ms;
+    color: white;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.tools {
+
+}
+.msgEditFrame{
+    background-color: rgba(0,0,0,0.2);
+}
+.msgEdit{
+    font-size: 20px;
+}
+textview.text{
+    background: transparent;
+}
+
 .LogIn {
-    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/welcome.gif");
+
 }
-label{
-    background-color: red;
-    color: yellow;
+
+label {
+    transition: color;
+    transition-duration: 500ms;
+    color: white;
 }
+
 
 .avatar {
 
 
 }
-.myChatMessage{
+
+.myChatMessage {
     color: black;
-    background-color: lightgray;
+    background-color: #c5c0c0;
+    padding: 5px;
 }
-.otherChatMessage{
-    color: white;
-    background-color: darkslategray;
+
+.otherChatMessage {
+    color: black;
+    background-color: white;
+    padding: 5px;
 }
-.mainWindowAvatarButtonBox{
-    background-color: azure;
+
+.messageNickName{
+    font-size: 13px;
 }
+
+

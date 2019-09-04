@@ -18,7 +18,7 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
         plist(plist),
         clist(clist),
         glist(glist) {
-    get_style_context()->add_class("MainWindow");
+    get_style_context()->add_class("mainWindow");
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
 
@@ -28,7 +28,7 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
 
     add(box);
 
-    box.pack_start(avatar_button_box, false, false);
+    box.pack_start(avatar_button_box,Gtk::PACK_SHRINK);
 
     auto ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
     ava = ava->scale_simple(64, 64, Gdk::INTERP_BILINEAR);
@@ -39,22 +39,17 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
 
 //    chats_bt.set_label("CHAT");
     chats_bt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("message"))));
-    avatar_button_box.pack_start(chats_bt);
+    avatar_button_box.pack_start(chats_bt,Gtk::PACK_SHRINK);
     contacts_bt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("user"))));
-    avatar_button_box.pack_start(contacts_bt);
-    others_bt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("menu"))));
-    avatar_button_box.pack_start(others_bt);
+    avatar_button_box.pack_start(contacts_bt,Gtk::PACK_SHRINK);
+    others_bt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("appstore"))));
+    avatar_button_box.pack_start(others_bt,Gtk::PACK_SHRINK);
 
 
     avatar_button_box.set_valign(Gtk::ALIGN_START);
     avatar_button_box.set_halign(Gtk::ALIGN_CENTER);
-    avatar_button_box.set_hexpand(false);
-    avatar_button_box.set_vexpand(false);
-    avatar_button_box.set_spacing(20);
-    avatar_button_box.set_margin_top(10);
-    avatar_button_box.set_margin_bottom(10);
-    avatar_button_box.set_margin_left(10);
-    avatar_button_box.set_margin_right(10);
+    avatar_button_box.set_vexpand(true);
+    avatar_button_box.set_spacing(10);
 
     chats_bt.signal_clicked().connect([this] {
         changeWindow(CHATS);

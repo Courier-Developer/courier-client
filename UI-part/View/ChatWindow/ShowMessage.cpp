@@ -10,7 +10,6 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
         nickName(m->getSender()->getNickName()),
         content(m->getContent()) {
     set_hexpand(false);
-    set_spacing(10);
     avatar.set_vexpand(false);
     avatar.set_valign(Gtk::ALIGN_START);
     avatar.set_margin_top(10);
@@ -21,6 +20,7 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
     if (showNickName) {
         messageBox.pack_start(nickName, Gtk::PACK_SHRINK);
         nickName.set_line_wrap(true);
+        nickName.get_style_context()->add_class("messageNickName");
     }
     messageBox.pack_start(message);
     message.pack_start(content);
@@ -29,16 +29,21 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
 
     std::cout<<receiver->me->getNickName()<<std::endl;
     std::cout<<m->getSender()->getUserId()<<" "<<receiver->me->getUserId()<<std::endl;
+
     if (m->getSender()->getUserId() == receiver->me->getUserId()) {
         content.get_style_context()->add_class("myChatMessage");
         set_halign(Gtk::ALIGN_END);
         pack_end(avatar);
+        avatar.set_margin_left(0);
+        pack_end(*new Gtk::Image(PixMan::getIcon("receiver",10)));
         nickName.set_halign(Gtk::ALIGN_END);
         pack_end(messageBox);
     } else {
         content.get_style_context()->add_class("otherChatMessage");
         set_halign(Gtk::ALIGN_START);
         pack_start(avatar);
+        avatar.set_margin_right(0);
+        pack_start(*new Gtk::Image(PixMan::getIcon("sender",10)));
         nickName.set_halign(Gtk::ALIGN_START);
         pack_start(messageBox);
 
