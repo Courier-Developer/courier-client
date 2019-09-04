@@ -16,7 +16,7 @@ AUX_SOURCE_DIRECTORY(UI-Interface DIR_CLS)
 
 INCLUDE_DIRECTORIES(feverrpc/include)
 
-
+INCLUDE_DIRECTORIES(include)
 
 add_executable(Logic_Part ${DIR_CLS} main.cpp Dealer.cpp Dealer.h feverrpc/src/feverrpc-client.cpp feverrpc/src/feverrpc.cpp)
 

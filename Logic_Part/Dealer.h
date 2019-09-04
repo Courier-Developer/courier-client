@@ -10,6 +10,7 @@
 #include "UI-Interface/PacketInfo.h"
 #include "UI-Interface/MessageInfo.h"
 #include "UI-Interface/GroupInfo.h"
+//#include "../UI-part/Receiver.h"
 #include <map>
 #include <iostream>
 #include <thread>
@@ -32,11 +33,13 @@
 extern Login Access_Key;
 class Dealer {
 private:
+    //todo:
+//    Reveiver *receiver;
     int packetnum = 1;
     int uid;
     std::string ip = "191.2.153.99";
     std::mutex _mtx;
-    FeverRPC::Client client{"127.0.0.1"};
+    FeverRPC::Client client{"10.194.151.197"};
     std::vector<PacketInfo> get_packet_from_server();
 
     void update_local_packet(const std::vector<PacketInfo> &packet);
@@ -246,7 +249,6 @@ public:
     void login(const std::string &username, const std::string &password,
                std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                   std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
-
 
     /**************************************Server*************************************/
 

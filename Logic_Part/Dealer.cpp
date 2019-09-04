@@ -336,7 +336,8 @@ void Dealer::update_local_group(const GroupInfo &group) {
 void Dealer::be_added_in_group(GroupInfo group) {
     GroupInfo *newgroup = add_group(group);
     update_local_group(group);
-    //todo: call for UI
+    //todo:
+//    receiver->groupUpdate(newgroup);
 }
 
 //离开群
@@ -700,8 +701,9 @@ void Dealer::receive_new_message(MessageInfo msg) {
     _mtx.lock();
     add_local_message(msg);
     MessageInfo *newmsg = cope_new_message(msg); //may exist bug here
-    //todo: call for UI
     _mtx.unlock();
+    //todo:
+//    receiver->receiveMessage(msg);
 }
 
 /**********************************获取云端历史信息*********************************/
@@ -987,16 +989,17 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
 
     _mtx.lock();
     //todo:
-    client=FeverRPC::Client("127.0.0.1");
+    client=FeverRPC::Client("10.194.151.197");
     ::Access_Key.username=username;
     ::Access_Key.password=password;
     ::Access_Key.ip=ip;
-    uid=client.call<int>("login",username,password);
+    uid=client.call<int>("login",username,password,ip);
 
-    if (/*****/1) {
+    if (uid) {
 //        get_information_and_update();
-        test();
-        success(PacketList, GroupList, ChatList);
+//        test();
+//        success(PacketList, GroupList, ChatList);
+        std::cout<<"ok"<<std::endl;
     } else {
         fail("不知道出了什么问题，反正就是登录失败了！");
     }
@@ -1158,7 +1161,17 @@ MessageInfo *Dealer::newMessage(int type, std::string content, ChatInfo *chat) {
 
 void Dealer::signinMethod(std::string username, std::string password, std::function<void(std::string)> success,
                           std::function<void(std::string)> fail) {
-    
+    _mtx.lock();
+    client=FeverRPC::Client("10.194.151.197");
+//    bool ismale=true;
+    uid=client.call<int>("register",username,password,username,true);
+    _mtx.unlock();
+    if (uid){
+        success("注册成功");
+    }
+    else{
+        fail("用户已被注册");
+    }
 }
 
 void Dealer::sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
