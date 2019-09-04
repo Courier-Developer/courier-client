@@ -981,8 +981,8 @@ void Dealer::ShowTestChatInfo() {
 /***********************************UI-Interface**************************************/
 
 //登录
-void Dealer::login(const std::string &username, const std::string &password,
-                   std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+void Dealer::loginMethod(const std::string &username, const std::string &password,
+                         std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                       std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
 
     _mtx.lock();
@@ -1173,6 +1173,16 @@ void Dealer::updateMyInfo(std::function<void(std::string)> success, std::functio
 
 }
 
+
+/**************************************Thread***************************************/
+void Dealer::login(const std::string &username, const std::string &password,
+                   std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+                                      std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail) {
+    //todo:
+    std::thread t(std::bind(&Dealer::loginMethod,this,username,password,success,fail));
+    t.detach();
+}
+
 /***************************************SERVER***************************************/
 
 void Dealer::receiveMessage(MessageInfo msg) {
@@ -1203,6 +1213,7 @@ void Dealer::userLogout(int id) {
 void Dealer::groupAdd(GroupInfo group) {
     //todo: fix the problem
 }
+
 
 
 

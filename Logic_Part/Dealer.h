@@ -184,8 +184,6 @@ private:
     void update_server_groupinfo(const int &groupid, const std::string &name, const std::string &avatorpath,
                                  const std::string &notice);
 
-    void updateMyInfo(std::function<void(std::string)> success, std::function<void(std::string)> fail);
-
 public:
     /************************************** Data ***************************************/
     std::map<int, UserInfo *> UserMap;
@@ -200,8 +198,8 @@ public:
 
     /************************************** UI ***************************************/
 
-    void login(const std::string &username, const std::string &password,
-               std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+    void loginMethod(const std::string &username, const std::string &password,
+                     std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                   std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
 
 
@@ -237,6 +235,15 @@ public:
     MessageInfo *newMessage(int type, std::string content, ChatInfo *chat); //1:文本消息 2.文件 3.图片
 
     void sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void updateMyInfo(std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void signinMethod(std::string username,std::string password,std::function<void(std::string)> success,std::function<void(std::string)> fail);
+
+    void login(const std::string &username, const std::string &password,
+               std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+                                  std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
+
 
     /**************************************Server*************************************/
 
