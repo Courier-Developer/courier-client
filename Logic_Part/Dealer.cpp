@@ -576,6 +576,7 @@ void Dealer::friend_be_accepted(UserInfo user) {
         add_user(user);
     }
     _mtx.unlock();
+    //todo: call UI
 }
 
 /*************************************删除好友**********************************/
@@ -990,8 +991,8 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
 
     if (uid) {
         userid = uid;
-//        get_information_and_update();
-//        success(PacketList, GroupList, ChatList);
+        get_information_and_update();
+        success(PacketList, GroupList, ChatList);
         _mtx.unlock();
         std::cout << "ok" << std::endl;
     } else {
