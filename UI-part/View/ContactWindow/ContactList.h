@@ -21,11 +21,24 @@ public:
     ContactWindow *contactWindow;
     bool isCheck = true;
     std::map<PacketInfo *, Gtk::TreeModel::iterator> p_iter;
+    std::map<UserInfo *, Gtk::TreeModel::iterator> u_iter;
+    std::map<GroupInfo *, Gtk::TreeModel::iterator> g_iter;
     Gtk::TreeModel::iterator gp_iter;
     std::vector<PacketInfo *> &plist;
     std::vector<GroupInfo *> &glist;
 
-    const int PACKET=0,USER=1,GROUP=2;
+    const int PACKET = 0, USER = 1, GROUP = 2;
+    void addNewPacket(PacketInfo *newPacketInfo);
+
+    void deletePacket(PacketInfo *p);
+
+    void addNewFriend(UserInfo *newUser);
+
+    void deleteFriend(UserInfo *u);
+
+    void addNewGroup(GroupInfo *newGroup);
+
+    void deleteGroup(GroupInfo *g);
 protected:
 
     Gtk::SearchEntry searchEntry;
@@ -67,11 +80,7 @@ protected:
     Glib::RefPtr<Gtk::TreeModelSort> sort;
     Glib::RefPtr<Gtk::TreeSelection> select;
 
-    void addNewPacket(PacketInfo *newPacketInfo);
 
-    void addNewFriend(UserInfo *newUser);
-
-    void addNewGroup(GroupInfo *newGroup);
 };
 
 

@@ -28,16 +28,21 @@ void ChatWindow::changeTo(ChatInfo *c) {
     if(c==nullptr){
         frame.remove();
     }else {
-
         frame.remove();
-
-        frame.add(*Gtk::manage(new Chatting(this, c)));
+        if(c_ui.count(c)==0){
+            c_ui[c]=Gtk::manage(new Chatting(this, c));
+        }
+        frame.add(*c_ui[c]);
         frame.show_all_children();
     }
 }
-
+void ChatWindow::receiveMsg(MessageInfo *msg) {
+    c_ui[msg->getChat()]->addMessage(msg);
+}
 
 ChatWindow::~ChatWindow() {
 
 }
+
+
 

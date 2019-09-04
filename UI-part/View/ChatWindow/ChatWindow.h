@@ -18,6 +18,7 @@ public:
     MainWindow *mainWindow;
     std::vector<ChatInfo *> &clist;
     std::map<ChatInfo *, Chatting *> c_ui;
+    void receiveMsg(MessageInfo* msg);
     void changeTo(ChatInfo* c);
     ChatList chatList;
 protected:

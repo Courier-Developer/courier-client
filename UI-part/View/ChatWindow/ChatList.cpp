@@ -32,7 +32,7 @@ ChatList::ChatList(ChatWindow *chatWindow,
 
     chatListView.append_column("Avatar", chatPeep.avatar);
     chatListView.append_column("ChatEntity Name", chatPeep.chatName);
-    chatListView.append_column("Unread",chatPeep.msg_toread);
+    chatListView.append_column("Unread", chatPeep.msg_toread);
     chatListView.set_headers_visible(false);
 
 
@@ -63,16 +63,18 @@ ChatList::ChatList(ChatWindow *chatWindow,
     chatListView.set_model(sort);
 
     select = chatListView.get_selection();
-    select->signal_changed().connect([this]{
+
+    select->signal_changed().connect([this] {
         Gtk::TreeModel::iterator iter = select->get_selected();
         if (iter) {
             Gtk::TreeModel::Row row = *iter;
-            std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. " << std::endl;
+            std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. "
+                      << std::endl;
             this->chatWindow->changeTo(iter->get_value(chatPeep.c));
         }
     });
 
-    for(auto c:clist){
+    for (auto c:clist) {
         addChat(c);
     }
 
@@ -80,29 +82,27 @@ ChatList::ChatList(ChatWindow *chatWindow,
 }
 
 void ChatList::addChat(ChatInfo *newChat) {
-    if(c_iter.count(newChat)==0) {
-        auto iter = refChatPeep->append();
-        iter->set_value(chatPeep.type, newChat->getTotype());
-        Glib::RefPtr<Gdk::Pixbuf> ava;
-        if (newChat->getTotype() == 1) {
-            iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToUser()->getNickName()));
-            iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToUser()->getAvatarPath()));
-        } else if (newChat->getTotype() == 2) {
-            iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToGroup()->getNickName()));
-            iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToGroup()->getAvatarPath()));
-        }
-        iter->set_value(chatPeep.c, newChat);
-        c_iter[newChat] = iter;
-        iter->set_value(chatPeep.msg_toread, newChat->getUnreadNumbers());
-        select->select(iter);
-
-    }else{
-        this->chatWindow->changeTo(newChat);
-        select->select(c_iter[newChat]);
+    Gtk::TreeModel::iterator iter;
+    if (c_iter.count(newChat) == 0) {
+        iter = refChatPeep->append();
+    } else {
+        iter = c_iter[newChat];
     }
+    iter->set_value(chatPeep.type, newChat->getTotype());
+    Glib::RefPtr<Gdk::Pixbuf> ava;
+    if (newChat->getTotype() == 1) {
+        iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToUser()->getNickName()));
+        iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToUser()->getAvatarPath()));
+    } else if (newChat->getTotype() == 2) {
+        iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToGroup()->getNickName()));
+        iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToGroup()->getAvatarPath()));
+    }
+    iter->set_value(chatPeep.c, newChat);
+    c_iter[newChat] = iter;
+    iter->set_value(chatPeep.msg_toread, newChat->getUnreadNumbers());
 }
 
-void ChatList::deleteChat(ChatInfo* c) {
+void ChatList::deleteChat(ChatInfo *c) {
     auto iter = c_iter[c];
     refChatPeep->erase(iter);
     c_iter.erase(c);

@@ -21,8 +21,9 @@ public:
     std::vector<PacketInfo *> &plist;
     std::vector<GroupInfo *> &glist;
     Gtk::Frame frame;
-protected:
     ContactList contactList;
+protected:
+
 
 };
 
