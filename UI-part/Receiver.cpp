@@ -105,7 +105,7 @@ void Receiver::friendDelete(UserInfo *u) {
 }
 
 void Receiver::groupUpdate(GroupInfo *g) {
-    mainWindow->contactWindow.contactList.deleteFriend(g);
+    mainWindow->contactWindow.contactList.deleteGroup(g);
     mainWindow->contactWindow.contactList.addNewGroup(g);
 }
 
