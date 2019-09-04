@@ -23,6 +23,8 @@ public:
 
     Glib::Dispatcher dispatcher;
 
+    sigc::connection conn;
+
     void debug();
 
     void friendRequest(UserInfo *);

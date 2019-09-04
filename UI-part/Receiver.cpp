@@ -98,11 +98,16 @@ void Receiver::friendRequest(UserInfo *u) {
 
 
 void Receiver::receiveMessage(MessageInfo *msg) {
-    sigc::connection conn = dispatcher.connect([&] {
+    std::cout<<"Receiver receive message"<<std::endl;
+    if(conn.connected()){
+        conn.disconnect();
+    }
+
+    conn = dispatcher.connect([&] {
+        std::cout<<"dispatcher Receiver receive message"<<std::endl;
         mainWindow->chatWindow.receiveMsg(msg);
     });
     dispatcher.emit();
-    conn.disconnect();
 }
 
 void Receiver::friendUpdate(UserInfo *u) {

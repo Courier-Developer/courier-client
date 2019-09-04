@@ -37,6 +37,7 @@ void ChatWindow::changeTo(ChatInfo *c) {
     }
 }
 void ChatWindow::receiveMsg(MessageInfo *msg) {
+    std::cout<<"Chat Window Receive message"<<std::endl;
     c_ui[msg->getChat()]->addMessage(msg);
 }
 

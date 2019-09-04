@@ -26,6 +26,7 @@ protected:
     Gtk::Button expressionBt;
     Gtk::Button fileBt;
     Gtk::Button historyBt;
+    Gtk::Button imageBt;
 
     Gtk::Button chatDetailBt,cancelBt;
 

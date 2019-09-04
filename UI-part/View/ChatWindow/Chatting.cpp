@@ -68,9 +68,19 @@ Chatting::Chatting(ChatWindow *chatWindow,
     tools.get_style_context()->add_class("tools");
 
     expressionBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("smile",20))));
+
+
+    imageBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("image",20))));
+    imageBt.signal_clicked().connect([this]{
+        Gtk::FileChooserDialog fileChooserDialog("Choose an image to send");
+        fileChooserDialog.add_button("OK", 0);
+        fileChooserDialog.add_button("Cancel", 1);
+        fileChooserDialog.run();
+    });
+
     fileBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("file-copy",20))));
     fileBt.signal_clicked().connect([this] {
-        Gtk::FileChooserDialog fileChooserDialog("");
+        Gtk::FileChooserDialog fileChooserDialog("Choose a File to Send");
         fileChooserDialog.add_button("OK", 0);
         fileChooserDialog.add_button("Cancel", 1);
         fileChooserDialog.run();
@@ -86,6 +96,7 @@ Chatting::Chatting(ChatWindow *chatWindow,
     });
 
     tools.pack_start(expressionBt, Gtk::PACK_SHRINK);
+    tools.pack_start(imageBt,Gtk::PACK_SHRINK);
     tools.pack_start(fileBt, Gtk::PACK_SHRINK);
     tools.pack_start(historyBt, Gtk::PACK_SHRINK);
 
@@ -109,6 +120,14 @@ Chatting::Chatting(ChatWindow *chatWindow,
     refMsgText->signal_insert().connect(
             [this](const Gtk::TextBuffer::iterator &it, const Glib::ustring &ustring, int x) {
                 if (ustring.length() == 1 && ustring[0] == '\n') {
+
+                    auto nm = dealer.newMessage(1,refMsgText->get_text().substr(0,refMsgText->get_text().length()-1),this->c);
+                    addMessage(nm);
+                    dealer.sendMessage(nm,[this](std::string s){
+
+                    },[this](std::string s){
+
+                    });
                     refMsgText->set_text("");
 
                 }
@@ -126,5 +145,10 @@ Chatting::~Chatting() {
 }
 
 void Chatting::addMessage(MessageInfo *m) {
+    std::cout<<"Chatting adding Messsage"<<std::endl;
     msgList.pack_start(*Gtk::manage(new ShowMessage(m, true)), Gtk::PACK_SHRINK);
+    msgList.show_all_children();
+    auto adj = scrolledWindow.get_vadjustment();
+    adj->set_value(adj->get_upper());
+    std::cout<<adj->get_upper()<<std::endl;
 }

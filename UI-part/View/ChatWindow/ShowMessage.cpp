@@ -9,6 +9,7 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
         m(m),
         nickName(m->getSender()->getNickName()),
         content(m->getContent()) {
+    std::cout<<"Constructing Messsage"<<std::endl;
     set_hexpand(false);
     avatar.set_vexpand(false);
     avatar.set_valign(Gtk::ALIGN_START);
@@ -27,6 +28,8 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
     message.pack_start(content);
     content.set_line_wrap(true);
 
+
+    std::cout<<"Constructing Messsage"<<std::endl;
 
     std::cout<<receiver->me->getNickName()<<std::endl;
     std::cout<<m->getSender()->getUserId()<<" "<<receiver->me->getUserId()<<std::endl;
