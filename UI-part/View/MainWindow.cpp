@@ -38,12 +38,11 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
     avatar_button_box.get_style_context()->add_class("mainWindowAvatarButtonBox");
 
 //    chats_bt.set_label("CHAT");
-    chats_bt.set_image(
-            *Gtk::manage(new Gtk::Image("/home/ervinxie/Desktop/courier-client/UI-part/View/res/message-fill.png")));
+    chats_bt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("message"))));
     avatar_button_box.pack_start(chats_bt);
-    contacts_bt.set_label("CONT");
+    contacts_bt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("user"))));
     avatar_button_box.pack_start(contacts_bt);
-    others_bt.set_label("OTHE");
+    others_bt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("menu"))));
     avatar_button_box.pack_start(others_bt);
 
 
