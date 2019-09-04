@@ -15,7 +15,9 @@ public:
 
     virtual ~LogIn();
 
+    MainWindow *mainWindow;
 
+    Glib::Dispatcher dispatcher;
 protected:
     Glib::RefPtr<Gtk::Application> app;
     Gtk::VBox vbox;

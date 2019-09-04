@@ -992,11 +992,13 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
     if (/*****/1) {
 //        get_information_and_update();
         test();
+        _mtx.unlock();
         success(PacketList, GroupList, ChatList);
     } else {
+        _mtx.unlock();
         fail("不知道出了什么问题，反正就是登录失败了！");
     }
-    _mtx.unlock();
+
 }
 
 

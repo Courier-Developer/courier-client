@@ -54,6 +54,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     infoGrid.attach(showPassword, 0, 2, 2, 1);
 
     signUpBt.set_label("Sign Up");
+
     signUpBt.signal_clicked().connect([this] {
         SignUp *signUp = new SignUp(this->app);
         this->app->add_window(*signUp);
@@ -61,28 +62,30 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
         this->hide();
         this->app->remove_window(*this);
     });
+
     infoGrid.attach(signUpBt, 0, 3, 2, 1);
 
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
-
-        dealer.login("", "", [this](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
+        dealer.login("", "", [&](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
                                     std::vector<ChatInfo *> &clist) {
-
+            std::cout<<"Log In Success"<<std::endl;
             dealer.getMyprofile([&](UserInfo *me) {
-                receiver = new Receiver(plist, glist, clist, me);
-                receiver->debug();
-                MainWindow *mainWindow = new MainWindow(this->app, plist, glist, clist);
-                receiver->mainWindow = mainWindow;
-
-                this->app->add_window(*mainWindow);
-                mainWindow->show();
-                this->hide();
-                this->app->remove_window(*this);
+                dispatcher.connect([&]{
+                    receiver = new Receiver(plist, glist, clist, me);
+                    receiver->debug();
+                    mainWindow = new MainWindow(this->app, plist, glist, clist);
+                    receiver->mainWindow = mainWindow;
+                    std::cout << "Finished?" << std::endl;
+                    this->app->add_window(*(this->mainWindow));
+                    this->mainWindow->show();
+                    this->hide();
+                    this->app->remove_window(*this);
+                });
+                dispatcher.emit();
             }, [this](std::string error) {
                 std::cout << error << std::endl;
             });
-
         }, [this](std::string error) {
             std::cout << error << std::endl;
         });

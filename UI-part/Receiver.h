@@ -21,6 +21,8 @@ public:
 
     MainWindow *mainWindow;
 
+    Glib::Dispatcher dispatcher;
+
     void debug();
 
     void friendRequest(UserInfo *);
@@ -28,6 +30,7 @@ public:
     void friendDelete(UserInfo *);
 
     void friendUpdate(UserInfo *);
+
 
     void groupRequest(GroupInfo *);
 
