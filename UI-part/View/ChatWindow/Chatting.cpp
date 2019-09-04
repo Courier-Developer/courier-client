@@ -91,11 +91,14 @@ Chatting::Chatting(ChatWindow *chatWindow,
         if(re==1){
             auto nm = dealer.newMessage(3,fileChooserDialog.get_filename(),this->c);
             std::cout<<"nm:"<<nm->getContentKind()<<std::endl;
-            addMessage(nm);
-            dealer.sendMessage(nm,[this](std::string s){
+            auto sm=addMessage(nm);
+            dealer.sendMessage(nm,[this,sm](std::string s){
                 std::cout<<s<<std::endl;
-            },[this](std::string s){
+                sm->toggle();
+
+            },[this,sm](std::string s){
                 std::cout<<s<<std::endl;
+                sm->toggle();
             });
         }
     });
@@ -109,11 +112,13 @@ Chatting::Chatting(ChatWindow *chatWindow,
         if(re==1){
             auto nm = dealer.newMessage(2,fileChooserDialog.get_filename(),this->c);
             std::cout<<"nm:"<<nm->getContentKind()<<std::endl;
-            addMessage(nm);
-            dealer.sendMessage(nm,[this](std::string s){
+            auto sm=addMessage(nm);
+            dealer.sendMessage(nm,[this,sm](std::string s){
                 std::cout<<s<<std::endl;
-            },[this](std::string s){
+                sm->toggle();
+            },[this,sm](std::string s){
                 std::cout<<s<<std::endl;
+                sm->toggle();
             });
         }
 
@@ -156,11 +161,13 @@ Chatting::Chatting(ChatWindow *chatWindow,
 
                     auto nm = dealer.newMessage(1,refMsgText->get_text().substr(0,refMsgText->get_text().length()-1),this->c);
                     std::cout<<"nm:"<<nm->getContentKind()<<std::endl;
-                    addMessage(nm);
-                    dealer.sendMessage(nm,[this](std::string s){
+                    auto sm = addMessage(nm);
+                    dealer.sendMessage(nm,[this,sm](std::string s){
                         std::cout<<s<<std::endl;
-                    },[this](std::string s){
+                        sm->toggle();
+                    },[this,sm](std::string s){
                         std::cout<<s<<std::endl;
+                        sm->toggle();
                     });
                     refMsgText->set_text("");
 
@@ -168,7 +175,8 @@ Chatting::Chatting(ChatWindow *chatWindow,
             });
 
     for (auto m:*c->getMsgList()) {
-        addMessage(m);
+        auto sm= addMessage(m);
+        sm->toggle();
     }
 
     show_all_children();
@@ -178,16 +186,18 @@ Chatting::~Chatting() {
 
 }
 
-void Chatting::addMessage(MessageInfo *m) {
+ShowMessage* Chatting::addMessage(MessageInfo *m) {
 
     std::cout<<"Chatting adding Messsage"<<std::endl;
     std::cout<<m<<std::endl;
     std::cout<<m->getSender()<<std::endl;
     std::cout<<m->getContent()<<std::endl;
     std::cout<<m->getSender()->getNickName()<<std::endl;
-    msgList.pack_start(*Gtk::manage(new ShowMessage(m, true)), Gtk::PACK_SHRINK);
+    auto sm = Gtk::manage(new ShowMessage(m, true));
+    msgList.pack_start(*sm, Gtk::PACK_SHRINK);
     msgList.show_all_children();
     auto adj = scrolledWindow.get_vadjustment();
     adj->set_value(adj->get_upper());
     std::cout<<adj->get_upper()<<std::endl;
+    return sm;
 }

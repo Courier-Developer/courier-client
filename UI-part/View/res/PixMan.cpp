@@ -89,6 +89,6 @@ Glib::RefPtr<Gdk::Pixbuf> PixMan::getPic(std::string path, int width) {
                     local_res + "/NoAvatar.png");
         }
     }
-    img = img->scale_simple(width, width * .0 * img->get_height() / img->get_width(), Gdk::INTERP_BILINEAR);
+    img = img->scale_simple(width, width * 1.0 * img->get_height() / img->get_width(), Gdk::INTERP_BILINEAR);
     return img;
 }

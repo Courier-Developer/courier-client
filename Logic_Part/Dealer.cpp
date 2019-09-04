@@ -1259,9 +1259,14 @@ void Dealer::sendMessageMethod(MessageInfo *msg, std::function<void(std::string)
     if (msg->getContentKind()>1){
         MyFile loadfile(msg->getContent(),msg->getContentKind());
         int ok=client.call<int>("save_file",loadfile.getfilename(),loadfile.getvefile());
+        sleep(0.1);
+        std::cout<<"uploadfine"<<std::endl;
         msg->setContent(loadfile.getfilename());
+        std::cout<<"set fine"<<std::endl;
     }
+    std::cout<<"okokokok"<<std::endl;
     int result = send_message_to_server(*msg);
+    std::cout<<"sdfasdf"<<std::endl;
     if (result) {
         msg->setMessageId(result);
         add_local_message(*msg);

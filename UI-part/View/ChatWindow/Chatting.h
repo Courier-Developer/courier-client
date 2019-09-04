@@ -13,7 +13,7 @@ public:
     Chatting(ChatWindow* chatWindow,ChatInfo* c);
     virtual ~Chatting();
     ChatWindow *chatWindow;
-    void addMessage(MessageInfo*);
+    ShowMessage* addMessage(MessageInfo*);
     ChatInfo* c;
 protected:
     Gtk::Label chatName;

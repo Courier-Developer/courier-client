@@ -14,6 +14,10 @@ public:
     Gtk::VBox message;
     Gtk::Label nickName,textContent;
     Gtk::VBox messageBox;
+    Gtk::Spinner loading;
+    Glib::Dispatcher dispatcher;
+    sigc::connection conn;
+    void toggle();
 };
 
 

@@ -24,7 +24,7 @@ class LogIn;
 class ChatList;
 class Chatting;
 class ChatWindow;
-
+class ShowMessage;
 class ContactInfo;
 class ContactList;
 class ContactWindow;

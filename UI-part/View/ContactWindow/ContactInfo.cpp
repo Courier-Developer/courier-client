@@ -46,6 +46,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
                         conn.disconnect();
                     }
                     conn = dispatcher.connect([=] {
+
                         receiver->mainWindow->contactWindow.contactList.addNewFriend(this->u);
                         std::cout<<suc<<std::endl;
                     });
