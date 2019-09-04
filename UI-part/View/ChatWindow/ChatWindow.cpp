@@ -11,6 +11,7 @@ ChatWindow::ChatWindow(MainWindow *mainWindow,
         mainWindow(mainWindow),
         chatList(this, clist),
         clist(clist) {
+    std::cout<<"ChatWindow Building"<<std::endl;
 
     pack_start(chatList, Gtk::PACK_SHRINK);
     frame.set_shadow_type(Gtk::SHADOW_NONE);

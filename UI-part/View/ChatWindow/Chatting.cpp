@@ -68,7 +68,9 @@ Chatting::Chatting(ChatWindow *chatWindow,
     tools.get_style_context()->add_class("tools");
 
     expressionBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("smile",20))));
+    expressionBt.signal_clicked().connect([this]{
 
+    });
 
     imageBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("image",20))));
     imageBt.signal_clicked().connect([this]{
@@ -124,9 +126,9 @@ Chatting::Chatting(ChatWindow *chatWindow,
                     auto nm = dealer.newMessage(1,refMsgText->get_text().substr(0,refMsgText->get_text().length()-1),this->c);
                     addMessage(nm);
                     dealer.sendMessage(nm,[this](std::string s){
-
+                        std::cout<<s<<std::endl;
                     },[this](std::string s){
-
+                        std::cout<<s<<std::endl;
                     });
                     refMsgText->set_text("");
 

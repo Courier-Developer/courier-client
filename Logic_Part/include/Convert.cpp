@@ -64,10 +64,12 @@ std::vector<UserInfo> Convert::cv_vfriend_to_client(std::vector<Friend> _su)
 std::vector<PacketInfo> Convert::cv_vpacket_to_client(std::vector<package> _pa)
 {
 	std::vector<PacketInfo> ve;
+	std::cout<<_pa.size()<<std::endl;
 	for (auto tmp : _pa)
 	{
 		ve.push_back(cv_packet_to_client(tmp));
 	}
+	std::cout<<ve.size()<<std::endl;
 	return ve;
 }
 

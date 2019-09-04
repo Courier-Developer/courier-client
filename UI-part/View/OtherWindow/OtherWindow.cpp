@@ -5,6 +5,7 @@
 #include "../implement.h"
 
 OtherWindow::OtherWindow(MainWindow *mainWindow) : myInfo(receiver->me, 128) {
+    std::cout<<"OtherWindow Building"<<std::endl;
     this->mainWindow = mainWindow;
 
     set_border_width(10);

@@ -30,7 +30,13 @@
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
 
-
+int ReveiveMessage(Message msg);
+int FriendWantAdd(Friend fri);
+int FriendConfirm(Friend fri);
+int SomeoneOnline(int id);
+int SomeoneOffline(int id);
+int GroupAdd(chatGroup_with_members group);
+Login CheckAccess();
 extern Login Access_Key;
 class Dealer {
 private:

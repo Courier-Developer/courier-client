@@ -16,6 +16,7 @@ Receiver::Receiver(std::vector<PacketInfo *> &plist,
         me(me) {}
 
 void Receiver::debug() {
+    std::cout<<"Receiver OK"<<std::endl;
     std::cout << me->getNickName() << std::endl;
     for (auto p : plist) {
         std::cout << p->getName() << std::endl;

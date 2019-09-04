@@ -14,6 +14,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         isCheck(isCheck),
         glist(glist),
         plist(plist) {
+    std::cout<<"Contact List Building"<<std::endl;
 
     set_margin_top(5);
     set_spacing(5);

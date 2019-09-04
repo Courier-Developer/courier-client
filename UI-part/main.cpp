@@ -10,7 +10,7 @@ ThemeManage *themeManage;
 
 Login Access_Key;
 
-std::string serverip = "10.194.151.197";
+std::string serverip = "172.20.10.10";
 
 int ReveiveMessage(Message msg) {
     MessageInfo mess = Convert::cv_message_to_client(msg);
@@ -53,18 +53,7 @@ Login CheckAccess() {
 
 int main(int argc, char *argv[]) {
     dealer.init(serverip);
-//    std::thread _t([](){
-//        FeverRPC::Client s2c(serverip.c_str());
-//        s2c.bind("login",CheckAccess);
-//        s2c.bind("friendQuest",FriendWantAdd);
-//        s2c.bind("friendConfirm",FriendConfirm);
-//        s2c.bind("userLogin",SomeoneOnline);
-//        s2c.bind("userLogout",SomeoneOffline);
-//        s2c.bind("groupAdd",GroupAdd);
-//        s2c.bind("newMessage",ReveiveMessage);
-//        s2c.s2c();
-//    });
-//    _t.detach();
+
 
 //    for(int i=0;i<100;i++) {
 //        std::thread test([=] {
