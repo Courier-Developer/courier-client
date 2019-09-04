@@ -20,20 +20,22 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
-//#include "feverrpc/feverrpc-client.hpp"
-//#include "feverrpc/utils.hpp"
+#include "feverrpc/include/feverrpc/feverrpc-client.hpp"
+
+#include "feverrpc/utils.hpp"
 //#define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
 
-//extern Login Access_Key;
+extern Login Access_Key;
 class Dealer {
 private:
     int packetnum = 1;
+    int uid;
     std::string ip = "191.2.153.99";
     std::mutex _mtx;
-//    FeverRPC::Client rpc("127.0.0.1");
+    FeverRPC::Client client{"127.0.0.1"};
     std::vector<PacketInfo> get_packet_from_server();
 
     void update_local_packet(const std::vector<PacketInfo> &packet);

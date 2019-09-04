@@ -987,8 +987,12 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
 
     _mtx.lock();
     //todo:
+    client=FeverRPC::Client("127.0.0.1");
+    ::Access_Key.username=username;
+    ::Access_Key.password=password;
+    ::Access_Key.ip=ip;
+    uid=client.call<int>("login",username,password);
 
-//    client=FeverRPC::Client("127.0.0.1");
     if (/*****/1) {
 //        get_information_and_update();
         test();
@@ -1152,6 +1156,10 @@ MessageInfo *Dealer::newMessage(int type, std::string content, ChatInfo *chat) {
     }
 }
 
+void Dealer::signinMethod(std::string username, std::string password, std::function<void(std::string)> success,
+                          std::function<void(std::string)> fail) {
+
+}
 
 void Dealer::sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail) {
     _mtx.lock();
@@ -1213,6 +1221,8 @@ void Dealer::userLogout(int id) {
 void Dealer::groupAdd(GroupInfo group) {
     //todo: fix the problem
 }
+
+
 
 
 
