@@ -14,7 +14,7 @@ private:
     std::vector<MessageInfo *> *MessageList = nullptr;
     UserInfo *ToUser= nullptr;
     GroupInfo *ToGroup=nullptr;
-    int UnreadNumbers; //未读消息数量
+    int UnreadNumbers=0; //未读消息数量
 //    MessageInfo *LastContent;
 public:
     std::vector<MessageInfo *> *getMsgList();

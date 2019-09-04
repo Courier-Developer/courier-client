@@ -1,27 +1,73 @@
 #include "Dealer.h"
-#include <thread>
-#include <iostream>
 #include <zconf.h>
+#include "Convert.h"
 
-//#include "feverrpc/feverrpc.hpp"
 Dealer dealer;
 Login Access_Key;
 
-//int receiveMsg(Mess)
+std::string serverip="10.194.151.197";
+int ReveiveMessage(Message msg)
+{
+    MessageInfo mess=Convert::cv_message_to_client(msg);
+    dealer.receiveMessage(mess);
+    return 0;
+}
+
+int FriendWantAdd(Friend fri)
+{
+    UserInfo newfriend=Convert::cv_friend_to_client(fri);
+    dealer.friendWanttoAdd(newfriend);
+    return 0;
+}
+
+int FriendConfirm(Friend fri)
+{
+    UserInfo newfriend=Convert::cv_friend_to_client(fri);
+    dealer.friendConfirm(newfriend);
+    return 0;
+}
+
+int SomeoneOnline(int id)
+{
+    dealer.userLogin(id);
+    return 0;
+}
+
+int SomeoneOffline(int id)
+{
+    dealer.userLogout(id);
+    return 0;
+}
+
+int GroupAdd(chatGroup_with_members group)
+{
+    GroupInfo newgroup=Convert::cv_group_to_client(group);
+    dealer.groupAdd(newgroup);
+    return 0;
+}
+
+Login CheckAccess()
+{
+    return Access_Key;
+}
+
+
+
 //todo: need login
 int main()
 {
-//    dealer.test();
-////    cout<<dealer.ip<<endl;
-//    dealer.ShowTestUserInfo();
-//    dealer.ShowTestPacketInfo();
-//    dealer.ShowTestGroupInfo();
-//    dealer.ShowTestChatInfo();
-//    dealer.UI_send_message("fuck",dealer.get_chat(dealer.UserMap[10002]));
-//    dealer.ShowTestChatInfo();
-//    sleep(3);
-//    dealer.signinMethod("ironhead","12345678",[](std::string s)->void{std::cout<<s;},[](std::string s)->void{std::cout<<s;});
-//    dealer.login("ironhead","12345678",[](auto a,auto b,auto c)->void{std::cout<<"ok";},[](auto s)->void{std::cout<<"fail";});
-    sleep(1000);
-    return 0;
+    dealer.init(serverip);
+    std::thread _t([](){
+        FeverRPC::Client s2c(serverip.c_str());
+        s2c.bind("login",CheckAccess);
+        s2c.bind("friendQuest",FriendWantAdd);
+        s2c.bind("friendConfirm",FriendConfirm);
+        s2c.bind("userLogin",SomeoneOnline);
+        s2c.bind("userLogout",SomeoneOffline);
+        s2c.bind("groupAdd",GroupAdd);
+        s2c.bind("newMessage",ReveiveMessage);
+        s2c.s2c();
+    });
+    _t.detach();
+
 }

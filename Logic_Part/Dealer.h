@@ -10,7 +10,7 @@
 #include "UI-Interface/PacketInfo.h"
 #include "UI-Interface/MessageInfo.h"
 #include "UI-Interface/GroupInfo.h"
-//#include "../UI-part/Receiver.h"
+#include "db-classes.hpp"
 #include <map>
 #include <iostream>
 #include <thread>
@@ -23,12 +23,13 @@
 #include <sys/ioctl.h>
 #include <arpa/inet.h>
 #include "feverrpc/include/feverrpc/feverrpc-client.hpp"
-
+#include "Convert.h"
 #include "feverrpc/utils.hpp"
 //#define ETH_NAME    "eth0"
 //#include "FeverRPC/utils.cpp"
 //#include "FeverRPC/lock.cpp"
 //#include "FeverRPC/feverrpc.cpp"
+
 
 extern Login Access_Key;
 class Dealer {
@@ -37,7 +38,9 @@ private:
 //    Reveiver *receiver;
     int packetnum = 1;
     int uid;
+    int userid;
     std::string ip = "191.2.153.99";
+    std::string serverip;
     std::mutex _mtx;
     FeverRPC::Client client{"10.194.151.197"};
     std::vector<PacketInfo> get_packet_from_server();
@@ -202,12 +205,49 @@ public:
     UserInfo MyProfile;
     UserInfo *MyProfileCopy;
 
+    /************************************** Init**************************************/
+    void init(std::string sip);
     /************************************** UI ***************************************/
 
     void loginMethod(const std::string &username, const std::string &password,
                      std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
                                   std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
 
+
+    void getMyprofileMethod(std::function<void(UserInfo *)> getprofile, std::function<void(std::string)> error);
+
+    void queryUserMethod(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
+
+    void addFriendMethod(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void agreefriendMethod(int id, std::function<void(UserInfo *)> success, std::function<void(std::string)> fail);
+
+    void deleteFriendMethod(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void moveToPacketMethod(UserInfo *user, PacketInfo *packet, std::function<void(std::string)> success,
+                            std::function<void(std::string)> fail);
+
+    void addPacketMethod(std::string name, std::function<void(PacketInfo *)> success, std::function<void(std::string)> fail);
+
+    void renamePacketMethod(std::string name, PacketInfo *packet, std::function<void(std::string)> success,
+                            std::function<void(std::string)> fail);
+
+    void deletePacketMethod(PacketInfo *packet, std::function<void(std::string)> ok, std::function<void(std::string)> fail);
+
+    void addGroupMethod(std::string name, std::vector<int> userList, std::function<void(GroupInfo *)> success,
+                        std::function<void(std::string)> fail);
+
+    void exitGroupMethod(GroupInfo *group, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void sendMessageMethod(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+//    void updateMyInfoMethod(std::function<void(std::string)> success, std::function<void(std::string)> fail);
+
+    void signinMethod(std::string username,std::string password,std::function<void(std::string)> success,std::function<void(std::string)> fail);
+    /************************************** UI thread ********************************/
+    void login(const std::string &username, const std::string &password,
+               std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
+                                  std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
 
     void getMyprofile(std::function<void(UserInfo *)> getprofile, std::function<void(std::string)> error);
 
@@ -219,37 +259,30 @@ public:
 
     void deleteFriend(int id, std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
-    void chatWith(UserInfo *user, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail);
-
-    void chatWith(GroupInfo *group, std::function<void(ChatInfo *)> success, std::function<void(std::string)> fail);
-
     void moveToPacket(UserInfo *user, PacketInfo *packet, std::function<void(std::string)> success,
-                      std::function<void(std::string)> fail);
+                            std::function<void(std::string)> fail);
 
     void addPacket(std::string name, std::function<void(PacketInfo *)> success, std::function<void(std::string)> fail);
 
     void renamePacket(std::string name, PacketInfo *packet, std::function<void(std::string)> success,
-                      std::function<void(std::string)> fail);
+                            std::function<void(std::string)> fail);
 
     void deletePacket(PacketInfo *packet, std::function<void(std::string)> ok, std::function<void(std::string)> fail);
 
     void addGroup(std::string name, std::vector<int> userList, std::function<void(GroupInfo *)> success,
-                  std::function<void(std::string)> fail);
+                        std::function<void(std::string)> fail);
 
     void exitGroup(GroupInfo *group, std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
-    MessageInfo *newMessage(int type, std::string content, ChatInfo *chat); //1:文本消息 2.文件 3.图片
-
     void sendMessage(MessageInfo *msg, std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
-    void updateMyInfo(std::function<void(std::string)> success, std::function<void(std::string)> fail);
+//    void updateMyInfo(std::function<void(std::string)> success, std::function<void(std::string)> fail);
 
-    void signinMethod(std::string username,std::string password,std::function<void(std::string)> success,std::function<void(std::string)> fail);
+    ChatInfo *chatWith(UserInfo *user);
 
-    void login(const std::string &username, const std::string &password,
-               std::function<void(std::vector<PacketInfo *> &, std::vector<GroupInfo *> &,
-                                  std::vector<ChatInfo *> &)> success, std::function<void(std::string)> fail);
+    ChatInfo *chatWith(GroupInfo *group);
 
+    MessageInfo *newMessage(int type, std::string content, ChatInfo *chat); //1:文本消息 2.文件 3.图片
     /**************************************Server*************************************/
 
     void server_ask_to_add_friend(UserInfo user);
