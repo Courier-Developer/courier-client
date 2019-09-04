@@ -1,11 +1,11 @@
 
 dialog{
-    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-desert-blue.jpeg");
+    background-image: url("../res/bg-desert-blue.jpeg");
     background-size: cover;
     /*filter: blur(15px);*/
 }
 window{
-    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-desert-blue.jpeg") ;
+    background-image: url("../res/bg-desert-blue.jpeg") ;
     background-size: cover;
 
 }

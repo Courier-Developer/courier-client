@@ -4,6 +4,7 @@
 
 #include "implement.h"
 #include "ThemeManage.h"
+const std::string local_css="/home/ervinxie/Desktop/courier-client/UI-part/View/css/";
 ThemeManage::ThemeManage() {
     styleContext = Gtk::StyleContext::create();
     screen = Gdk::Screen::get_default();
@@ -11,7 +12,7 @@ ThemeManage::ThemeManage() {
 }
 void ThemeManage::changeTheme(std::string theme) {
     cssProvider = Gtk::CssProvider::create();
-    cssProvider->load_from_path("/home/ervinxie/Desktop/courier-client/UI-part/View/css/"+theme+".css");
+    cssProvider->load_from_path(local_css+theme+".css");
 //    std::cout<<cssProvider->to_string()<<std::endl;
     styleContext->add_provider_for_screen(screen, cssProvider,GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
