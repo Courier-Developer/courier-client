@@ -505,7 +505,7 @@ void Dealer::UI_move_friend(UserInfo *user, int packetid) {
 }
 
 void Dealer::update_server_user(const UserInfo &user) {
-    int op=client.call<int>("change_packet",userid,user.getUserId(),user.getInPacket()->getPacketName());
+    int op=client.call<int>("change_package",userid,user.getUserId(),user.getInPacket()->getPacketName());
 }
 
 void Dealer::update_friend(UserInfo user) {   //server_call
