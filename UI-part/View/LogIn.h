@@ -32,6 +32,8 @@ protected:
     Gtk::Button signUpBt;
     Gtk::Button logInBt;
 
+    Gtk::Spinner spinner;
+
 };
 
 

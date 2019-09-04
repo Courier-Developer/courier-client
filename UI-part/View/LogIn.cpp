@@ -20,6 +20,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
     add(vbox);
     vbox.pack_end(infoGrid, Gtk::PACK_SHRINK);
     vbox.pack_start(welcomeImage);
+    vbox.pack_start(spinner,Gtk::PACK_SHRINK);
     welcomeImage.set(PixMan::getIcon("welcome",300));
 
 
@@ -69,11 +70,14 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
     logInBt.set_label("Log In");
     logInBt.signal_clicked().connect([this] {
-        dealer.login("", "", [&](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
+
+        spinner.property_active()= true;
+        dealer.login(this->username.get_text(),this->password.get_text(), [&](std::vector<PacketInfo *> &plist, std::vector<GroupInfo *> &glist,
                                     std::vector<ChatInfo *> &clist) {
             std::cout<<"Log In Success"<<std::endl;
             dealer.getMyprofile([&](UserInfo *me) {
                 dispatcher.connect([&]{
+                    spinner.property_active()= false;
                     receiver = new Receiver(plist, glist, clist, me);
                     receiver->debug();
                     mainWindow = new MainWindow(this->app, plist, glist, clist);
@@ -86,9 +90,11 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
                 });
                 dispatcher.emit();
             }, [this](std::string error) {
+                spinner.property_active()= false;
                 std::cout << error << std::endl;
             });
         }, [this](std::string error) {
+            spinner.property_active()= false;
             std::cout << error << std::endl;
         });
 

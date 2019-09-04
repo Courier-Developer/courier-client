@@ -19,7 +19,9 @@ ChatWindow::ChatWindow(MainWindow *mainWindow,
 
     set_vexpand(true);
     set_hexpand(true);
-    changeTo(clist[0]);
+    if(clist.size()) {
+        changeTo(clist[0]);
+    }
 
     show_all_children();
 }

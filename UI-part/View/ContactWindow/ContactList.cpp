@@ -39,9 +39,8 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
 //            ContactInfo newUser;
             newUserEntry.set_placeholder_text("Enter the target UserName");
             newUserEntry.signal_changed().connect([&] {
-                newUserEntry.get_text();
+//                dealer.queryUser();
             });
-
             dialog.get_content_area()->pack_start(newUserEntry);
 //            dialog.get_content_area()->pack_start(newUser);
 

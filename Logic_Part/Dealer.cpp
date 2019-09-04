@@ -13,7 +13,7 @@
 std::vector<PacketInfo> Dealer::get_packet_from_server() {
     //call for server
     std::vector<PacketInfo> packets = Convert::cv_vpacket_to_client(
-            client.call<vector<package> >("get_all_my_package"));
+            client.call<Response< std::vector<package> > >("get_all_my_package").data);
     return packets;
 }
 
@@ -70,7 +70,8 @@ void Dealer::get_information_and_update() {
 //从服务器获取我的个人信息
 UserInfo Dealer::get_my_profile_from_server() {
     //todo: call for server
-    UserInfo myprofile = Convert::cv_user_to_client(client.call<userinfo>("get_my_info"));
+    UserInfo myprofile = Convert::cv_user_to_client(client.call< userinfo>("get_my_info"));
+    std::cout<<myprofile.getNickName()<<std::endl;
     return myprofile;
 }
 
@@ -87,7 +88,7 @@ void Dealer::update_local_packet(const std::vector<PacketInfo> &packet) {
 //从服务端获取有关用户信息
 std::vector<UserInfo> Dealer::get_users_from_server() {
     //todo: call for the server
-    std::vector<UserInfo> users = Convert::cv_vfriend_to_client(client.call<vector<Friend> >("get_all_friends_info"));
+    std::vector<UserInfo> users = Convert::cv_vfriend_to_client(client.call<Response< vector<Friend> > >("get_all_friends_info").data);
     return users;
 }
 
@@ -100,7 +101,7 @@ void Dealer::update_local_users(const std::vector<UserInfo> &user) {
 std::vector<GroupInfo> Dealer::get_group_from_server() {
     //todo: call for the server
     std::vector<GroupInfo> groups = Convert::cv_vgroup_to_client(
-            client.call<vector<chatGroup_with_members> >("get_chatGroupWithMembers", userid));
+            client.call<Response< vector<chatGroup_with_members> > >("get_chatGroupWithMembers", userid).data);
     return groups;
 }
 
@@ -113,7 +114,7 @@ void Dealer::update_local_group(const std::vector<GroupInfo> &group) {
 std::vector<MessageInfo> Dealer::get_message_from_server() {
     //todo: call for the server;
     std::vector<MessageInfo> messages = Convert::cv_vmessage_to_client(
-            client.call<vector<Message> >("get_all_message", userid));
+            client.call<Response< vector<Message> > >("get_all_message", userid).data);
     return messages;
 }
 
@@ -451,13 +452,13 @@ UserInfo Dealer::find_user_from_server(const int &tmpmember) {
         std::cerr << "some mistakes, try to find an existed user from server whose id is " << tmpmember << std::endl;
         return *UserMap[tmpmember];
     }
-    return Convert::cv_user_to_client(client.call<userinfo>("get_info_by_uid", tmpmember));
+    return Convert::cv_user_to_client(client.call<Response< userinfo> >("get_info_by_uid", tmpmember).data);
 }
 
 //用nickname向服务器请求对方信息
 UserInfo Dealer::find_user_from_server(const std::string &username) {
 
-    UserInfo user = Convert::cv_user_to_client(client.call<userinfo>("get_info_by_username", username));
+    UserInfo user = Convert::cv_user_to_client(client.call<Response< userinfo> >("get_info_by_username", username).data);
     if (UserMap.count(user.getUserId())) {
         std::cerr << "some mistakes, try to find an existed user from server whose id is " << user.getUserId()
                   << std::endl;
@@ -508,7 +509,7 @@ void Dealer::UI_move_friend(UserInfo *user, int packetid) {
 }
 
 void Dealer::update_server_user(const UserInfo &user) {
-    int op = client.call<int>("change_package", userid, user.getUserId(), user.getInPacket()->getPacketName());
+//    int op = client.call<int>("change_package", userid, user.getUserId(), user.getInPacket()->getPacketName());
 }
 
 void Dealer::update_friend(UserInfo user) {   //server_call
@@ -993,20 +994,19 @@ void Dealer::loginMethod(const std::string &username, const std::string &passwor
     ::Access_Key.username = username;
     ::Access_Key.password = password;
     ::Access_Key.ip = ip;
-//    uid = client.call<int>("login", username, password, ip);
+    uid = client.call<int>("login", username, password, ip);
 
-//    if (uid) {
-//        userid = uid;
-//        get_information_and_update();
-    test();
+    if (uid) {
+        userid = uid;
+        get_information_and_update();
+//    test();
     success(PacketList, GroupList, ChatList);
     _mtx.unlock();
     std::cout << "ok" << std::endl;
-//    } else {
-//        _mtx.unlock();
-//        fail("不知道出了什么问题，反正就是登录失败了！");
-//    }
-
+    } else {
+        _mtx.unlock();
+        fail("不知道出了什么问题，反正就是登录失败了！");
+    }
 }
 
 

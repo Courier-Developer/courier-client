@@ -19,6 +19,7 @@ template <typename T> class Response {
 public:
 
 	T data;
+	Response(){};
 
 	Response(bool success, std::string msg, T data)
 
