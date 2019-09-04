@@ -142,7 +142,6 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
                 auto row = *kid;
                 kid->set_value(contact.checked, checked);
                 row[contact.checked] = checked;
-
             }
         });
     }
@@ -186,52 +185,77 @@ ContactList::~ContactList() {
 }
 
 void ContactList::addNewPacket(PacketInfo *newPacketInfo) {
-    auto iter = refTreeStore->append();
-    p_iter[newPacketInfo] = iter;
+    Gtk::TreeModel::iterator iter;
+    if(p_iter.count(newPacketInfo)==0){
+        iter = refTreeStore->append();
+        p_iter[newPacketInfo]=iter;
+    }else{
+        iter=p_iter[newPacketInfo];
+    }
     iter->set_value(contact.type, PACKET);
     iter->set_value(contact.nickName, Glib::ustring(newPacketInfo->getName()));
     iter->set_value(contact.sortPriority, newPacketInfo->getPriority());
     iter->set_value(contact.p, newPacketInfo);
 }
 
+void ContactList::deletePacket(PacketInfo *p) {
+    if(p_iter.count(p)&&p->getUsers()->empty()){
+        auto iter=p_iter[p];
+        refTreeStore->erase(iter);
+        p_iter.erase(p);
+    }
+}
+
+
 void ContactList::addNewFriend(UserInfo *newUser) {
-    auto iter = refTreeStore->append(p_iter[newUser->getInPacket()]->children());
+    Gtk::TreeModel::iterator iter;
+    if(u_iter.count(newUser)==0){
+        iter = refTreeStore->append(p_iter[newUser->getInPacket()]->children());
+        u_iter[newUser]=iter;
+    }else{
+        iter=u_iter[newUser];
+    }
     iter->set_value(contact.nickName, Glib::ustring(newUser->getNickName()));
-    Glib::RefPtr<Gdk::Pixbuf> ava;
-    try {
-        ava = Gdk::Pixbuf::create_from_file(newUser->getAvatarPath());
-    }
-    catch (...) {
-        std::cout << newUser->getNickName() << ":ContactList Avatar Load Failed at" << newUser->getAvatarPath()
-                  << std::endl;
-        ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    }
-    ava = ava->scale_simple(24, 24, Gdk::INTERP_BILINEAR);
-    iter->set_value(contact.avatar, ava);
+    iter->set_value(contact.avatar, PixMan::TryOrDefaultUserAva(24,newUser->getAvatarPath()));
     iter->set_value(contact.u, newUser);
     iter->set_value(contact.type, USER);
     iter->set_value(contact.sortPriority, 0);
 }
 
+void ContactList::deleteFriend(UserInfo *u) {
+    if(u_iter.count(u)){
+        auto iter=u_iter[u];
+        refTreeStore->erase(iter);
+        u_iter.erase(u);
+    }
+}
+
 
 void ContactList::addNewGroup(GroupInfo *newGroup) {
-    auto iter = refTreeStore->append(gp_iter->children());
+    Gtk::TreeModel::iterator iter;
+    if(g_iter.count(newGroup)==0){
+        iter = refTreeStore->append(gp_iter->children());
+        g_iter[newGroup]=iter;
+    }else{
+        iter=g_iter[newGroup];
+    }
     iter->set_value(contact.nickName, Glib::ustring(newGroup->getNickName()));
-    Glib::RefPtr<Gdk::Pixbuf> ava;
-    try {
-        ava = Gdk::Pixbuf::create_from_file(newGroup->getAvatarPath());
-    }
-    catch (...) {
-        std::cout << newGroup->getNickName() << ":ContactList Avatar Load Failed at" << newGroup->getAvatarPath()
-                  << std::endl;
-        ava = Gdk::Pixbuf::create_from_file("/home/ervinxie/Downloads/f7074b005cd6a206f6fb94392214c5b6.jpeg");
-    }
-    ava = ava->scale_simple(24, 24, Gdk::INTERP_BILINEAR);
-    iter->set_value(contact.avatar, ava);
+    iter->set_value(contact.avatar, PixMan::TryOrDefaultUserAva(24,newGroup->getAvatarPath()));
     iter->set_value(contact.g, newGroup);
     iter->set_value(contact.type, GROUP);
     iter->set_value(contact.sortPriority, 0);
 
 }
+
+void ContactList::deleteGroup(GroupInfo *g) {
+    if(g_iter.count(g)){
+        auto iter = g_iter[g];
+        refTreeStore->erase(iter);
+        g_iter.erase(g);
+    }
+}
+
+
+
 
 

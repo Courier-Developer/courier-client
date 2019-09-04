@@ -40,7 +40,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
     signature.set_text(u->getSignature());
     pack_start(signature, Gtk::PACK_SHRINK);
 
-    if (reduce > 0) {
+    if (reduce > 5) {
         goto end;
     }
 
@@ -58,7 +58,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
         pack_end(deleteFriend, Gtk::PACK_SHRINK);
     }
 
-    if(reduce>5){
+    if(reduce>0){
         goto end;
     }
 

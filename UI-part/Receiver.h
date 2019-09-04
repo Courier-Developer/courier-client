@@ -33,6 +33,8 @@ public:
 
     void groupUpdate(GroupInfo *);
 
+    void groupDelete(GroupInfo*);
+
     void receiveMessage(MessageInfo *msg);
 };
 
