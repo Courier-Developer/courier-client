@@ -11,7 +11,7 @@ ChatWindow::ChatWindow(MainWindow *mainWindow,
         mainWindow(mainWindow),
         chatList(this, clist),
         clist(clist) {
-    std::cout<<"ChatWindow Building"<<std::endl;
+    std::cout << "ChatWindow Building" << std::endl;
 
     pack_start(chatList, Gtk::PACK_SHRINK);
     frame.set_shadow_type(Gtk::SHADOW_NONE);
@@ -20,7 +20,7 @@ ChatWindow::ChatWindow(MainWindow *mainWindow,
 
     set_vexpand(true);
     set_hexpand(true);
-    if(clist.size()) {
+    if (clist.size()) {
         changeTo(clist[0]);
     }
 
@@ -28,20 +28,23 @@ ChatWindow::ChatWindow(MainWindow *mainWindow,
 }
 
 void ChatWindow::changeTo(ChatInfo *c) {
-    if(c==nullptr){
+    if (c == nullptr) {
         frame.remove();
-    }else {
+    } else {
         frame.remove();
-        if(c_ui.count(c)==0){
-            c_ui[c]=Gtk::manage(new Chatting(this, c));
+        if (c_ui.count(c) == 0) {
+            c_ui[c] = Gtk::manage(new Chatting(this, c));
         }
         frame.add(*c_ui[c]);
         frame.show_all_children();
     }
 }
+
 void ChatWindow::receiveMsg(MessageInfo *msg) {
-    std::cout<<"Chat Window Receive message"<<std::endl;
+
+    std::cout << "Chat Window Receive message" << std::endl;
     c_ui[msg->getChat()]->addMessage(msg);
+
 }
 
 ChatWindow::~ChatWindow() {

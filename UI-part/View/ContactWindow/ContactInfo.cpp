@@ -17,7 +17,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
     grid.set_row_spacing(10);
     grid.set_column_spacing(10);
 
-    avatar = PixMan::TryOrDefaultUserAva(avatarSize,u->getAvatarPath());
+    avatar = PixMan::TryOrDefaultUserAva(avatarSize,u->getAvatarPath(),u->getStatus()==0);
     nickName.set_text(u->getNickName());
     nickName.set_line_wrap(true);
 

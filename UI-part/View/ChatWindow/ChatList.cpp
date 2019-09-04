@@ -50,11 +50,8 @@ ChatList::ChatList(ChatWindow *chatWindow,
 
     sort = Gtk::TreeModelSort::create(filter);
     sort->set_default_sort_func([this](const Gtk::TreeModel::iterator &a, const Gtk::TreeModel::iterator &b) -> int {
-        int x = (*a)[chatPeep.sortPriority] - (*b)[chatPeep.sortPriority];
-        if (x > 0) {
+        if ((*a)[chatPeep.lastMsgTime] > (*b)[chatPeep.lastMsgTime]) {
             return -1;
-        } else if (x == 0) {
-            return 0;
         } else {
             return 1;
         }
@@ -68,9 +65,10 @@ ChatList::ChatList(ChatWindow *chatWindow,
         Gtk::TreeModel::iterator iter = select->get_selected();
         if (iter) {
             Gtk::TreeModel::Row row = *iter;
-            std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. "<< std::endl;
+            std::cout << "The " << row[chatPeep.chatName] << " " << row[chatPeep.msg_toread] << " Clicked. "
+                      << std::endl;
             this->chatWindow->changeTo(iter->get_value(chatPeep.c));
-        }else{
+        } else {
             this->chatWindow->changeTo(nullptr);
         }
     });
@@ -93,7 +91,8 @@ void ChatList::addChat(ChatInfo *newChat) {
     Glib::RefPtr<Gdk::Pixbuf> ava;
     if (newChat->getTotype() == 1) {
         iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToUser()->getNickName()));
-        iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToUser()->getAvatarPath()));
+        iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToUser()->getAvatarPath(),
+                                                                     newChat->getToUser()->getStatus() == 0));
     } else if (newChat->getTotype() == 2) {
         iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToGroup()->getNickName()));
         iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToGroup()->getAvatarPath()));
@@ -104,7 +103,7 @@ void ChatList::addChat(ChatInfo *newChat) {
 }
 
 void ChatList::deleteChat(ChatInfo *c) {
-    std::cout<<c->getMsgList()->at(0)->getContent()<<std::endl;
+    std::cout << c->getMsgList()->at(0)->getContent() << std::endl;
     auto iter = c_iter[c];
     refChatPeep->erase(iter);
     c_iter.erase(c);

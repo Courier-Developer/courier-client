@@ -140,6 +140,9 @@ void Receiver::groupUpdate(GroupInfo *g) {
     sigc::connection conn = dispatcher.connect([=] {
         mainWindow->contactWindow.contactList.deleteGroup(g);
         mainWindow->contactWindow.contactList.addNewGroup(g);
+        mainWindow->changeWindow(CHATS);
+        mainWindow->chatWindow.chatList.addChat(g->getChat());
+        mainWindow->chatWindow.changeTo(g->getChat());
     });
     dispatcher.emit();
 

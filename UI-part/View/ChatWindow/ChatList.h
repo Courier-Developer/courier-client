@@ -23,9 +23,6 @@ public:
     void addChat(ChatInfo *newChat);
     void deleteChat(ChatInfo* c);
 
-protected:
-    Gtk::SearchEntry searchEntry;
-
     class ChatPeep : public Gtk::TreeModel::ColumnRecord {
     public:
         Gtk::TreeModelColumn<Glib::ustring> chatName;
@@ -46,6 +43,10 @@ protected:
             add(c);
         }
     } chatPeep;
+protected:
+    Gtk::SearchEntry searchEntry;
+
+
 
     Gtk::ScrolledWindow scrolledWindow;
     Gtk::TreeView chatListView;

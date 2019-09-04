@@ -21,6 +21,9 @@ std::vector<std::string> ThemeManage::getThemeList() {
     std::vector<std::string> v;
     v.push_back("default");
     v.push_back("ocean");
+    v.push_back("sky");
+    v.push_back("forest");
+
     return v;
 }
 

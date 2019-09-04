@@ -7,10 +7,14 @@
 
 Chatting::Chatting(ChatWindow *chatWindow,
                    ChatInfo *c) :
-        chatName("ChatEntity"),
         chatWindow(chatWindow),
         c(c) {
     set_size_request(400, 500);
+    if(c->getTotype()==1){
+        chatName.set_label(c->getToUser()->getNickName());
+    }else if(c->getTotype()==2){
+        chatName.set_label(c->getToGroup()->getNickName());
+    }
 
     Gtk::Frame *chatNameFrame = Gtk::manage(new Gtk::Frame);
     Gtk::HBox *chatNameAndDetail = Gtk::manage(new Gtk::HBox);
@@ -193,6 +197,12 @@ ShowMessage* Chatting::addMessage(MessageInfo *m) {
     std::cout<<m->getSender()<<std::endl;
     std::cout<<m->getContent()<<std::endl;
     std::cout<<m->getSender()->getNickName()<<std::endl;
+
+    if (chatWindow-> chatList.c_iter.count(m->getChat())) {
+        chatWindow-> chatList.c_iter[m->getChat()]->set_value(chatWindow-> chatList.chatPeep.lastMsgTime,
+                                                   Glib::ustring(m->getCreateTime().getString()));
+    }
+
     auto sm = Gtk::manage(new ShowMessage(m, true));
     msgList.pack_start(*sm, Gtk::PACK_SHRINK);
     msgList.show_all_children();

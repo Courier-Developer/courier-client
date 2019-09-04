@@ -1,10 +1,10 @@
 
 dialog{
-    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-ocean.jpeg");
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-forest.jpeg");
     background-size: cover;
 }
 window{
-    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-ocean.jpeg");
+    background-image: url("/home/ervinxie/Desktop/courier-client/UI-part/View/res/bg-forest.jpeg");
     background-size: cover;
 }
 
@@ -23,7 +23,7 @@ button label{
 }
 button:hover{
     transition-duration: 500ms;
-    background-color: white;
+    background-color: #ffffff;
 }
 
 .avatar{
@@ -83,7 +83,7 @@ label {
 
 .otherChatMessage {
     color: white;
-    background-color: rgba(1,1,1,0.6);
+    background-color: rgba(1,1,1,0.8);
     padding: 5px;
 }
 

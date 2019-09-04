@@ -115,7 +115,7 @@ void GroupContactInfo::changeGroup(GroupInfo *group) {
 void GroupContactInfo::addUserAsMember(UserInfo *newUser) {
     auto iter = refListStore->append();
     iter->set_value(groupContact.nickName, Glib::ustring(newUser->getNickName()));
-    iter->set_value(groupContact.avatar, PixMan::TryOrDefaultUserAva(24,newUser->getAvatarPath()));
+    iter->set_value(groupContact.avatar, PixMan::TryOrDefaultUserAva(24,newUser->getAvatarPath(),newUser->getStatus()==0));
 }
 
 GroupContactInfo::~GroupContactInfo() {

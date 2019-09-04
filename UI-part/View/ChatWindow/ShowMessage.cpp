@@ -54,7 +54,7 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
         avatar.set_margin_left(0);
         auto rec=new Gtk::Image(PixMan::getIcon("receiver",10));
         rec->set_valign(Gtk::ALIGN_START);
-        rec->set_margin_top(10);
+        rec->set_margin_top(20);
         pack_end(*rec);
         nickName.set_halign(Gtk::ALIGN_END);
         pack_end(messageBox);
@@ -66,20 +66,23 @@ ShowMessage::ShowMessage(MessageInfo *m, bool showNickName) :
         avatar.set_margin_right(0);
         auto sen = new Gtk::Image(PixMan::getIcon("sender",10));
         sen->set_valign(Gtk::ALIGN_START);
-        sen->set_margin_top(10);
+        sen->set_margin_top(20);
         pack_start(*sen);
         nickName.set_halign(Gtk::ALIGN_START);
         pack_start(messageBox);
         pack_start(loading);
     }
-    loading.property_active()= true;
+    if(m->getSenderId()==receiver->me->getUserId()) {
+        loading.property_active() = true;
+        dispatcher.connect([this]{
+            this->loading.property_active() = ! this->loading.property_active();
+        });
+    }
     show_all_children();
+
+
 }
 
 void ShowMessage::toggle() {
-    dispatcher.connect([this]{
-        this->loading.property_active() = ! this->loading.property_active();
-    });
     dispatcher.emit();
-
 }

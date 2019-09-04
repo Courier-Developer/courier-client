@@ -95,7 +95,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
             confirm->signal_clicked().connect([&] {
                 vector<int> v;
                 for (auto iter:(gselect->refTreeStore)->children()) {
-                    std::cout<<iter->get_value(contact.nickName)<<std::endl;
+                    std::cout << iter->get_value(contact.nickName) << std::endl;
                     for (auto kid:iter->children()) {
                         std::cout << kid->get_value(contact.nickName) << std::endl;
                         if (kid->get_value(contact.checked)) {
@@ -108,6 +108,12 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
                 for (int i:v) {
                     std::cout << i << std::endl;
                 }
+                dealer.addGroup("Gourp by" + receiver->me->getNickName(), v, [this](GroupInfo *g) {
+                    receiver->groupUpdate(g);
+
+                }, [this](std::string s) {
+                    std::cout << s << std::endl;
+                });
 
                 dialog.hide();
             });
@@ -294,10 +300,11 @@ void ContactList::addNewFriend(UserInfo *newUser) {
         iter = u_iter[newUser];
     }
     iter->set_value(contact.nickName, Glib::ustring(newUser->getNickName()));
-    iter->set_value(contact.avatar, PixMan::TryOrDefaultUserAva(24, newUser->getAvatarPath()));
+    iter->set_value(contact.avatar,
+                    PixMan::TryOrDefaultUserAva(24, newUser->getAvatarPath(), newUser->getStatus() == 0));
     iter->set_value(contact.u, newUser);
     iter->set_value(contact.type, USER);
-    iter->set_value(contact.sortPriority, 0);
+    iter->set_value(contact.sortPriority, newUser->getStatus() * 10);
 }
 
 void ContactList::deleteFriend(UserInfo *u) {

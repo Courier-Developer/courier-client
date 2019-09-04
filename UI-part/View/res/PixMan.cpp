@@ -4,8 +4,8 @@
 
 #include "PixMan.h"
 const std::string local_res="../../UI-part/View/res/";
-Glib::RefPtr<Gdk::Pixbuf> PixMan::TryOrDefaultUserAva(int size, std::string path) {
-    Glib::RefPtr<Gdk::Pixbuf> avatar;
+Glib::RefPtr<Gdk::Pixbuf> PixMan::TryOrDefaultUserAva(int size, std::string path,bool isgray) {
+    Glib::RefPtr<Gdk::Pixbuf> avatar,re;
     if (path == "")
         avatar = Gdk::Pixbuf::create_from_file(local_res + "/NoAvatar.png");
     else {
@@ -18,6 +18,11 @@ Glib::RefPtr<Gdk::Pixbuf> PixMan::TryOrDefaultUserAva(int size, std::string path
         }
     }
     avatar = avatar->scale_simple(size, size, Gdk::INTERP_BILINEAR);
+    if(isgray){
+        re = avatar;
+        avatar->saturate_and_pixelate(re,0, false);
+        return re;
+    }
     return avatar;
 }
 
