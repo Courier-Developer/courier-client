@@ -10,7 +10,7 @@ ThemeManage *themeManage;
 
 Login Access_Key;
 
-std::string serverip = "172.20.10.8";
+std::string serverip = "192.168.43.171";
 
 int ReveiveMessage(Message msg) {
     MessageInfo mess = Convert::cv_message_to_client(msg);

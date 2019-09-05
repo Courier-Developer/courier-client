@@ -207,6 +207,7 @@ ShowMessage* Chatting::addMessage(MessageInfo *m) {
     msgList.pack_start(*sm, Gtk::PACK_SHRINK);
     msgList.show_all_children();
     auto adj = scrolledWindow.get_vadjustment();
+    sleep(0.1);
     adj->set_value(adj->get_upper());
     std::cout<<adj->get_upper()<<std::endl;
     return sm;

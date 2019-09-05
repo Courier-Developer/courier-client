@@ -104,7 +104,11 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
             dialog.add_button("OK", 1);
             dialog.show_all_children();
             if (dialog.run() == 1) {
-
+                dealer.moveToPacket(this->u,pa,[this](std::string s){
+                    std::cout<<s<<std::endl;
+                },[this](std::string erro){
+                    std::cout<<erro<<std::endl;
+                });
             } else {
                 auto iter = p_iter[this->u->getInPacket()];
                 packetCombo.set_active(p_iter[this->u->getInPacket()]);
