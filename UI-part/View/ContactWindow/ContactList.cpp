@@ -76,8 +76,11 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
         addNewGroupBt.set_image(*Gtk::manage(new Gtk::Image(PixMan::getIcon("addteam", 32))));
         addNewGroupBt.signal_clicked().connect([this] {
             Gtk::Dialog dialog;
+            Gtk::Entry entry;
+            entry.set_placeholder_text("Enter Group Name");
             dialog.set_size_request(300, 400);
             dialog.get_content_area()->pack_start(*Gtk::manage(new Gtk::Label("Select Friends")));
+            dialog.get_content_area()->pack_start(entry);
             dialog.set_border_width(10);
 
             ContactList *gselect = Gtk::manage(new ContactList(nullptr, this->plist, this->glist, true));
@@ -108,7 +111,7 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
                 for (int i:v) {
                     std::cout << i << std::endl;
                 }
-                dealer.addGroup("Gourp by" + receiver->me->getNickName(), v, [this](GroupInfo *g) {
+                dealer.addGroup(entry.get_text()+"by " + receiver->me->getNickName(), v, [this](GroupInfo *g) {
                     receiver->groupUpdate(g);
 
                 }, [this](std::string s) {

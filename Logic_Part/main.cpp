@@ -39,10 +39,10 @@ int SomeoneOffline(int id)
     return 0;
 }
 
-int GroupAdd(chatGroup_with_members group)
+int GroupAdd(int id,std::string name)
 {
-    GroupInfo newgroup=Convert::cv_group_to_client(group);
-    dealer.groupAdd(newgroup);
+
+    dealer.addgroup(id,name);
     return 0;
 }
 

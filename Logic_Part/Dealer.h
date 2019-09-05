@@ -35,7 +35,7 @@ int FriendWantAdd(Friend fri);
 int FriendConfirm(Friend fri);
 int SomeoneOnline(int id);
 int SomeoneOffline(int id);
-int GroupAdd(chatGroup_with_members group);
+int GroupAdd(int id,std::string name);
 Login CheckAccess();
 extern Login Access_Key;
 class Dealer {
@@ -322,6 +322,10 @@ public:
     void userLogout(int id);
 
     void groupAdd(GroupInfo group);
+
+    void addgroupMethod(int id,std::string name);
+
+    void addgroup(int id,std::string name);
 
     /**************************************Test*************************************/
 

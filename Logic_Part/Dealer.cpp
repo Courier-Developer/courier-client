@@ -5,6 +5,8 @@
 
 #include "../UI-part/View/implement.h"
 #include "../file/MyFile.h"
+#include "Dealer.h"
+
 
 /*************************************获取ip**************************************/
 
@@ -362,7 +364,7 @@ void Dealer::be_added_in_group(GroupInfo group) {
     GroupInfo *newgroup = add_group(group);
     update_local_group(group);
     //todo:
-//    receiver->groupUpdate(newgroup);
+    receiver->groupUpdate(newgroup);
 }
 
 //离开群
@@ -1413,6 +1415,22 @@ Dealer::chatWith(UserInfo *user) {
 ChatInfo *
 Dealer::chatWith(GroupInfo *group) {
     return get_chat(group);
+}
+
+void Dealer::addgroupMethod(int id, std::string name) {
+    _mtx.lock();
+    std::vector<Friend> members=client.call<std::vector<Friend> >("get_group_mumber",id);
+    std::vector<int> memberids;
+    for (auto &tmp:members){
+        memberids.push_back(tmp.uid);
+    }
+    GroupInfo *newgroup=add_group(GroupInfo(id,name,"","",memberids));
+    _mtx.unlock();
+    receiver->groupUpdate(newgroup);
+}
+
+void Dealer::addgroup(int id, std::string name) {
+    std::thread t(std::bind(&Dealer::addgroupMethod, this, id, name));
 }
 
 
