@@ -11,7 +11,7 @@ SignUp::SignUp(Glib::RefPtr<Gtk::Application> app) {
 
     set_title("Sign Up at Courier");
     set_position(Gtk::WIN_POS_CENTER);
-    set_size_request(800, 800);
+    set_size_request(400, 400);
 
 
     vbox.pack_end(infoGrid, Gtk::PACK_SHRINK);
