@@ -27,9 +27,9 @@ public:
     std::vector<GroupInfo *>& glist;
     std::vector<ChatInfo *>& clist;
 
-    ChatWindow chatWindow;
-    ContactWindow contactWindow;
-    OtherWindow otherWindow;
+    ChatWindow* chatWindow;
+    ContactWindow* contactWindow;
+    OtherWindow* otherWindow;
     void changeWindow(int to);
     void refresh();
 protected:

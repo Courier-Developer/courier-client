@@ -12,9 +12,6 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
                        std::vector<PacketInfo *> &plist,
                        std::vector<GroupInfo *> &glist,
                        std::vector<ChatInfo *> &clist) :
-        chatWindow(this, clist),
-        contactWindow(this, plist, glist),
-        otherWindow(this),
         plist(plist),
         clist(clist),
         glist(glist) {
@@ -29,7 +26,7 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
     add(box);
 
     box.pack_start(avatar_button_box,Gtk::PACK_SHRINK);
-    avatar.set(PixMan::TryOrDefaultUserAva(64,receiver->me->getAvatarPath()));
+    refresh();
 
     avatar.get_style_context()->add_class("avatar");
     avatar_button_box.pack_start(avatar);
@@ -63,7 +60,7 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
     });
 
 
-    windowFrame.add(chatWindow);
+    changeWindow(CHATS);
     windowFrame.set_border_width(0);
     box.pack_start(windowFrame);
     windowFrame.set_shadow_type(Gtk::SHADOW_NONE);
@@ -79,20 +76,23 @@ void MainWindow::changeWindow(int to) {
     switch (to) {
         case CHATS: {
             windowFrame.remove();
-            windowFrame.add(chatWindow);
+            chatWindow = new ChatWindow(this,clist);
+            windowFrame.add(*chatWindow);
             windowFrame.show_all_children();
 
             break;
         }
         case CONTACTS: {
             windowFrame.remove();
-            windowFrame.add(contactWindow);
+            contactWindow = new ContactWindow(this,plist,glist);
+            windowFrame.add(*contactWindow);
             windowFrame.show_all_children();
             break;
         }
         case OTHERS: {
             windowFrame.remove();
-            windowFrame.add(otherWindow);
+            otherWindow = new OtherWindow(this);
+            windowFrame.add(*otherWindow);
             windowFrame.show_all_children();
 
             break;
@@ -105,6 +105,6 @@ void MainWindow::changeWindow(int to) {
 }
 
 void MainWindow::refresh() {
-    avatar.set(PixMan::TryOrDefaultUserAva(64,receiver->me->getAvatarPath()));
+    avatar.set(PixMan::TryOrDefaultUserAva(64,receiver->me->getAvatarPath(),true,receiver->me->getUserId()));
 }
 

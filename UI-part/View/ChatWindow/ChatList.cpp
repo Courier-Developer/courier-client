@@ -92,7 +92,7 @@ void ChatList::addChat(ChatInfo *newChat) {
     if (newChat->getTotype() == 1) {
         iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToUser()->getNickName()));
         iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToUser()->getAvatarPath(),
-                                                                     newChat->getToUser()->getStatus() == 0));
+                                                                     newChat->getToUser()->getStatus() == 0,newChat->getToUser()->getUserId()));
     } else if (newChat->getTotype() == 2) {
         iter->set_value(chatPeep.chatName, Glib::ustring(newChat->getToGroup()->getNickName()));
         iter->set_value(chatPeep.avatar, PixMan::TryOrDefaultUserAva(64, newChat->getToGroup()->getAvatarPath()));

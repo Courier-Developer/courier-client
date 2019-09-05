@@ -1109,6 +1109,7 @@ void Dealer::addFriendMethod(int id, std::function<void(std::string)> success, s
 
         bool op = client.call<bool>("request_friend", userid, id);
         std::cout<<" ok"<<std::endl;
+        UI_add_friend(UserMap[id],1);
         _mtx.unlock();
         success("我觉得可以");
     } else {

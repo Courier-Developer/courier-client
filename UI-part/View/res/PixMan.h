@@ -9,7 +9,7 @@
 #include <iostream>
 class PixMan {
 public:
-    static Glib::RefPtr<Gdk::Pixbuf> TryOrDefaultUserAva(int size=64,std::string path="",bool isgray=false);
+    static Glib::RefPtr<Gdk::Pixbuf> TryOrDefaultUserAva(int size=64,std::string path="",bool isgray=false,int x=0);
     static Glib::RefPtr<Gdk::Pixbuf> getIcon(std::string name,int size=40);
     static Gtk::Image getIconImage(std::string name,int size=40);
     static Glib::RefPtr<Gdk::Pixbuf> getPic(std::string name,int width=150);

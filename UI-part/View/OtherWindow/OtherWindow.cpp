@@ -26,7 +26,7 @@ OtherWindow::OtherWindow(MainWindow *mainWindow) : myInfo(receiver->me, 128) {
         dialog.set_border_width(10);
         dialog.set_size_request(100, 100);
         dialog.set_title("Edit My Profile");
-        Gtk::Image ava(PixMan::TryOrDefaultUserAva(150, receiver->me->getAvatarPath()));
+        Gtk::Image ava(PixMan::TryOrDefaultUserAva(150, receiver->me->getAvatarPath(),true,0));
         ava.get_style_context()->add_class("avatar");
 
         Gtk::Button bt;

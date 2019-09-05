@@ -68,8 +68,8 @@ GroupContactInfo::GroupContactInfo() {
         if(this->group){
             auto c= dealer.chatWith(this->group);
             receiver->mainWindow->changeWindow(CHATS);
-            receiver->mainWindow->chatWindow.chatList.addChat(c);
-            receiver->mainWindow->chatWindow.changeTo(c);
+            receiver->mainWindow->chatWindow->chatList.addChat(c);
+            receiver->mainWindow->chatWindow->changeTo(c);
         }
     });
 
@@ -115,7 +115,7 @@ void GroupContactInfo::changeGroup(GroupInfo *group) {
 void GroupContactInfo::addUserAsMember(UserInfo *newUser) {
     auto iter = refListStore->append();
     iter->set_value(groupContact.nickName, Glib::ustring(newUser->getNickName()));
-    iter->set_value(groupContact.avatar, PixMan::TryOrDefaultUserAva(24,newUser->getAvatarPath(),newUser->getStatus()==0));
+    iter->set_value(groupContact.avatar, PixMan::TryOrDefaultUserAva(24,newUser->getAvatarPath(),newUser->getStatus()==0,newUser->getUserId()));
 }
 
 GroupContactInfo::~GroupContactInfo() {

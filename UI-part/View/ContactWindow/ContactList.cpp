@@ -301,7 +301,7 @@ void ContactList::addNewFriend(UserInfo *newUser) {
     }
     iter->set_value(contact.nickName, Glib::ustring(newUser->getNickName()));
     iter->set_value(contact.avatar,
-                    PixMan::TryOrDefaultUserAva(24, newUser->getAvatarPath(), newUser->getStatus() == 0));
+                    PixMan::TryOrDefaultUserAva(24, newUser->getAvatarPath(), newUser->getStatus() == 0,newUser->getUserId()));
     iter->set_value(contact.u, newUser);
     iter->set_value(contact.type, USER);
     iter->set_value(contact.sortPriority, newUser->getStatus() * 10);

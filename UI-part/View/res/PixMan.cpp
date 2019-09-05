@@ -4,19 +4,37 @@
 
 #include "PixMan.h"
 const std::string local_res="../../UI-part/View/res/";
-Glib::RefPtr<Gdk::Pixbuf> PixMan::TryOrDefaultUserAva(int size, std::string path,bool isgray) {
+Glib::RefPtr<Gdk::Pixbuf> PixMan::TryOrDefaultUserAva(int size, std::string path,bool isgray,int x) {
     Glib::RefPtr<Gdk::Pixbuf> avatar,re;
-    if (path == "")
-        avatar = Gdk::Pixbuf::create_from_file(local_res + "/NoAvatar.png");
-    else {
-        try {
-            avatar = Gdk::Pixbuf::create_from_file(path);
-        } catch (...) {
-            std::cout << "Avatar Load Failed at" << path << std::endl;
-            avatar = Gdk::Pixbuf::create_from_file(
-                    local_res + "/NoAvatar.png");
-        }
+
+    if(x%5==0){
+        avatar= Gdk::Pixbuf::create_from_file(local_res + "NoAvatar.png");
     }
+    if(x%5==1){
+        avatar= Gdk::Pixbuf::create_from_file(local_res + "zl.jpeg");
+    }
+    if(x%5==2){
+        avatar= Gdk::Pixbuf::create_from_file(local_res + "xch.jpeg");
+    }
+    if(x%5==3){
+        avatar= Gdk::Pixbuf::create_from_file(local_res + "sdy.jpg");
+    }
+    if(x%5==4){
+        avatar= Gdk::Pixbuf::create_from_file(local_res + "md.jpg");
+    }
+
+
+//    if (path == "")
+//        avatar = Gdk::Pixbuf::create_from_file(local_res + "/NoAvatar.png");
+//    else {
+//        try {
+//            avatar = Gdk::Pixbuf::create_from_file(path);
+//        } catch (...) {
+//            std::cout << "Avatar Load Failed at" << path << std::endl;
+//            avatar = Gdk::Pixbuf::create_from_file(
+//                    local_res + "/NoAvatar.png");
+//        }
+//    }
     avatar = avatar->scale_simple(size, size, Gdk::INTERP_BILINEAR);
     if(isgray){
         re = avatar;

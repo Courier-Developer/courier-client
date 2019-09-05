@@ -17,7 +17,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
     grid.set_row_spacing(10);
     grid.set_column_spacing(10);
 
-    avatar = PixMan::TryOrDefaultUserAva(avatarSize,u->getAvatarPath(),u->getStatus()==0);
+    avatar = PixMan::TryOrDefaultUserAva(avatarSize,u->getAvatarPath(),u->getStatus()==0,u->getUserId());
     nickName.set_text(u->getNickName());
     nickName.set_line_wrap(true);
 
@@ -47,7 +47,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
                     }
                     conn = dispatcher.connect([=] {
 
-                        receiver->mainWindow->contactWindow.contactList.addNewFriend(this->u);
+                        receiver->mainWindow->contactWindow->contactList.addNewFriend(this->u);
                         std::cout<<suc<<std::endl;
                     });
                     dispatcher.emit();
@@ -123,8 +123,8 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
         startChat.signal_clicked().connect([this] {
             auto c = this->u->getChat();
             receiver->mainWindow->changeWindow(CHATS);
-            receiver->mainWindow->chatWindow.chatList.addChat(c);
-            receiver->mainWindow->chatWindow.changeTo(c);
+            receiver->mainWindow->chatWindow->chatList.addChat(c);
+            receiver->mainWindow->chatWindow->changeTo(c);
         });
         pack_start(startChat, Gtk::PACK_SHRINK);
     }

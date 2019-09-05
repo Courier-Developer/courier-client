@@ -55,7 +55,7 @@ void HistroyMessage::addMessage(MessageInfo *msg) {
     std::cout<<msg->getCreateTime().getString()<<std::endl;
     iter->set_value(message.msgTime, Glib::ustring(msg->getCreateTime().getString()));
     iter->set_value(message.senderName, Glib::ustring(msg->getSender()->getNickName()));
-    iter->set_value(message.senderAvatar, PixMan::TryOrDefaultUserAva(32,msg->getSender()->getAvatarPath()));
+    iter->set_value(message.senderAvatar, PixMan::TryOrDefaultUserAva(32,msg->getSender()->getAvatarPath(),true,msg->getSender()->getUserId()));
 }
 
 

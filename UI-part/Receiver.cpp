@@ -104,7 +104,7 @@ void Receiver::receiveMessage(MessageInfo *msg) {
     }
     conn = dispatcher.connect([=] {
         std::cout<<msg->getContent()<<" "<<msg->getContentKind()<<std::endl;
-        mainWindow->chatWindow.receiveMsg(msg);
+        mainWindow->chatWindow->receiveMsg(msg);
     });
     dispatcher.emit();
 }
@@ -114,8 +114,8 @@ void Receiver::friendUpdate(UserInfo *u) {
         conn.disconnect();
     }
     sigc::connection conn = dispatcher.connect([=] {
-        mainWindow->contactWindow.contactList.deleteFriend(u);
-        mainWindow->contactWindow.contactList.addNewFriend(u);
+        mainWindow->contactWindow->contactList.deleteFriend(u);
+        mainWindow->contactWindow->contactList.addNewFriend(u);
     });
     dispatcher.emit();
 
@@ -126,8 +126,8 @@ void Receiver::friendDelete(UserInfo *u) {
         conn.disconnect();
     }
     sigc::connection conn = dispatcher.connect([=] {
-        mainWindow->contactWindow.contactList.deleteFriend(u);
-        mainWindow->contactWindow.contactList.addNewFriend(u);
+        mainWindow->contactWindow->contactList.deleteFriend(u);
+        mainWindow->contactWindow->contactList.addNewFriend(u);
     });
     dispatcher.emit();
 
@@ -138,11 +138,11 @@ void Receiver::groupUpdate(GroupInfo *g) {
         conn.disconnect();
     }
     sigc::connection conn = dispatcher.connect([=] {
-        mainWindow->contactWindow.contactList.deleteGroup(g);
-        mainWindow->contactWindow.contactList.addNewGroup(g);
+        mainWindow->contactWindow->contactList.deleteGroup(g);
+        mainWindow->contactWindow->contactList.addNewGroup(g);
         mainWindow->changeWindow(CHATS);
-        mainWindow->chatWindow.chatList.addChat(g->getChat());
-        mainWindow->chatWindow.changeTo(g->getChat());
+        mainWindow->chatWindow->chatList.addChat(g->getChat());
+        mainWindow->chatWindow->changeTo(g->getChat());
     });
     dispatcher.emit();
 
@@ -153,8 +153,8 @@ void Receiver::groupDelete(GroupInfo *g) {
         conn.disconnect();
     }
     sigc::connection conn = dispatcher.connect([=] {
-        mainWindow->contactWindow.contactList.deleteGroup(g);
-        mainWindow->contactWindow.contactList.addNewGroup(g);
+        mainWindow->contactWindow->contactList.deleteGroup(g);
+        mainWindow->contactWindow->contactList.addNewGroup(g);
     });
     dispatcher.emit();
 }
@@ -164,9 +164,9 @@ void Receiver::groupRequest(GroupInfo *g) {
         conn.disconnect();
     }
     sigc::connection conn = dispatcher.connect([=] {
-        mainWindow->contactWindow.contactList.deleteGroup(g);
-        mainWindow->contactWindow.contactList.addNewGroup(g);
-        mainWindow->chatWindow.chatList.addChat(g->getChat());
+        mainWindow->contactWindow->contactList.deleteGroup(g);
+        mainWindow->contactWindow->contactList.addNewGroup(g);
+        mainWindow->chatWindow->chatList.addChat(g->getChat());
     });
     dispatcher.emit();
 
