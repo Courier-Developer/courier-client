@@ -111,9 +111,10 @@ ContactList::ContactList(ContactWindow *contactWindow, std::vector<PacketInfo *>
                 for (int i:v) {
                     std::cout << i << std::endl;
                 }
-                dealer.addGroup(entry.get_text()+"by " + receiver->me->getNickName(), v, [this](GroupInfo *g) {
-                    receiver->groupUpdate(g);
 
+                dealer.addGroup(entry.get_text()+"by " + receiver->me->getNickName(), v, [this](GroupInfo *g) {
+                    std::cout<<"group add ok!"<<std::endl;
+                    receiver->groupUpdate(g);
                 }, [this](std::string s) {
                     std::cout << s << std::endl;
                 });

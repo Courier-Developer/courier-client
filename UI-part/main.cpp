@@ -41,8 +41,16 @@ int SomeoneOffline(int id) {
 }
 
 int GroupAdd(int id,std::string name) {
-    dealer.addgroup(id,name);
-    return 0;
+    std::cout<<"Ga01"<<std::endl;
+    if (dealer.GroupMap.count(id)) {
+        std::cout << "Ga01ok" << std::endl;
+        return 0;
+    }
+    else {
+        std::cout<<"Ga01false"<<std::endl;
+        dealer.addgroup(id, name);
+        return 0;
+    }
 }
 
 Login CheckAccess() {

@@ -42,7 +42,10 @@ void ChatWindow::changeTo(ChatInfo *c) {
 
 void ChatWindow::receiveMsg(MessageInfo *msg) {
     std::cout << "Chat Window Receive message" << std::endl;
-    c_ui[msg->getChat()]->addMessage(msg);
+    if (c_ui.count(msg->getInChat()) == 0) {
+        c_ui[msg->getInChat()] = Gtk::manage(new Chatting(this, msg->getInChat()));
+    }
+    c_ui[msg->getInChat()]->addMessage(msg);
 
 }
 

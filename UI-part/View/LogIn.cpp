@@ -14,7 +14,7 @@ LogIn::LogIn(Glib::RefPtr<Gtk::Application> app) {
 
     set_title("Welcome to Courier");
     set_position(Gtk::WIN_POS_CENTER);
-    set_size_request(300, 500);
+    set_size_request(800, 800);
 
 
     add(vbox);

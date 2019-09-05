@@ -262,7 +262,7 @@ void Dealer::local_update_packet(const PacketInfo &packet) {
 
 void Dealer::server_update_packet(const PacketInfo &packet) {
     //todo: call for server 有则修改，无则添加
-    bool op = client.call<bool>("change_name_of_package", userid, packet.getPacketId(), packet.getPacketName());
+//    bool op = client.call<bool>("change_name_of_package", userid, packet.getPacketId(), packet.getPacketName());
 }
 
 bool Dealer::UI_change_packetname(PacketInfo *packet, const std::string &name) {
