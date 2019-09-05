@@ -18,6 +18,9 @@ MainWindow::MainWindow(Glib::RefPtr<Gtk::Application> app,
     get_style_context()->add_class("mainWindow");
     std::cout << "Building Main Window" << std::endl;
     this->app = app;
+    chatWindow = new ChatWindow(this,clist);
+    contactWindow = new ContactWindow(this,plist,glist);
+    otherWindow = new OtherWindow(this);
 
     set_title("MainWindow");
     set_position(Gtk::WIN_POS_CENTER);

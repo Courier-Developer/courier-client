@@ -17,7 +17,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
     grid.set_row_spacing(10);
     grid.set_column_spacing(10);
 
-    avatar = PixMan::TryOrDefaultUserAva(avatarSize,u->getAvatarPath(),u->getStatus()==0,u->getUserId());
+    avatar = PixMan::TryOrDefaultUserAva(avatarSize, u->getAvatarPath(), u->getStatus() == 0, u->getUserId());
     nickName.set_text(u->getNickName());
     nickName.set_line_wrap(true);
 
@@ -37,22 +37,22 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
         goto end;
     }
     if (u->getUserId() != receiver->me->getUserId()) {
-        std::cout<<u->getPacket()<<std::endl;
-        if (u->getPacket() ==0) {
+        std::cout << u->getPacket() << std::endl;
+        if (u->getPacket() == 0) {
             addFriend.set_label("Add As Friend");
-            addFriend.signal_clicked().connect([this]{
-                dealer.addFriend(this->u->getUserId(),[this](std::string suc){
+            addFriend.signal_clicked().connect([this] {
+                dealer.addFriend(this->u->getUserId(), [this](std::string suc) {
                     if (conn.connected()) {
                         conn.disconnect();
                     }
                     conn = dispatcher.connect([=] {
 
                         receiver->mainWindow->contactWindow->contactList.addNewFriend(this->u);
-                        std::cout<<suc<<std::endl;
+                        std::cout << suc << std::endl;
                     });
                     dispatcher.emit();
-                    },[this](std::string err){
-                    std::cout<<err<<std::endl;
+                }, [this](std::string err) {
+                    std::cout << err << std::endl;
                 });
             });
             pack_start(addFriend, Gtk::PACK_SHRINK);
@@ -104,10 +104,10 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
             dialog.add_button("OK", 1);
             dialog.show_all_children();
             if (dialog.run() == 1) {
-                dealer.moveToPacket(this->u,pa,[this](std::string s){
-                    std::cout<<s<<std::endl;
-                },[this](std::string erro){
-                    std::cout<<erro<<std::endl;
+                dealer.moveToPacket(this->u, pa, [this](std::string s) {
+                    std::cout << s << std::endl;
+                }, [this](std::string erro) {
+                    std::cout << erro << std::endl;
                 });
             } else {
                 auto iter = p_iter[this->u->getInPacket()];
@@ -121,7 +121,7 @@ ContactInfo::ContactInfo(UserInfo *u, int avatarSize, int reduce) : avatarSize(a
     if (u->getUserId() != receiver->me->getUserId()) {
         startChat.set_label("Start Chat");
         startChat.signal_clicked().connect([this] {
-            auto c = this->u->getChat();
+            auto c = dealer.chatWith(this->u);
             receiver->mainWindow->changeWindow(CHATS);
             receiver->mainWindow->chatWindow->chatList.addChat(c);
             receiver->mainWindow->chatWindow->changeTo(c);

@@ -198,8 +198,8 @@ ShowMessage* Chatting::addMessage(MessageInfo *m) {
     std::cout<<m->getContent()<<std::endl;
     std::cout<<m->getSender()->getNickName()<<std::endl;
 
-    if (chatWindow-> chatList.c_iter.count(m->getChat())) {
-        chatWindow-> chatList.c_iter[m->getChat()]->set_value(chatWindow-> chatList.chatPeep.lastMsgTime,
+    if (chatWindow-> chatList.c_iter.count(m->getInChat())) {
+        chatWindow-> chatList.c_iter[m->getInChat()]->set_value(chatWindow-> chatList.chatPeep.lastMsgTime,
                                                    Glib::ustring(m->getCreateTime().getString()));
     }
 
